@@ -1,0 +1,51 @@
+{
+  "name": "nf3",
+  "version": "0.1.12",
+  "description": "",
+  "repository": "unjs/nf3",
+  "license": "MIT",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.mjs"
+  },
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "obuild",
+    "dev": "vitest dev",
+    "lint": "eslint . && prettier -c .",
+    "lint:fix": "automd && eslint . --fix && prettier -w .",
+    "prepack": "pnpm build",
+    "release": "pnpm test && pnpm build && changelogen --release && npm publish && git push --follow-tags",
+    "test": "pnpm lint && pnpm test:types && vitest run --coverage",
+    "test:types": "tsc --noEmit --skipLibCheck"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@types/node": "^24.10.0",
+    "@types/semver": "^7.7.1",
+    "@vercel/nft": "^0.30.3",
+    "@vitest/coverage-v8": "^4.0.8",
+    "automd": "^0.4.2",
+    "changelogen": "^0.6.2",
+    "eslint": "^9.39.1",
+    "eslint-config-unjs": "^0.5.0",
+    "exsolve": "^1.0.8",
+    "mlly": "^1.8.0",
+    "obuild": "^0.4.1",
+    "oxc-minify": "^0.96.0",
+    "pathe": "^2.0.3",
+    "pkg-types": "^2.3.0",
+    "prettier": "^3.6.2",
+    "rolldown": "1.0.0-beta.47",
+    "rollup": "^4.53.2",
+    "rollup-plugin-esbuild": "^6.2.1",
+    "semver": "^7.7.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.8"
+  },
+  "packageManager": "pnpm@10.20.0"
+}

@@ -1,0 +1,1 @@
+"use strict";Object.defineProperty(exports,`__esModule`,{value:!0}),exports.escape=void 0;const escape=(e,{windowsPathsNoEscape:t=!1}={})=>t?e.replace(/[?*()[\]]/g,`[$&]`):e.replace(/[?*()[\]\\]/g,`\\$&`);exports.escape=escape;
