@@ -1,6 +1,28 @@
 
 @import "tailwindcss";
 
+:root {
+  --primary-color: #1A756A;
+  --secondary-color: #2D9C8F;
+  --accent-color: #0B3F39;
+  --white-color: #FFFFFF;
+  --black-color: #000000;
+  --error: #d32f2f;
+  --good: #4caf50;
+
+  --header-color: linear-gradient(to right, #1A756A, #2D9C8F);
+  --footer-color: linear-gradient(to right, #1A756A, #2D9C8F);
+  --background-color: linear-gradient(to bottom, #1A756A, #2D9C8F);
+  --box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.2);
+
+  --header-height: 10rem;
+
+  --bg-color: white;
+  --text-color: black;
+  --welcome-card-color: #e8f5f3;
+}
+
+
 * {
   box-sizing: border-box;
 }
@@ -10,8 +32,44 @@ body,
 #app {
   min-height: 100%;
 }
+html {
+  font-size:  62.5%;
+  scroll-behavior: smooth; 
+}
 
 body {
-  margin: 0;
+  font-size: 1.6rem;
 }
+
+/* header {
+  background-color: var(--primary-color);
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+header h1 {
+  color: var(--white-color);
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+nav {
+  display: flex;
+  gap: 3rem;
+  align-items: center;
+}
+
+nav a {
+  position: relative;
+  text-decoration: none;
+  color: var(--white-color);
+  font-size: 2.2rem;
+}
+
+nav a:hover {
+  color: #2D9C8F;
+}  */
+
 

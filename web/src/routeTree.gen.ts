@@ -9,50 +9,271 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/recipes/index'
+import { Route as ShoppingRouteImport } from './routes/shopping'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as RecipesRouteImport } from './routes/recipes'
+import { Route as QuestionsRouteImport } from './routes/questions'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as HandmatigRouteImport } from './routes/handmatig'
+import { Route as FavoritesRouteImport } from './routes/favorites'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AutomatischRouteImport } from './routes/automatisch'
+import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
+import { Route as RecipesIdRouteImport } from './routes/recipes/$id'
 
-const IndexRoute = IndexRouteImport.update({
+const ShoppingRoute = ShoppingRouteImport.update({
+  id: '/shopping',
+  path: '/shopping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecipesRoute = RecipesRouteImport.update({
+  id: '/recipes',
+  path: '/recipes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuestionsRoute = QuestionsRouteImport.update({
+  id: '/questions',
+  path: '/questions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HandmatigRoute = HandmatigRouteImport.update({
+  id: '/handmatig',
+  path: '/handmatig',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritesRoute = FavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AutomatischRoute = AutomatischRouteImport.update({
+  id: '/automatisch',
+  path: '/automatisch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecipesIndexRoute = RecipesIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => RecipesRoute,
+} as any)
+const RecipesIdRoute = RecipesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => RecipesRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/automatisch': typeof AutomatischRoute
+  '/dashboard': typeof DashboardRoute
+  '/favorites': typeof FavoritesRoute
+  '/handmatig': typeof HandmatigRoute
+  '/profile': typeof ProfileRoute
+  '/questions': typeof QuestionsRoute
+  '/recipes': typeof RecipesRouteWithChildren
+  '/settings': typeof SettingsRoute
+  '/shopping': typeof ShoppingRoute
+  '/recipes/$id': typeof RecipesIdRoute
+  '/recipes/': typeof RecipesIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/automatisch': typeof AutomatischRoute
+  '/dashboard': typeof DashboardRoute
+  '/favorites': typeof FavoritesRoute
+  '/handmatig': typeof HandmatigRoute
+  '/profile': typeof ProfileRoute
+  '/questions': typeof QuestionsRoute
+  '/settings': typeof SettingsRoute
+  '/shopping': typeof ShoppingRoute
+  '/recipes/$id': typeof RecipesIdRoute
+  '/recipes': typeof RecipesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/automatisch': typeof AutomatischRoute
+  '/dashboard': typeof DashboardRoute
+  '/favorites': typeof FavoritesRoute
+  '/handmatig': typeof HandmatigRoute
+  '/profile': typeof ProfileRoute
+  '/questions': typeof QuestionsRoute
+  '/recipes': typeof RecipesRouteWithChildren
+  '/settings': typeof SettingsRoute
+  '/shopping': typeof ShoppingRoute
+  '/recipes/$id': typeof RecipesIdRoute
+  '/recipes/': typeof RecipesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/automatisch'
+    | '/dashboard'
+    | '/favorites'
+    | '/handmatig'
+    | '/profile'
+    | '/questions'
+    | '/recipes'
+    | '/settings'
+    | '/shopping'
+    | '/recipes/$id'
+    | '/recipes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/automatisch'
+    | '/dashboard'
+    | '/favorites'
+    | '/handmatig'
+    | '/profile'
+    | '/questions'
+    | '/settings'
+    | '/shopping'
+    | '/recipes/$id'
+    | '/recipes'
+  id:
+    | '__root__'
+    | '/automatisch'
+    | '/dashboard'
+    | '/favorites'
+    | '/handmatig'
+    | '/profile'
+    | '/questions'
+    | '/recipes'
+    | '/settings'
+    | '/shopping'
+    | '/recipes/$id'
+    | '/recipes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  AutomatischRoute: typeof AutomatischRoute
+  DashboardRoute: typeof DashboardRoute
+  FavoritesRoute: typeof FavoritesRoute
+  HandmatigRoute: typeof HandmatigRoute
+  ProfileRoute: typeof ProfileRoute
+  QuestionsRoute: typeof QuestionsRoute
+  RecipesRoute: typeof RecipesRouteWithChildren
+  SettingsRoute: typeof SettingsRoute
+  ShoppingRoute: typeof ShoppingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/shopping': {
+      id: '/shopping'
+      path: '/shopping'
+      fullPath: '/shopping'
+      preLoaderRoute: typeof ShoppingRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes': {
+      id: '/recipes'
+      path: '/recipes'
+      fullPath: '/recipes'
+      preLoaderRoute: typeof RecipesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/questions': {
+      id: '/questions'
+      path: '/questions'
+      fullPath: '/questions'
+      preLoaderRoute: typeof QuestionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/handmatig': {
+      id: '/handmatig'
+      path: '/handmatig'
+      fullPath: '/handmatig'
+      preLoaderRoute: typeof HandmatigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favorites': {
+      id: '/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/automatisch': {
+      id: '/automatisch'
+      path: '/automatisch'
+      fullPath: '/automatisch'
+      preLoaderRoute: typeof AutomatischRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes/': {
+      id: '/recipes/'
+      path: '/'
+      fullPath: '/recipes/'
+      preLoaderRoute: typeof RecipesIndexRouteImport
+      parentRoute: typeof RecipesRoute
+    }
+    '/recipes/$id': {
+      id: '/recipes/$id'
+      path: '/$id'
+      fullPath: '/recipes/$id'
+      preLoaderRoute: typeof RecipesIdRouteImport
+      parentRoute: typeof RecipesRoute
     }
   }
 }
 
+interface RecipesRouteChildren {
+  RecipesIdRoute: typeof RecipesIdRoute
+  RecipesIndexRoute: typeof RecipesIndexRoute
+}
+
+const RecipesRouteChildren: RecipesRouteChildren = {
+  RecipesIdRoute: RecipesIdRoute,
+  RecipesIndexRoute: RecipesIndexRoute,
+}
+
+const RecipesRouteWithChildren =
+  RecipesRoute._addFileChildren(RecipesRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  AutomatischRoute: AutomatischRoute,
+  DashboardRoute: DashboardRoute,
+  FavoritesRoute: FavoritesRoute,
+  HandmatigRoute: HandmatigRoute,
+  ProfileRoute: ProfileRoute,
+  QuestionsRoute: QuestionsRoute,
+  RecipesRoute: RecipesRouteWithChildren,
+  SettingsRoute: SettingsRoute,
+  ShoppingRoute: ShoppingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
