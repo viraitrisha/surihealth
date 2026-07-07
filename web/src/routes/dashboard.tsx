@@ -9,7 +9,7 @@
 // }
 
 import { createFileRoute } from '@tanstack/react-router'
-import '../styles/dashboard.css'
+// import '../styles/dashboard.css'
 import WelcomeCard from '../client/Dashboard/WelcomeCard'
 import FoodPreview from '#/client/Dashboard/FoodPreview'
 import Header from '../client/components/Layout/PrivateHeader'
