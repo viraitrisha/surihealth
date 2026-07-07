@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import '../styles/automatisch.css'
+// import '../styles/automatisch.css'
 import Header from '#/client/components/Layout/PrivateHeader'
 import Footer from '#/client/components/Layout/Footer.tsx'
 
@@ -12,14 +12,14 @@ function RouteComponent() {
     <>
     <Header />
   <div>
-    <main className='page'>
-        <section className='plan-title'>
-            <h1>Automatisch Plan</h1>
+    <main className='min-h-screen'>
+        <section className='bg-[#e8f5f3] text-black text-center py-8 px-4 text-2xl font-bold border-b-2 border-[#2D9C8F]'>
+            <h1 className='m-0 text-[2.8rem]j'>Automatisch Plan</h1>
         </section>
 
-        <section className='plan-wrapper'>
-            <div className='plan-left'>
-                <h2>
+        <section className='flex flex-wrap justify-center gap-12 max-w-[120rem] mx-auto my-12 px-8'>
+            <div className='flex-[2] min-w-[25rem] bg-white p-12 rounded-2xl shadow-[0_0.2rem_1rem_rgba(0,0,0,0.2)] transition-transform duration-200 hover:-translate-y-1'>
+                <h2 className='text-[#2D9C8F]'>
                     Welkom, <span>Gebruiker</span>
                 </h2>
                 <p>Vandaag - (d/m/j)</p>
