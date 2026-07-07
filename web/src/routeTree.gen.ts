@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
 import { Route as RecipesIdRouteImport } from './routes/recipes/$id'
+import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 
 const QuestionsRoute = QuestionsRouteImport.update({
   id: '/questions',
@@ -22,6 +25,16 @@ const QuestionsRoute = QuestionsRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecipesIndexRoute = RecipesIndexRouteImport.update({
@@ -34,37 +47,76 @@ const RecipesIdRoute = RecipesIdRouteImport.update({
   path: '/recipes/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
+  id: '/demo/drizzle',
+  path: '/demo/drizzle',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
+  '/demo/drizzle': typeof DemoDrizzleRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
+  '/demo/drizzle': typeof DemoDrizzleRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes': typeof RecipesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
+  '/demo/drizzle': typeof DemoDrizzleRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/profile' | '/questions' | '/recipes/$id' | '/recipes/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/profile'
+    | '/questions'
+    | '/demo/drizzle'
+    | '/recipes/$id'
+    | '/recipes/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/profile' | '/questions' | '/recipes/$id' | '/recipes'
-  id: '__root__' | '/profile' | '/questions' | '/recipes/$id' | '/recipes/'
+  to:
+    | '/'
+    | '/about'
+    | '/profile'
+    | '/questions'
+    | '/demo/drizzle'
+    | '/recipes/$id'
+    | '/recipes'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/profile'
+    | '/questions'
+    | '/demo/drizzle'
+    | '/recipes/$id'
+    | '/recipes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   ProfileRoute: typeof ProfileRoute
   QuestionsRoute: typeof QuestionsRoute
+  DemoDrizzleRoute: typeof DemoDrizzleRoute
   RecipesIdRoute: typeof RecipesIdRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
 }
@@ -85,6 +137,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recipes/': {
       id: '/recipes/'
       path: '/recipes'
@@ -99,12 +165,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecipesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/demo/drizzle': {
+      id: '/demo/drizzle'
+      path: '/demo/drizzle'
+      fullPath: '/demo/drizzle'
+      preLoaderRoute: typeof DemoDrizzleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   ProfileRoute: ProfileRoute,
   QuestionsRoute: QuestionsRoute,
+  DemoDrizzleRoute: DemoDrizzleRoute,
   RecipesIdRoute: RecipesIdRoute,
   RecipesIndexRoute: RecipesIndexRoute,
 }
