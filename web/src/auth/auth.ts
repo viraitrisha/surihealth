@@ -12,16 +12,4 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false,
   },
-  socialProviders: {
-  },
-  session: {
-    expiresIn: 60 * 60 * 24 * 7, // 7 dagen
-    updateAge: 60 * 60 * 24,     // elke dag vernieuwen
-  },
-  user: {
-    modelName: 'user',
-    additionalFields: {
-    },
-  },
-  secret: process.env.BETTER_AUTH_SECRET!,
 });

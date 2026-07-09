@@ -1,15 +1,10 @@
-import { createServerFn } from '@tanstack/start';
-import { z } from 'zod';
+import { createServerFn } from '@tanstack/react-start';
 import { db } from '../../lib/db';
 import { contacts } from '../../db/schema';
 
-export const submitContact = createServerFn({ method: 'POST' })
-  .validator(z.object({
-    name: z.string().min(1),
-    email: z.string().email(),
-    message: z.string().min(1),
-  }))
+export const submitContact = createServerFn()
+  .validator((data: { name: string; email: string; message: string }) => data)
   .handler(async ({ data }) => {
     await db.insert(contacts).values(data);
     return { success: true };
-  });
+});

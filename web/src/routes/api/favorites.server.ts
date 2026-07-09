@@ -1,33 +1,37 @@
-import { createServerFn } from '@tanstack/start';
-import { z } from 'zod';
+import { createServerFn } from '@tanstack/react-start';
 import { db } from '../../lib/db';
-import { favorites } from '../../db/schema';
-import { and, eq } from 'drizzle-orm';
-import { requireUser } from '../../lib/auth-utils';
+import { favorites, recipes } from '../../db/schema';
+import { eq, and } from 'drizzle-orm';
+import { auth } from '../../auth/auth';
 
-export const getFavorites = createServerFn({ method: 'GET' })
-  .handler(async () => {
-    const user = await requireUser();
-    const favs = await db.query.favorites.findMany({
-      where: eq(favorites.userId, user.id),
-      with: { recipe: true },
+export const getFavorites = createServerFn().handler(async ({ context }) => {
+  const session = await auth.api.getSession({ headers: context.headers });
+  if (!session?.user) throw new Error('Niet ingelogd');
+  const favs = await db.select().from(favorites)
+    .where(eq(favorites.userId, session.user.id))
+    .innerJoin(recipes, eq(favorites.recipeId, recipes.id));
+  return favs.map(f => f.recipe);
+});
+
+export const addFavorite = createServerFn()
+  .validator((recipeId: number) => recipeId)
+  .handler(async ({ data, context }) => {
+    const session = await auth.api.getSession({ headers: context.headers });
+    if (!session?.user) throw new Error('Niet ingelogd');
+    await db.insert(favorites).values({
+      userId: session.user.id,
+      recipeId: data,
     });
-    return favs.map(f => f.recipe);
-  });
+});
 
-export const addFavorite = createServerFn({ method: 'POST' })
-  .validator(z.object({ recipeId: z.number().int().positive() }))
-  .handler(async ({ data }) => {
-    const user = await requireUser();
-    await db.insert(favorites).values({ userId: user.id, recipeId: data.recipeId });
-    return { success: true };
-  });
-
-export const removeFavorite = createServerFn({ method: 'POST' })
-  .validator(z.object({ recipeId: z.number().int().positive() }))
-  .handler(async ({ data }) => {
-    const user = await requireUser();
+export const removeFavorite = createServerFn()
+  .validator((recipeId: number) => recipeId)
+  .handler(async ({ data, context }) => {
+    const session = await auth.api.getSession({ headers: context.headers });
+    if (!session?.user) throw new Error('Niet ingelogd');
     await db.delete(favorites)
-      .where(and(eq(favorites.userId, user.id), eq(favorites.recipeId, data.recipeId)));
-    return { success: true };
-  });
+      .where(and(
+        eq(favorites.userId, session.user.id),
+        eq(favorites.recipeId, data)
+      ));
+});

@@ -1,4 +1,14 @@
-import { pgTable, serial, varchar, text, integer, boolean, jsonb, timestamp, uniqueIndex, } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  serial,
+  varchar,
+  text,
+  integer,
+  boolean,
+  jsonb,
+  timestamp,
+  uniqueIndex,
+} from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
   id: serial('id').primaryKey(),
@@ -12,7 +22,9 @@ export const users = pgTable('user', {
 
 export const sessions = pgTable('session', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   token: text('token').notNull(),
   expiresAt: timestamp('expires_at').notNull(),
   ipAddress: text('ip_address'),
@@ -23,7 +35,9 @@ export const sessions = pgTable('session', {
 
 export const accounts = pgTable('account', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   accountId: text('account_id').notNull(),
   providerId: text('provider_id').notNull(),
   accessToken: text('access_token'),
@@ -48,7 +62,10 @@ export const verifications = pgTable('verification', {
 
 export const profiles = pgTable('profile', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().unique().references(() => users.id, { onDelete: 'cascade' }),
+  userId: integer('user_id')
+    .notNull()
+    .unique()
+    .references(() => users.id, { onDelete: 'cascade' }),
   age: integer('age'),
   gender: varchar('gender', { length: 20 }),
   height: integer('height'),
@@ -83,18 +100,39 @@ export const recipes = pgTable('recipe', {
   ingredientsNl: jsonb('ingredients_nl').$type<string[]>(),
 });
 
-export const favorites = pgTable('favorite', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
-  recipeId: integer('recipe_id').notNull().references(() => recipes.id, { onDelete: 'cascade' }),
-}, (table) => ({
-  unique: uniqueIndex('fav_unique').on(table.userId, table.recipeId),
-}));
+export const favorites = pgTable(
+  'favorite',
+  {
+    id: serial('id').primaryKey(),
+    userId: integer('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    recipeId: integer('recipe_id')
+      .notNull()
+      .references(() => recipes.id, { onDelete: 'cascade' }),
+  },
+  (table) => ({
+    unique: uniqueIndex('fav_unique').on(table.userId, table.recipeId),
+  })
+);
 
 export const shoppingListItems = pgTable('shopping_list_item', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 255 }).notNull(),
   quantity: varchar('quantity', { length: 100 }),
   checked: boolean('checked').default(false).notNull(),
+});
+
+export const userHistory = pgTable('user_history', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  recipeId: integer('recipe_id')
+    .notNull()
+    .references(() => recipes.id, { onDelete: 'cascade' }),
+  viewedAt: timestamp('viewed_at').defaultNow().notNull(),
 });
