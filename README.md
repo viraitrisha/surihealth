@@ -20,55 +20,49 @@ i18n/vertaling van ingrediënten via een statisch Engels -> Nederlands
 
 ```
 web/
-├── .vscode/
-│   └── settings.json
 ├── public/
-│   ├── favicon.ico
-│   └── images/                  # eventueel statische afbeeldingen
+│   └── images/
 ├── src/
 │   ├── auth/
-│   │   ├── auth.ts              # Better Auth configuratie
-│   │   └── auth-handler.ts      # handler voor auth-endpoints (optioneel)
+│   │   ├── auth.ts                # Better Auth configuratie + Drizzle adapter
+│   │   └── auth-handler.ts        # Handler die de auth‑endpoints afhandelt
 │   ├── db/
-│   │   ├── schema.ts            # Drizzle schema (tabellen)
-│   │   └── seed.ts              # import script voor MealDB
-│   ├── lib/
-│   │   ├── db.ts                # Drizzle + PostgreSQL verbinding
-│   │   ├── filter.ts            # filterlogica recepten op basis van profiel
-│   │   └── auth-utils.ts        # hulpfuncties voor sessie/gebruiker
+│   │   ├── schema.ts              # Drizzle schema (alle tabellen)
+│   │   ├── seed.ts                # Import‑script voor MealDB
+│   │   └── index.ts               # Databaseverbinding
+│   ├── server/
+│   │   └── functions/
+│   │       ├── recipes.server.ts  # Server functions voor recepten
+│   │       ├── favorites.server.ts
+│   │       ├── profile.server.ts
+│   │       ├── shopping.server.ts
+│   │       ├── contact.server.ts
+│   │       ├── admin.server.ts
+│   │       └── history.server.ts  # Voor recept‑geschiedenis
 │   ├── routes/
-│   │   ├── __root.tsx           # root layout (TanStack Route)
-│   │   ├── index.tsx            # homepagina
+│   │   ├── __root.tsx             # Root layout
+│   │   ├── index.tsx              # Homepage
 │   │   ├── auth/
-│   │   │   ├── login.tsx        # inlogpagina (frontend)
-│   │   │   └── register.tsx     # registratiepagina (frontend)
+│   │   │   ├── login.tsx
+│   │   │   └── register.tsx
 │   │   ├── api/
-│   │   │   ├── auth/
-│   │   │   │   └── $.ts         # catch-all handler voor Better Auth (/api/auth/*)
-│   │   │   ├── auth.server.ts   # serverfuncties: register, login, logout, changePassword
-│   │   │   ├── recipes.server.ts
-│   │   │   ├── favorites.server.ts
-│   │   │   ├── profile.server.ts
-│   │   │   ├── shopping.server.ts
-│   │   │   ├── contact.server.ts
-│   │   │   └── admin.server.ts  # import trigger
+│   │   │   └── auth/
+│   │   │       └── $.ts           # Catch‑all voor Better Auth (/api/auth/*)
 │   │   ├── recipes/
-│   │   │   ├── index.tsx        # overzichtspagina (frontend)
-│   │   │   └── $id.tsx          # detailpagina (frontend)
+│   │   │   ├── index.tsx          # Overzicht
+│   │   │   └── $id.tsx            # Detail
 │   │   ├── profile/
-│   │   │   └── index.tsx        # profielpagina (frontend)
-│   │   └── ...                  # eventuele andere frontend routes
+│   │   │   └── index.tsx
+│   │   └── ...
 │   ├── styles/
-│   │   └── globals.css          # Tailwind CSS
-│   ├── app.config.ts            # TanStack Start configuratie
-│   ├── entry.client.tsx         # client entry
-│   └── entry.server.tsx         # server entry (indien nodig)
+│   │   └── globals.css
+│   ├── app.config.ts              # TanStack Start configuratie
+│   ├── entry.client.tsx
+│   └── entry.server.tsx
 ├── drizzle/
-│   ├── meta/
-│   └── 0000_initial.sql         # gegenereerde migraties
+│   └── migrations/
 ├── .env
 ├── package.json
 ├── tsconfig.json
-├── vite.config.ts
-└── drizzle.config.ts
+└── vite.config.ts
 ```
