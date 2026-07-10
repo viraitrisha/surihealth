@@ -21,42 +21,45 @@ i18n/vertaling van ingrediënten via een statisch Engels -> Nederlands
 ```
 web/
 ├── public/
-│   └── images/
 ├── src/
 │   ├── auth/
-│   │   ├── auth.ts                # Better Auth configuratie + Drizzle adapter
-│   │   └── auth-handler.ts        # Handler die de auth‑endpoints afhandelt
+│   │   ├── auth.ts                 # Better Auth config + Drizzle adapter
+│   │   └── auth-handler.ts         # Handler voor /api/auth/*
 │   ├── db/
-│   │   ├── schema.ts              # Drizzle schema (alle tabellen)
-│   │   ├── seed.ts                # Import‑script voor MealDB
-│   │   └── index.ts               # Databaseverbinding
+│   │   ├── schema.ts               # Drizzle schema (alle tabellen, incl. history)
+│   │   ├── seed.ts                 # Import‑script voor MealDB
+│   │   └── index.ts                # Databaseverbinding
 │   ├── server/
 │   │   └── functions/
-│   │       ├── recipes.server.ts  # Server functions voor recepten
+│   │       ├── recipes.server.ts
 │   │       ├── favorites.server.ts
 │   │       ├── profile.server.ts
 │   │       ├── shopping.server.ts
 │   │       ├── contact.server.ts
 │   │       ├── admin.server.ts
-│   │       └── history.server.ts  # Voor recept‑geschiedenis
+│   │       └── history.server.ts
+│   ├── utils/
+│   │   ├── surinameIngredients.ts  # List met surinaamse ingredients
+│   │   ├── translation.ts          # Engels → Nederlands woordenboek
+│   │   └── recipeFilters.ts        # Logica voor surinaamse beschikbaarheid, diëten, allergieën
 │   ├── routes/
-│   │   ├── __root.tsx             # Root layout
-│   │   ├── index.tsx              # Homepage
+│   │   ├── __root.tsx
+│   │   ├── index.tsx
 │   │   ├── auth/
 │   │   │   ├── login.tsx
 │   │   │   └── register.tsx
 │   │   ├── api/
 │   │   │   └── auth/
-│   │   │       └── $.ts           # Catch‑all voor Better Auth (/api/auth/*)
+│   │   │       └── $.ts            # Catch‑all voor Better Auth
 │   │   ├── recipes/
-│   │   │   ├── index.tsx          # Overzicht
-│   │   │   └── $id.tsx            # Detail
+│   │   │   ├── index.tsx
+│   │   │   └── $id.tsx
 │   │   ├── profile/
 │   │   │   └── index.tsx
 │   │   └── ...
 │   ├── styles/
 │   │   └── globals.css
-│   ├── app.config.ts              # TanStack Start configuratie
+│   ├── app.config.ts
 │   ├── entry.client.tsx
 │   └── entry.server.tsx
 ├── drizzle/
