@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 // import '../styles/handmatig.css'
-import Header from '#/client/components/Layout/PrivateHeader'
+import Header from '#/components/layout/PrivateHeader'
 import Footer from '#/client/components/Layout/Footer'
-export const Route = createFileRoute('/handmatig')({
+export const Route = createFileRoute('/_dashboard/handmatig')({
   component: RouteComponent,
 })
 

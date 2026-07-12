@@ -9,26 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TestRouteImport } from './routes/test'
 import { Route as ShoppingRouteImport } from './routes/shopping'
-import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as RecipesRouteImport } from './routes/recipes'
 import { Route as QuestionsRouteImport } from './routes/questions'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as HandmatigRouteImport } from './routes/handmatig'
 import { Route as FavoritesRouteImport } from './routes/favorites'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as AutomatischRouteImport } from './routes/automatisch'
 import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
 import { Route as RecipesIdRouteImport } from './routes/recipes/$id'
+import { Route as SettingsSettingsRouteImport } from './routes/_settings/settings'
+import { Route as ProfileProfileRouteImport } from './routes/_profile/profile'
+import { Route as DashboardHandmatigRouteImport } from './routes/_dashboard/handmatig'
+import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
+import { Route as DashboardAutomatischRouteImport } from './routes/_dashboard/automatisch'
 
+const TestRoute = TestRouteImport.update({
+  id: '/test',
+  path: '/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShoppingRoute = ShoppingRouteImport.update({
   id: '/shopping',
   path: '/shopping',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecipesRoute = RecipesRouteImport.update({
@@ -41,29 +42,9 @@ const QuestionsRoute = QuestionsRouteImport.update({
   path: '/questions',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HandmatigRoute = HandmatigRouteImport.update({
-  id: '/handmatig',
-  path: '/handmatig',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FavoritesRoute = FavoritesRouteImport.update({
   id: '/favorites',
   path: '/favorites',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AutomatischRoute = AutomatischRouteImport.update({
-  id: '/automatisch',
-  path: '/automatisch',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecipesIndexRoute = RecipesIndexRouteImport.update({
@@ -76,113 +57,145 @@ const RecipesIdRoute = RecipesIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => RecipesRoute,
 } as any)
+const SettingsSettingsRoute = SettingsSettingsRouteImport.update({
+  id: '/_settings/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileProfileRoute = ProfileProfileRouteImport.update({
+  id: '/_profile/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardHandmatigRoute = DashboardHandmatigRouteImport.update({
+  id: '/_dashboard/handmatig',
+  path: '/handmatig',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
+  id: '/_dashboard/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAutomatischRoute = DashboardAutomatischRouteImport.update({
+  id: '/_dashboard/automatisch',
+  path: '/automatisch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/automatisch': typeof AutomatischRoute
-  '/dashboard': typeof DashboardRoute
   '/favorites': typeof FavoritesRoute
-  '/handmatig': typeof HandmatigRoute
-  '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
   '/recipes': typeof RecipesRouteWithChildren
-  '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
+  '/test': typeof TestRoute
+  '/automatisch': typeof DashboardAutomatischRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/handmatig': typeof DashboardHandmatigRoute
+  '/profile': typeof ProfileProfileRoute
+  '/settings': typeof SettingsSettingsRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
 }
 export interface FileRoutesByTo {
-  '/automatisch': typeof AutomatischRoute
-  '/dashboard': typeof DashboardRoute
   '/favorites': typeof FavoritesRoute
-  '/handmatig': typeof HandmatigRoute
-  '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
-  '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
+  '/test': typeof TestRoute
+  '/automatisch': typeof DashboardAutomatischRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/handmatig': typeof DashboardHandmatigRoute
+  '/profile': typeof ProfileProfileRoute
+  '/settings': typeof SettingsSettingsRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes': typeof RecipesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/automatisch': typeof AutomatischRoute
-  '/dashboard': typeof DashboardRoute
   '/favorites': typeof FavoritesRoute
-  '/handmatig': typeof HandmatigRoute
-  '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
   '/recipes': typeof RecipesRouteWithChildren
-  '/settings': typeof SettingsRoute
   '/shopping': typeof ShoppingRoute
+  '/test': typeof TestRoute
+  '/_dashboard/automatisch': typeof DashboardAutomatischRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/handmatig': typeof DashboardHandmatigRoute
+  '/_profile/profile': typeof ProfileProfileRoute
+  '/_settings/settings': typeof SettingsSettingsRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/automatisch'
-    | '/dashboard'
     | '/favorites'
-    | '/handmatig'
-    | '/profile'
     | '/questions'
     | '/recipes'
-    | '/settings'
     | '/shopping'
+    | '/test'
+    | '/automatisch'
+    | '/dashboard'
+    | '/handmatig'
+    | '/profile'
+    | '/settings'
     | '/recipes/$id'
     | '/recipes/'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/favorites'
+    | '/questions'
+    | '/shopping'
+    | '/test'
     | '/automatisch'
     | '/dashboard'
-    | '/favorites'
     | '/handmatig'
     | '/profile'
-    | '/questions'
     | '/settings'
-    | '/shopping'
     | '/recipes/$id'
     | '/recipes'
   id:
     | '__root__'
-    | '/automatisch'
-    | '/dashboard'
     | '/favorites'
-    | '/handmatig'
-    | '/profile'
     | '/questions'
     | '/recipes'
-    | '/settings'
     | '/shopping'
+    | '/test'
+    | '/_dashboard/automatisch'
+    | '/_dashboard/dashboard'
+    | '/_dashboard/handmatig'
+    | '/_profile/profile'
+    | '/_settings/settings'
     | '/recipes/$id'
     | '/recipes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  AutomatischRoute: typeof AutomatischRoute
-  DashboardRoute: typeof DashboardRoute
   FavoritesRoute: typeof FavoritesRoute
-  HandmatigRoute: typeof HandmatigRoute
-  ProfileRoute: typeof ProfileRoute
   QuestionsRoute: typeof QuestionsRoute
   RecipesRoute: typeof RecipesRouteWithChildren
-  SettingsRoute: typeof SettingsRoute
   ShoppingRoute: typeof ShoppingRoute
+  TestRoute: typeof TestRoute
+  DashboardAutomatischRoute: typeof DashboardAutomatischRoute
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardHandmatigRoute: typeof DashboardHandmatigRoute
+  ProfileProfileRoute: typeof ProfileProfileRoute
+  SettingsSettingsRoute: typeof SettingsSettingsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shopping': {
       id: '/shopping'
       path: '/shopping'
       fullPath: '/shopping'
       preLoaderRoute: typeof ShoppingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recipes': {
@@ -199,39 +212,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuestionsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/handmatig': {
-      id: '/handmatig'
-      path: '/handmatig'
-      fullPath: '/handmatig'
-      preLoaderRoute: typeof HandmatigRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/favorites': {
       id: '/favorites'
       path: '/favorites'
       fullPath: '/favorites'
       preLoaderRoute: typeof FavoritesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/automatisch': {
-      id: '/automatisch'
-      path: '/automatisch'
-      fullPath: '/automatisch'
-      preLoaderRoute: typeof AutomatischRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recipes/': {
@@ -247,6 +232,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/recipes/$id'
       preLoaderRoute: typeof RecipesIdRouteImport
       parentRoute: typeof RecipesRoute
+    }
+    '/_settings/settings': {
+      id: '/_settings/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_profile/profile': {
+      id: '/_profile/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/handmatig': {
+      id: '/_dashboard/handmatig'
+      path: '/handmatig'
+      fullPath: '/handmatig'
+      preLoaderRoute: typeof DashboardHandmatigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/automatisch': {
+      id: '/_dashboard/automatisch'
+      path: '/automatisch'
+      fullPath: '/automatisch'
+      preLoaderRoute: typeof DashboardAutomatischRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -265,15 +285,16 @@ const RecipesRouteWithChildren =
   RecipesRoute._addFileChildren(RecipesRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  AutomatischRoute: AutomatischRoute,
-  DashboardRoute: DashboardRoute,
   FavoritesRoute: FavoritesRoute,
-  HandmatigRoute: HandmatigRoute,
-  ProfileRoute: ProfileRoute,
   QuestionsRoute: QuestionsRoute,
   RecipesRoute: RecipesRouteWithChildren,
-  SettingsRoute: SettingsRoute,
   ShoppingRoute: ShoppingRoute,
+  TestRoute: TestRoute,
+  DashboardAutomatischRoute: DashboardAutomatischRoute,
+  DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardHandmatigRoute: DashboardHandmatigRoute,
+  ProfileProfileRoute: ProfileProfileRoute,
+  SettingsSettingsRoute: SettingsSettingsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

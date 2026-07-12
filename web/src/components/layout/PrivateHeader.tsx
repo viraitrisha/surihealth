@@ -8,10 +8,15 @@ FaHeart,
 FaUser,
 FaCog,
 } from 'react-icons/fa'
+import ProfileOverlay from '../profile/profile-overlay'
+import SettingsOverlay from '../settings/settings-overlay'
 
 export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
     return (
+      <>
     <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-[#1a756a] px-4 py-4 border-b border-gray-300">
     <h1 className='text-white text-5xl font-bold'>SuriHealth</h1>
     <button 
@@ -71,7 +76,7 @@ export default function Header() {
           Favorieten</span>
         </Link>
 
-        <Link to="/profile" className="nav-icon flex items-center lg:flex-col lg:justify-center w-full lg:w-auto py-4 px-6
+        <button onClick={() => setProfileOpen(true)} className="nav-icon flex items-center lg:flex-col lg:justify-center w-full lg:w-auto py-4 px-6
         lg:p-0 rounded-full lg:rounded-none hover:bg-white/20 lg:hover:bg-transparent transition-colors duration-200 text-white
         text-2xl no-underline relative group">
           <FaUser />
@@ -80,9 +85,9 @@ export default function Header() {
           lg:transition-opacity lg:duration-200 lg:z-10 lg:min-w-tooltip lg:text-center lg:hover:opacity-100 lg:hover:visible static
           opacity-100 visible bg-transparent p-0 text-xl ml-3 lg:ml-0  group-hover:lg:opacity-100 group-hover:lg:visible">
           Profiel</span>
-        </Link>
+        </button>
 
-        <Link to="/settings" className="nav-icon flex items-center lg:flex-col lg:justify-center w-full lg:w-auto py-4 px-6
+        <button onClick={() => setSettingsOpen(true)} className="nav-icon flex items-center lg:flex-col lg:justify-center w-full lg:w-auto py-4 px-6
         lg:p-0 rounded-full lg:rounded-none hover:bg-white/20 lg:hover:bg-transparent transition-colors duration-200 text-white
         text-2xl no-underline relative group">
           <FaCog />
@@ -91,10 +96,22 @@ export default function Header() {
           lg:transition-opacity lg:duration-200 lg:z-10 lg:min-w-tooltip lg:text-center lg:hover:opacity-100 lg:hover:visible static
           opacity-100 visible bg-transparent p-0 text-xl ml-3 lg:ml-0  group-hover:lg:opacity-100 group-hover:lg:visible">
           Instellingen</span>
-        </Link> 
+        </button> 
 
       </nav>
     </header>
+    <ProfileOverlay
+    isOpen={profileOpen}
+    onClose={() => setProfileOpen(false)}></ProfileOverlay>
+
+    <SettingsOverlay
+    isOpen={settingsOpen}
+    onClose={() => setSettingsOpen(false)}
+    onOpenProfile={() => {
+      setSettingsOpen(false);
+      setProfileOpen(true);
+    }}></SettingsOverlay>
+    </>
     )
 }
 
