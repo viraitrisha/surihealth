@@ -1,7 +1,7 @@
 import { createAPIFileRoute } from '@tanstack/start/api';
-import { handleAuth } from '../../../auth/auth-handler';
+import { GET as authGet, POST as authPost } from '../../../auth/auth-handler';
 
 export const Route = createAPIFileRoute('/api/auth/$')({
-  GET: ({ request }) => handleAuth(request),
-  POST: ({ request }) => handleAuth(request),
+  GET: ({ request }) => authGet(request),
+  POST: ({ request }) => authPost(request),
 });

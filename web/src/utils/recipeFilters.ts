@@ -1,106 +1,59 @@
-import type { Recipe, Profile } from '../db/schema';
+import type { InferSelectModel } from 'drizzle-orm';
+import { recipes, profiles } from '../db/schema';
 
-function recipeContainsIngredient(recipe: Recipe, search: string): boolean {
-  const lowerSearch = search.toLowerCase();
-  return recipe.ingredients.some(ing =>
-    ing.toLowerCase().includes(lowerSearch)
-  );
+type Recipe = InferSelectModel<typeof recipes>;
+type Profile = InferSelectModel<typeof profiles>;
+
+const GLUTEN_ITEMS = /tarwe|brood|pasta|meel|gluten|flour|bread|noodles/i;
+const DAIRY_ITEMS = /melk|kaas|yoghurt|boter|cream|milk|cheese|yogurt|butter/i;
+const MEAT_ITEMS = /kip|rund|varken|vis|garnalen|chicken|beef|pork|fish|shrimp|prawn|crab/i;
+
+function arrayContainsAny(ingredients: string[], regex: RegExp): boolean {
+  return ingredients.some(i => regex.test(i));
 }
 
-const MEAT_INGREDIENTS = [
-  'chicken', 'beef', 'pork', 'lamb', 'fish', 'shrimp', 'prawn', 'crab',
-  'sausage', 'bacon', 'ham', 'turkey', 'duck', 'venison', 'anchovy',
-  'salmon', 'tuna', 'cod', 'mackerel', 'sardine', 'meat'
-];
+export function filterRecipesByProfile(
+  recipes: Recipe[],
+  profile: Profile | null
+): Recipe[] {
+  if (!profile) return recipes;
 
-const GLUTEN_INGREDIENTS = [
-  'flour', 'bread', 'pasta', 'noodles', 'vermicelli', 'spaghetti',
-  'macaroni', 'lasagne', 'couscous', 'bulgur', 'semolina', 'barley',
-  'rye', 'oats', 'wheat', 'gluten'
-];
+  const allergies = (profile.allergies as string[]) || [];
+  const diets = (profile.diets as string[]) || [];
+  const dislikes = (profile.dislikes as string[]) || [];
+  const conditions = (profile.conditions as string[]) || [];
 
-const DAIRY_INGREDIENTS = [
-  'milk', 'cheese', 'butter', 'yogurt', 'cream', 'sour cream',
-  'cream cheese', 'mozzarella', 'parmesan', 'cheddar', 'ricotta',
-  'feta', 'brie', 'gouda', 'swiss cheese', 'blue cheese', 'condensed milk'
-];
+  return recipes.filter(recipe => {
+    const ingredients = recipe.ingredients as string[];
 
-const HIGH_SUGAR_INGREDIENTS = [
-  'sugar', 'honey', 'maple syrup', 'molasses', 'brown sugar',
-  'powdered sugar', 'jam', 'jelly', 'chocolate', 'caramel'
-];
+    // 1. Allergies
+    const hasAllergy = allergies.some(allergen =>
+      ingredients.some(ing => ing.toLowerCase().includes(allergen.toLowerCase()))
+    );
+    if (hasAllergy) return false;
 
-export function applyFilters(recipes: Recipe[], profile: Profile | null): Recipe[] {
-  if (!profile) return recipes; // Geen profiel -> alle recepten tonen
+    // 2. Dislikes
+    const hasDislike = dislikes.some(dislike =>
+      ingredients.some(ing => ing.toLowerCase().includes(dislike.toLowerCase()))
+    );
+    if (hasDislike) return false;
 
-  // 1. Allergieën
-  let filtered = recipes.filter(recipe => {
-    for (const allergy of profile.allergies) {
-      if (recipeContainsIngredient(recipe, allergy)) {
-        return false;
-      }
+    // 3. Medical conditions
+    if (conditions.includes('Diabetic') && recipe.category === 'Dessert') {
+      return false;
     }
+
+    // 4. Diets
+    if (diets.includes('Gluten Free') && arrayContainsAny(ingredients, GLUTEN_ITEMS)) {
+      return false;
+    }
+    if (diets.includes('Lactose Free') && arrayContainsAny(ingredients, DAIRY_ITEMS)) {
+      return false;
+    }
+    if (diets.includes('Vegetarian') && arrayContainsAny(ingredients, MEAT_ITEMS)) {
+      return false;
+    }
+
     return true;
   });
-
-  // 2. Dislikes (vermijden)
-  filtered = filtered.filter(recipe => {
-    for (const dislike of profile.dislikes) {
-      if (recipeContainsIngredient(recipe, dislike)) {
-        return false;
-      }
-    }
-    return true;
-  });
-
-  // 3. Dieet
-  const diets = new Set(profile.diets.map(d => d.toLowerCase()));
-
-  if (diets.has('vegetarian')) {
-    filtered = filtered.filter(recipe =>
-      !recipe.ingredients.some(ing =>
-        MEAT_INGREDIENTS.some(meat => ing.toLowerCase().includes(meat))
-      )
-    );
-  }
-
-  if (diets.has('gluten free')) {
-    filtered = filtered.filter(recipe =>
-      !recipe.ingredients.some(ing =>
-        GLUTEN_INGREDIENTS.some(gluten => ing.toLowerCase().includes(gluten))
-      )
-    );
-  }
-
-  if (diets.has('lactose free')) {
-    filtered = filtered.filter(recipe =>
-      !recipe.ingredients.some(ing =>
-        DAIRY_INGREDIENTS.some(dairy => ing.toLowerCase().includes(dairy))
-      )
-    );
-  }
-
-  // 4. Medische Condities
-  const conditions = new Set(profile.conditions.map(c => c.toLowerCase()));
-
-  if (conditions.has('diabetic')) {
-    // Geen desserts en geen suikerrijke ingrediënten
-    filtered = filtered.filter(recipe => {
-      if (recipe.category.toLowerCase() === 'dessert') return false;
-      return !recipe.ingredients.some(ing =>
-        HIGH_SUGAR_INGREDIENTS.some(sugar => ing.toLowerCase().includes(sugar))
-      );
-    });
-  }
-
-  // 5. Likes (at top)
-  if (profile.likes.length > 0) {
-    filtered = filtered.sort((a, b) => {
-      const aLiked = profile.likes.some(like => recipeContainsIngredient(a, like)) ? 1 : 0;
-      const bLiked = profile.likes.some(like => recipeContainsIngredient(b, like)) ? 1 : 0;
-      return bLiked - aLiked;
-    });
-  }
-
-  return filtered;
 }

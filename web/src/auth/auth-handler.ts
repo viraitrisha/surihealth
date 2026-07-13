@@ -1,2 +1,3 @@
 import { auth } from './auth';
-export const handleAuth = auth.handler;
+export const GET = auth.handler;
+export const POST = auth.handler;

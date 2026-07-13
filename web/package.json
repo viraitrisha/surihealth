@@ -19,7 +19,7 @@
     "db:push": "drizzle-kit push",
     "db:pull": "drizzle-kit pull",
     "db:studio": "drizzle-kit studio",
-    "seed": "tsx src/db/seed.ts --run"
+    "seed": "npx tsx src/db/seed.ts"
   },
   "dependencies": {
     "@better-auth/drizzle-adapter": "^1.6.23",

@@ -1,4 +1,4 @@
-export const SURINAME_INGREDIENTS = new Set([
+export const SURINAMESE_INGREDIENTS = new Set([
   'chicken', 'beef', 'pork', 'fish', 'shrimp', 'prawn', 'crab',
   'rice', 'brown rice', 'black-eyed pea', 'kidney bean', 'black bean',
   'potato', 'sweet potato', 'cassava', 'taro', 'plantain', 'banana',

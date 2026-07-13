@@ -1,91 +1,101 @@
 import 'dotenv/config';
-import { db } from '../lib/db';
-import { recipes } from '../db/schema';
-import { translateIngredient } from '../lib/translations';
-import axios from 'axios';
+import { db } from './index';
+import { recipes } from './schema';
+import { SURINAMESE_INGREDIENTS } from '../utils/surinameIngredients';
+import { translateIngredient } from '../utils/translation';
 
-const SURINAMESE_INGREDIENTS_EN = new Set([
-  'chicken', 'beef', 'pork', 'fish', 'shrimp', 'prawn', 'crab',
-  'rice', 'brown rice', 'black-eyed pea', 'kidney bean', 'black bean',
-  'potato', 'sweet potato', 'cassava', 'taro', 'plantain', 'banana',
-  'tomato', 'onion', 'garlic', 'scallion', 'celery', 'bell pepper',
-  'coconut milk', 'coconut cream', 'coconut oil', 'palm oil',
-  'okra', 'eggplant', 'pumpkin', 'spinach', 'cabbage', 'green bean',
-  'breadfruit', 'corn', 'peanut', 'cashew',
-  'salt', 'pepper', 'turmeric', 'curry powder', 'masala', 'cumin',
-  'ginger', 'thyme', 'parsley', 'cilantro', 'scotch bonnet', 'habanero',
-  'flour', 'bread', 'egg', 'milk', 'butter', 'cheese', 'yogurt',
-  'sugar', 'honey', 'vanilla', 'cinnamon', 'nutmeg',
-  'noodles', 'pasta', 'vermicelli'
-].map(i => i.toLowerCase()));
+const MEALDB_BASE = 'https://www.themealdb.com/api/json/v1/1';
 
-function isSurinamese(ingredients: string[]): boolean {
-  const matched = ingredients.filter(ing =>
-    Array.from(SURINAMESE_INGREDIENTS_EN).some(allowed =>
-      ing.toLowerCase().includes(allowed)
-    )
-  ).length;
-  return matched / ingredients.length >= 0.6; // 60% herkenbaar Surinaams
+async function fetchMealsByCategory(cat: string) {
+  const res = await fetch(`${MEALDB_BASE}/filter.php?c=${cat}`);
+  const data = await res.json();
+  return (data.meals || []) as { idMeal: string; strMeal: string; strMealThumb: string }[];
 }
 
-async function importRecipes() {
-  console.log('Start import vanuit TheMealDB');
-  // Haal alle categorieën op
-  const catRes = await axios.get('https://www.themealdb.com/api/json/v1/1/categories.php');
-  const categories: string[] = catRes.data.categories.map((c: any) => c.strCategory);
-  console.log(`Gevonden categorieën: ${categories.join(', ')}`);
+async function fetchMealById(id: string) {
+  const res = await fetch(`${MEALDB_BASE}/lookup.php?i=${id}`);
+  const data = await res.json();
+  return data.meals?.[0] || null;
+}
 
-  let imported = 0, skipped = 0;
+function extractIngredients(meal: any): string[] {
+  const ings: string[] = [];
+  for (let i = 1; i <= 20; i++) {
+    const ing = meal[`strIngredient${i}`];
+    if (ing && ing.trim()) ings.push(ing.trim());
+  }
+  return ings;
+}
+
+function isSurinameseRecipe(ingredients: string[]): boolean {
+  if (ingredients.length === 0) return false;
+  const allowedCount = ingredients.filter(ing =>
+    [...SURINAMESE_INGREDIENTS].some(allowed => ing.toLowerCase().includes(allowed))
+  ).length;
+  return (allowedCount / ingredients.length) >= 0.6;
+}
+
+async function seed() {
+  console.log('Start seeding recipes...');
+  const categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Chicken', 'Seafood'];
+  let imported = 0;
+  let skipped = 0;
 
   for (const cat of categories) {
-    console.log(`\nCategorie: ${cat}`);
-    const mealRes = await axios.get(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${cat}`);
-    const meals = mealRes.data.meals || [];
+    console.log(`Category: ${cat}`);
+    const meals = await fetchMealsByCategory(cat);
+    console.log(`   → ${meals.length} meals found`);
+
     for (const meal of meals) {
-      try {
-        const detailRes = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`);
-        const full = detailRes.data.meals[0];
-        if (!full) continue;
+      const full = await fetchMealById(meal.idMeal);
+      if (!full) continue;
 
-        const ings: string[] = [];
-        for (let i = 1; i <= 20; i++) {
-          const ing = full[`strIngredient${i}`];
-          if (ing && ing.trim()) ings.push(ing.trim());
-        }
-        if (!isSurinamese(ings)) { skipped++; continue; }
+      const ingredients = extractIngredients(full);
+      if (!isSurinameseRecipe(ingredients)) {
+        skipped++;
+        continue;
+      }
 
-        const ingsNl = ings.map(translateIngredient);
+      const ingredientsNl = ingredients.map(translateIngredient);
 
-        await db.insert(recipes).values({
+      await db
+        .insert(recipes)
+        .values({
           externalId: full.idMeal,
           name: full.strMeal,
-          nameNl: full.strMeal,
+          nameNl: null,
           category: cat,
-          area: full.strArea || 'Onbekend',
+          area: full.strArea || 'Unknown',
           instructions: full.strInstructions,
+          instructionsNl: null,
           imageUrl: full.strMealThumb,
-          ingredients: ings,
-          ingredientsNl: ingsNl,
-        }).onConflictDoUpdate({
+          calories: null,
+          ingredients: ingredients,
+          ingredientsNl: ingredientsNl,
+        })
+        .onConflictDoUpdate({
           target: recipes.externalId,
           set: {
             name: full.strMeal,
             category: cat,
-            area: full.strArea || 'Onbekend',
+            area: full.strArea || 'Unknown',
             instructions: full.strInstructions,
             imageUrl: full.strMealThumb,
-            ingredients: ings,
-            ingredientsNl: ingsNl,
+            ingredients: ingredients,
+            ingredientsNl: ingredientsNl,
           },
         });
-        imported++;
-        if (imported % 10 === 0) console.log(`${imported} recepten geïmporteerd`);
-      } catch (err) {
-        console.error(`Fout bij ${meal.idMeal}:`, err);
-      }
+
+      imported++;
+      if (imported % 10 === 0) console.log(`   → ${imported} imported so far`);
     }
   }
-  console.log(`\nKlaar! ${imported} geïmporteerd, ${skipped} overgeslagen.`);
+
+  console.log(`Done: ${imported} imported, ${skipped} skipped (non-Surinamese).`);
+  process.exit(0);
 }
 
-importRecipes().catch(console.error).finally(() => process.exit());
+seed().catch(e => {
+  console.error(e);
+  process.exit(1);
+});

@@ -1,5 +1,5 @@
 import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { drizzleAdapter } from '@better-auth/drizzle-adapter';
 import { db } from '../db';
 import * as schema from '../db/schema';
 
@@ -13,4 +13,7 @@ export const auth = betterAuth({
       verification: schema.verifications,
     },
   }),
+  emailAndPassword: {
+    enabled: true,
+  },
 });
