@@ -236,130 +236,130 @@ function FAQPage() {
                 </p>
               </div>
             </details>
-                        <div id="gezondheid" className="scroll-mt-28">
-                            <h3 className="text-center text-black border-b-4 border-black text-3xl font-bold mb-6">
-                                Gezondheid & Dieet
-                            </h3>
+          <div id="gezondheid" className="scroll-mt-28">
+            <h3 className="text-center text-black border-b-4 border-black text-3xl font-bold mb-6">
+              Gezondheid & Dieet
+            </h3>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Zijn jullie recepten medisch goedgekeurd?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    SuriHealth is een studentenproject en biedt geen medisch advies. Raadpleeg altijd je arts of diëtist.
-                                </div>
-                            </details>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Zijn jullie recepten medisch goedgekeurd?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                SuriHealth is een studentenproject en biedt geen medisch advies. Raadpleeg altijd je arts of diëtist.
+              </div>
+            </details>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Ik heb meerdere medische condities. Kan SuriHealth daarmee omgaan?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Ja, je kunt meerdere aandoeningen en allergieën selecteren.
-                                </div>
-                            </details>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Ik heb meerdere medische condities. Kan SuriHealth daarmee omgaan?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Ja, je kunt meerdere aandoeningen en allergieën selecteren.
+              </div>
+            </details>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Wordt rekening gehouden met religieuze dieetwensen?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Ja. Halal, vegetarisch, veganistisch en andere voorkeuren kunnen worden ingesteld.
-                                </div>
-                            </details>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Wordt rekening gehouden met religieuze dieetwensen?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Ja. Halal, vegetarisch, veganistisch en andere voorkeuren kunnen worden ingesteld.
+              </div>
+            </details>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Kunnen jullie helpen bij gewichtsverlies?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    We tonen voedingswaarden en calorieën, maar persoonlijk advies moet via een diëtist verlopen.
-                                </div>
-                            </details>
-                        </div>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Kunnen jullie helpen bij gewichtsverlies?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                We tonen voedingswaarden en calorieën, maar persoonlijk advies moet via een diëtist verlopen.
+              </div>
+            </details>
+          </div>
 
-                        {/* TECHNISCH */}
-                        <div id="technisch" className="scroll-mt-28">
-                            <h3 className="text-center text-black border-b-4 border-black text-3xl font-bold mb-6">
-                                Technische Vragen
-                            </h3>
+          {/* TECHNISCH */}
+          <div id="technisch" className="scroll-mt-28">
+            <h3 className="text-center text-black border-b-4 border-black text-3xl font-bold mb-6">
+              Technische Vragen
+            </h3>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Op welke apparaten werkt SuriHealth?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Desktop, tablet en smartphone worden ondersteund.
-                                </div>
-                            </details>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Op welke apparaten werkt SuriHealth?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Desktop, tablet en smartphone worden ondersteund.
+              </div>
+            </details>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Werkt SuriHealth offline?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Opgeslagen recepten en boodschappenlijsten zijn offline beschikbaar.
-                                </div>
-                            </details>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Werkt SuriHealth offline?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Opgeslagen recepten en boodschappenlijsten zijn offline beschikbaar.
+              </div>
+            </details>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Hoe vaak wordt de receptendatabase bijgewerkt?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Maandelijks worden nieuwe recepten toegevoegd en bestaande bijgewerkt.
-                                </div>
-                            </details>
-                        </div>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Hoe vaak wordt de receptendatabase bijgewerkt?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Maandelijks worden nieuwe recepten toegevoegd en bestaande bijgewerkt.
+              </div>
+            </details>
+          </div>
 
-                        {/* SUPPORT */}
-                        <div id="support" className="scroll-mt-28">
-                            <h3 className="text-center text-black border-b-4 border-black text-3xl font-bold mb-6">
-                                Support & Contact
-                            </h3>
+          {/* SUPPORT */}
+          <div id="support" className="scroll-mt-28">
+            <h3 className="text-center text-black border-b-4 border-black text-3xl font-bold mb-6">
+              Support & Contact
+            </h3>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Hoe kan ik contact opnemen?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Via het contactformulier of support@surihealth.nl.
-                                </div>
-                            </details>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Hoe kan ik contact opnemen?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Via het contactformulier of support@surihealth.nl.
+              </div>
+            </details>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Kunnen jullie helpen met medische vragen?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Voor medische vragen verwijzen wij naar je arts of zorgverlener.
-                                </div>
-                            </details>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Kunnen jullie helpen met medische vragen?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Voor medische vragen verwijzen wij naar je arts of zorgverlener.
+              </div>
+            </details>
 
-                            <details className="mb-8 shadow-md">
-                                <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
-                                    Accepteren jullie feedback?
-                                </summary>
-                                <div className="p-6 text-[#5C4B3B] bg-white">
-                                    Ja, feedback helpt ons om SuriHealth te verbeteren.
-                                </div>
-                            </details>
-                        </div>
-                </section>
-            </section>
+            <details className="mb-8 shadow-md">
+              <summary className="cursor-pointer bg-[#1A756A] hover:bg-[#2D9C8F] text-white font-bold p-6 flex items-center">
+                Accepteren jullie feedback?
+              </summary>
+              <div className="p-6 text-[#5C4B3B] bg-white">
+                Ja, feedback helpt ons om SuriHealth te verbeteren.
+              </div>
+            </details>
+          </div>
+        </section>
+      </section>
 
-                <section className="py-16 text-center">
-                    <Link
-                      to="/questions"
-                      className="inline-block bg-black text-white px-8 py-4 rounded-lg font-bold hover:bg-[#5C4B3B] transition"
-                    >
-                      Heeft u nog meer vragen? Neem contact op met ons!
-                    </Link>
-                </section>
-            </main>
+      <section className="py-16 text-center">
+        <Link
+          to="/questions"
+          className="inline-block bg-black text-white px-8 py-4 rounded-lg font-bold hover:bg-[#5C4B3B] transition"
+        >
+          Heeft u nog meer vragen? Neem contact op met ons!
+        </Link>
+      </section>
+    </main>
 
-            <Footer />
-        </>
-    )
+    <Footer />
+  </>
+)
+
 }
-            

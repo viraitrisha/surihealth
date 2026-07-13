@@ -14,7 +14,6 @@ import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as HistorieRouteImport } from './routes/historie'
 import { Route as FavoritesRouteImport } from './routes/favorites'
-import { Route as FavorietenRouteImport } from './routes/favorieten'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -45,11 +44,6 @@ const HistorieRoute = HistorieRouteImport.update({
 const FavoritesRoute = FavoritesRouteImport.update({
   id: '/favorites',
   path: '/favorites',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FavorietenRoute = FavorietenRouteImport.update({
-  id: '/favorieten',
-  path: '/favorieten',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -88,7 +82,6 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
-  '/favorieten': typeof FavorietenRoute
   '/favorites': typeof FavoritesRoute
   '/historie': typeof HistorieRoute
   '/profile': typeof ProfileRoute
@@ -102,7 +95,6 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
-  '/favorieten': typeof FavorietenRoute
   '/favorites': typeof FavoritesRoute
   '/historie': typeof HistorieRoute
   '/profile': typeof ProfileRoute
@@ -117,7 +109,6 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
-  '/favorieten': typeof FavorietenRoute
   '/favorites': typeof FavoritesRoute
   '/historie': typeof HistorieRoute
   '/profile': typeof ProfileRoute
@@ -133,7 +124,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
-    | '/favorieten'
     | '/favorites'
     | '/historie'
     | '/profile'
@@ -147,7 +137,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
-    | '/favorieten'
     | '/favorites'
     | '/historie'
     | '/profile'
@@ -161,7 +150,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
-    | '/favorieten'
     | '/favorites'
     | '/historie'
     | '/profile'
@@ -176,7 +164,6 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   FaqRoute: typeof FaqRoute
-  FavorietenRoute: typeof FavorietenRoute
   FavoritesRoute: typeof FavoritesRoute
   HistorieRoute: typeof HistorieRoute
   ProfileRoute: typeof ProfileRoute
@@ -221,13 +208,6 @@ declare module '@tanstack/react-router' {
       path: '/favorites'
       fullPath: '/favorites'
       preLoaderRoute: typeof FavoritesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/favorieten': {
-      id: '/favorieten'
-      path: '/favorieten'
-      fullPath: '/favorieten'
-      preLoaderRoute: typeof FavorietenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -280,7 +260,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   FaqRoute: FaqRoute,
-  FavorietenRoute: FavorietenRoute,
   FavoritesRoute: FavoritesRoute,
   HistorieRoute: HistorieRoute,
   ProfileRoute: ProfileRoute,
