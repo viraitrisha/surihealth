@@ -3,6 +3,7 @@
 // import Footer from '../client/components/Layout/Footer'
 
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { ThemeProvider } from '#/contexts/theme-context'
 // import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 // import { TanStackDevtools } from '@tanstack/react-devtools'
 
@@ -39,12 +40,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <ThemeProvider>
 
         {/* <Navbar/> */}
         {/* <Header/> */}
         {/* <Footer/> */}
         
         {children}
+        </ThemeProvider>
         {/* <TanStackDevtools
           config={{
             position: 'bottom-right',

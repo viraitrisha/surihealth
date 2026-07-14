@@ -21,6 +21,28 @@
   --welcome-card-color: #e8f5f3;
 }
 
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body[data-theme="dark"] {
+  --bg-color: #2b2b2b;
+  --text-color: #ffffff;
+  --welcome-card-color: #1e1e1e;
+  --secondary-color: #0B3F39;
+   --white-color: #e8f5f3;
+}
+
+body[data-theme="light"] {
+  --bg-color:#ffffff;
+  --text-color:#121212;
+  --primary-color: #1A756A;
+  --secondary-color: #2D9C8F;
+  --accent-color: #0B3F39;
+  --welcome-card-color: #e8f5f3;
+}
 
 * {
   box-sizing: border-box;
