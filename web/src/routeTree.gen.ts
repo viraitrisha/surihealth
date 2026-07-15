@@ -13,13 +13,13 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as HistorieRouteImport } from './routes/historie'
-import { Route as FavoritesRouteImport } from './routes/favorites'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as BoodschappenRouteImport } from './routes/boodschappen'
 import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
 import { Route as RecipesIdRouteImport } from './routes/recipes/$id'
+import { Route as FavoritesFavoritesRouteImport } from './routes/_favorites/favorites'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -39,11 +39,6 @@ const ProfileRoute = ProfileRouteImport.update({
 const HistorieRoute = HistorieRouteImport.update({
   id: '/historie',
   path: '/historie',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FavoritesRoute = FavoritesRouteImport.update({
-  id: '/favorites',
-  path: '/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -76,17 +71,22 @@ const RecipesIdRoute = RecipesIdRouteImport.update({
   path: '/recipes/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FavoritesFavoritesRoute = FavoritesFavoritesRouteImport.update({
+  id: '/_favorites/favorites',
+  path: '/favorites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/boodschappen': typeof BoodschappenRoute
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
-  '/favorites': typeof FavoritesRoute
   '/historie': typeof HistorieRoute
   '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
   '/settings': typeof SettingsRoute
+  '/favorites': typeof FavoritesFavoritesRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
 }
@@ -95,11 +95,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
-  '/favorites': typeof FavoritesRoute
   '/historie': typeof HistorieRoute
   '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
   '/settings': typeof SettingsRoute
+  '/favorites': typeof FavoritesFavoritesRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes': typeof RecipesIndexRoute
 }
@@ -109,11 +109,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/faq': typeof FaqRoute
-  '/favorites': typeof FavoritesRoute
   '/historie': typeof HistorieRoute
   '/profile': typeof ProfileRoute
   '/questions': typeof QuestionsRoute
   '/settings': typeof SettingsRoute
+  '/_favorites/favorites': typeof FavoritesFavoritesRoute
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
 }
@@ -124,11 +124,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
-    | '/favorites'
     | '/historie'
     | '/profile'
     | '/questions'
     | '/settings'
+    | '/favorites'
     | '/recipes/$id'
     | '/recipes/'
   fileRoutesByTo: FileRoutesByTo
@@ -137,11 +137,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
-    | '/favorites'
     | '/historie'
     | '/profile'
     | '/questions'
     | '/settings'
+    | '/favorites'
     | '/recipes/$id'
     | '/recipes'
   id:
@@ -150,11 +150,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
-    | '/favorites'
     | '/historie'
     | '/profile'
     | '/questions'
     | '/settings'
+    | '/_favorites/favorites'
     | '/recipes/$id'
     | '/recipes/'
   fileRoutesById: FileRoutesById
@@ -164,11 +164,11 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   FaqRoute: typeof FaqRoute
-  FavoritesRoute: typeof FavoritesRoute
   HistorieRoute: typeof HistorieRoute
   ProfileRoute: typeof ProfileRoute
   QuestionsRoute: typeof QuestionsRoute
   SettingsRoute: typeof SettingsRoute
+  FavoritesFavoritesRoute: typeof FavoritesFavoritesRoute
   RecipesIdRoute: typeof RecipesIdRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
 }
@@ -201,13 +201,6 @@ declare module '@tanstack/react-router' {
       path: '/historie'
       fullPath: '/historie'
       preLoaderRoute: typeof HistorieRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/favorites': {
-      id: '/favorites'
-      path: '/favorites'
-      fullPath: '/favorites'
-      preLoaderRoute: typeof FavoritesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -252,6 +245,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecipesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_favorites/favorites': {
+      id: '/_favorites/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesFavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -260,11 +260,11 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   FaqRoute: FaqRoute,
-  FavoritesRoute: FavoritesRoute,
   HistorieRoute: HistorieRoute,
   ProfileRoute: ProfileRoute,
   QuestionsRoute: QuestionsRoute,
   SettingsRoute: SettingsRoute,
+  FavoritesFavoritesRoute: FavoritesFavoritesRoute,
   RecipesIdRoute: RecipesIdRoute,
   RecipesIndexRoute: RecipesIndexRoute,
 }

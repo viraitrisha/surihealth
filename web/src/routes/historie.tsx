@@ -11,72 +11,90 @@ export const Route = createFileRoute('/historie')({
 function RouteComponent() {
   return (
     <>
-    <Header />
+      <Header />
 
-      <div>
-        <main className="min-h-screen pt-[50px]">
+      <main className="min-h-screen pt-[50px]">
 
-          {/* Titel */}
-          <section className="bg-[#e8f5f3] text-black text-center py-8 px-4 text-2xl font-bold border-b-2 border-[#2D9C8F]">
-            <h1 className="m-0 text-[2.8rem]">
-              Historie
-            </h1>
-          </section>
+        {/* Titel */}
+        <section className="bg-[var(--welcome-card-color)] text-[var(--text-color)] text-center py-8 px-4 border-b-2 border-[var(--secondary-color)]">
+          <h1 className="m-0 text-[2.8rem] font-bold">
+            Historie
+          </h1>
+        </section>
 
+        {/* Zoekbalk */}
+        <div className="relative w-[90%] max-w-[60rem] mx-auto my-8">
+          <Search
+            size={24}
+            className="absolute left-6 top-1/2 -translate-y-1/2 text-[var(--text-color)] opacity-60"
+          />
 
-          {/* Zoekbalk */}
-          <div className="relative w-[90%] max-w-[60rem] mx-auto my-8">
+          <input
+            type="text"
+            placeholder="Zoek Recepten"
+            className="w-full py-4 pl-20 pr-4 rounded-full border border-[#ddd] bg-[var(--bg-color)] text-[var(--text-color)] text-lg transition-all duration-200 focus:outline-none focus:border-[var(--primary-color)] focus:ring-2 focus:ring-[rgba(26,117,106,0.2)]"
+          />
+        </div>
 
-            <Search
-              size={28}
-              className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-500 opacity-70"
-            />
+        {/* Categorie */}
+        <section className="my-12">
 
-            <input
-              type="text"
-              placeholder="Zoek Recepten"
-              className="w-full py-4 pl-20 pr-5 rounded-full border border-gray-300 bg-white text-[1.6rem] focus:outline-none focus:border-[#1A756A] focus:ring-2 focus:ring-[#1A756A]/20"
-            />
+          <div className="flex justify-between items-center bg-[var(--welcome-card-color)] rounded-full py-4 px-8 mb-6 mx-[5%]">
+            <h2 className="text-[2rem] font-bold text-[var(--primary-color)]">
+              Recent bekeken
+            </h2>
+          </div>
+
+          {/* Recepten */}
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-8 p-4 mx-[5%]">
+
+            <figure className="overflow-hidden rounded-3xl bg-[var(--welcome-card-color)] shadow-[var(--box-shadow)] transition-transform duration-200 hover:-translate-y-[5px] hover:shadow-[0_1rem_2rem_rgba(0,0,0,0.15)]">
+
+              <img
+                src="/placeholder.png"
+                alt="Recept"
+                className="w-full h-80 object-cover rounded-3xl transition-transform duration-300 hover:scale-105 block"
+              />
+
+              <figcaption className="text-center my-3 font-bold text-[1.6rem] text-[var(--text-color)] px-4">
+                Gezonde Salade
+              </figcaption>
+
+            </figure>
+
+            <figure className="overflow-hidden rounded-3xl bg-[var(--welcome-card-color)] shadow-[var(--box-shadow)] transition-transform duration-200 hover:-translate-y-[5px] hover:shadow-[0_1rem_2rem_rgba(0,0,0,0.15)]">
+
+              <img
+                src="/placeholder.png"
+                alt="Recept"
+                className="w-full h-80 object-cover rounded-3xl transition-transform duration-300 hover:scale-105 block"
+              />
+
+              <figcaption className="text-center my-3 font-bold text-[1.6rem] text-[var(--text-color)] px-4">
+                Groente Soep
+              </figcaption>
+
+            </figure>
+
+            <figure className="overflow-hidden rounded-3xl bg-[var(--welcome-card-color)] shadow-[var(--box-shadow)] transition-transform duration-200 hover:-translate-y-[5px] hover:shadow-[0_1rem_2rem_rgba(0,0,0,0.15)]">
+
+              <img
+                src="/placeholder.png"
+                alt="Recept"
+                className="w-full h-80 object-cover rounded-3xl transition-transform duration-300 hover:scale-105 block"
+              />
+
+              <figcaption className="text-center my-3 font-bold text-[1.6rem] text-[var(--text-color)] px-4">
+                Fruit Smoothie
+              </figcaption>
+
+            </figure>
 
           </div>
 
+        </section>
 
-          {/* Recept historie */}
-          <section className="my-12">
-
-            <div className="flex justify-between items-center px-8 py-4 mb-6 bg-[#e8f5f3] rounded-full">
-
-            </div>
-
-
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(22rem,1fr))] gap-8 p-4">
-
-              {/* Voorbeeld recept kaart */}
-              <figure className="overflow-hidden rounded-3xl bg-[#e8f5f3] shadow-[0_0.2rem_1rem_rgba(0,0,0,0.2)] transition-transform duration-200 hover:-translate-y-1">
-
-                <a href="/recipes" className="no-underline">
-
-                  <img
-                    src="/placeholder.png"
-                    alt="Recept"
-                    className="w-full h-[20rem] object-cover rounded-3xl transition-transform duration-300 hover:scale-105"
-                  />
-
-                  <figcaption className="text-center mt-3 mb-3 font-bold text-[1.6rem] text-black px-4">
-                    Gezonde maaltijd
-                  </figcaption>
-
-                </a>
-
-              </figure>
-
-
-            </div>
-
-          </section>
-
-        </main>
-      </div>
+      </main>
 
       <Footer />
     </>
