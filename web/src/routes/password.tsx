@@ -87,7 +87,7 @@ const Header = () => {
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            <Link to="/" className="relative text-2xl font-bold text-white no-underline whitespace-nowrap transition-all duration-300 hover:text-[#155B52] after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#155B52] after:transition-all after:duration-300 hover:after:w-full">
+            <Link to="/home" className="relative text-2xl font-bold text-white no-underline whitespace-nowrap transition-all duration-300 hover:text-[#155B52] after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#155B52] after:transition-all after:duration-300 hover:after:w-full">
               Home
             </Link>
 
