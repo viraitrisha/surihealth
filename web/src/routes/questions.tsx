@@ -1,14 +1,3 @@
-// import { createFileRoute } from '@tanstack/react-router'
-
-// export const Route = createFileRoute('/questions')({
-//   component: RouteComponent,
-// })
-
-// function RouteComponent() {
-//   return <div>Hello "/questions"!</div>
-// }
-
-
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState, useEffect } from 'react';
 

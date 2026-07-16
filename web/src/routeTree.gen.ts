@@ -9,31 +9,52 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SnacksRouteImport } from './routes/snacks'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ReceptenDetailRouteImport } from './routes/recepten-detail'
+import { Route as ReceptenRouteImport } from './routes/recepten'
 import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as PasswordRouteImport } from './routes/password'
+import { Route as OntbijtRouteImport } from './routes/ontbijt'
+import { Route as LunchRouteImport } from './routes/lunch'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as HomeRouteImport } from './routes/home'
+import { Route as HistorieRouteImport } from './routes/historie'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BoodschappenRouteImport } from './routes/boodschappen'
+import { Route as AvondMaaltijdRouteImport } from './routes/avond-maaltijd'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
+import { Route as RecipesLunchRouteImport } from './routes/recipes/lunch'
+import { Route as RecipesAvondMaaltijdenRouteImport } from './routes/recipes/avond-maaltijden'
 import { Route as RecipesIdRouteImport } from './routes/recipes/$id'
-import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as SettingsSettingsRouteImport } from './routes/_settings/settings'
 import { Route as ProfileProfileRouteImport } from './routes/_profile/profile'
+import { Route as FavoritesFavoritesRouteImport } from './routes/_favorites/favorites'
 import { Route as DashboardHandmatigRouteImport } from './routes/_dashboard/handmatig'
 import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
 import { Route as DashboardAutomatischRouteImport } from './routes/_dashboard/automatisch'
-import { Route as HistorieRouteImport } from './routes/historie'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as BoodschappenRouteImport } from './routes/boodschappen'
-import { Route as FavoritesFavoritesRouteImport } from './routes/_favorites/favorites'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
+const SnacksRoute = SnacksRouteImport.update({
+  id: '/snacks',
+  path: '/snacks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceptenDetailRoute = ReceptenDetailRouteImport.update({
+  id: '/recepten-detail',
+  path: '/recepten-detail',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReceptenRoute = ReceptenRouteImport.update({
+  id: '/recepten',
+  path: '/recepten',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuestionsRoute = QuestionsRouteImport.update({
@@ -46,6 +67,16 @@ const PasswordRoute = PasswordRouteImport.update({
   path: '/password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OntbijtRoute = OntbijtRouteImport.update({
+  id: '/ontbijt',
+  path: '/ontbijt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LunchRoute = LunchRouteImport.update({
+  id: '/lunch',
+  path: '/lunch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -56,9 +87,29 @@ const HomeRoute = HomeRouteImport.update({
   path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HistorieRoute = HistorieRouteImport.update({
+  id: '/historie',
+  path: '/historie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BoodschappenRoute = BoodschappenRouteImport.update({
+  id: '/boodschappen',
+  path: '/boodschappen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvondMaaltijdRoute = AvondMaaltijdRouteImport.update({
+  id: '/avond-maaltijd',
+  path: '/avond-maaltijd',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -66,29 +117,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RecipesIndexRoute = RecipesIndexRouteImport.update({
   id: '/recipes/',
   path: '/recipes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RecipesLunchRoute = RecipesLunchRouteImport.update({
+  id: '/recipes/lunch',
+  path: '/recipes/lunch',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecipesAvondMaaltijdenRoute = RecipesAvondMaaltijdenRouteImport.update({
+  id: '/recipes/avond-maaltijden',
+  path: '/recipes/avond-maaltijden',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecipesIdRoute = RecipesIdRouteImport.update({
   id: '/recipes/$id',
   path: '/recipes/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
-  id: '/demo/drizzle',
-  path: '/demo/drizzle',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsSettingsRoute = SettingsSettingsRouteImport.update({
@@ -99,6 +145,11 @@ const SettingsSettingsRoute = SettingsSettingsRouteImport.update({
 const ProfileProfileRoute = ProfileProfileRouteImport.update({
   id: '/_profile/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritesFavoritesRoute = FavoritesFavoritesRouteImport.update({
+  id: '/_favorites/favorites',
+  path: '/favorites',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardHandmatigRoute = DashboardHandmatigRouteImport.update({
@@ -116,193 +167,248 @@ const DashboardAutomatischRoute = DashboardAutomatischRouteImport.update({
   path: '/automatisch',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HistorieRoute = HistorieRouteImport.update({
-  id: '/historie',
-  path: '/historie',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BoodschappenRoute = BoodschappenRouteImport.update({
-  id: '/boodschappen',
-  path: '/boodschappen',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FavoritesFavoritesRoute = FavoritesFavoritesRouteImport.update({
-  id: '/_favorites/favorites',
-  path: '/favorites',
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/avond-maaltijd': typeof AvondMaaltijdRoute
+  '/boodschappen': typeof BoodschappenRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/historie': typeof HistorieRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/lunch': typeof LunchRoute
+  '/ontbijt': typeof OntbijtRoute
   '/password': typeof PasswordRoute
+  '/questions': typeof QuestionsRoute
+  '/recepten': typeof ReceptenRoute
+  '/recepten-detail': typeof ReceptenDetailRoute
   '/register': typeof RegisterRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
+  '/snacks': typeof SnacksRoute
+  '/automatisch': typeof DashboardAutomatischRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/handmatig': typeof DashboardHandmatigRoute
+  '/favorites': typeof FavoritesFavoritesRoute
+  '/profile': typeof ProfileProfileRoute
+  '/settings': typeof SettingsSettingsRoute
   '/recipes/$id': typeof RecipesIdRoute
+  '/recipes/avond-maaltijden': typeof RecipesAvondMaaltijdenRoute
+  '/recipes/lunch': typeof RecipesLunchRoute
   '/recipes/': typeof RecipesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/settings': typeof SettingsSettingsRoute
-  '/profile': typeof ProfileProfileRoute
-  '/handmatig': typeof DashboardHandmatigRoute
-  '/dashboard': typeof DashboardDashboardRoute
-  '/automatisch': typeof DashboardAutomatischRoute
-  '/historie': typeof HistorieRoute
-  '/faq': typeof FaqRoute
-  '/boodschappen': typeof BoodschappenRoute
-  '/favorites': typeof FavoritesFavoritesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/avond-maaltijd': typeof AvondMaaltijdRoute
+  '/boodschappen': typeof BoodschappenRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/historie': typeof HistorieRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/lunch': typeof LunchRoute
+  '/ontbijt': typeof OntbijtRoute
   '/password': typeof PasswordRoute
+  '/questions': typeof QuestionsRoute
+  '/recepten': typeof ReceptenRoute
+  '/recepten-detail': typeof ReceptenDetailRoute
   '/register': typeof RegisterRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
+  '/snacks': typeof SnacksRoute
+  '/automatisch': typeof DashboardAutomatischRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/handmatig': typeof DashboardHandmatigRoute
+  '/favorites': typeof FavoritesFavoritesRoute
+  '/profile': typeof ProfileProfileRoute
+  '/settings': typeof SettingsSettingsRoute
   '/recipes/$id': typeof RecipesIdRoute
+  '/recipes/avond-maaltijden': typeof RecipesAvondMaaltijdenRoute
+  '/recipes/lunch': typeof RecipesLunchRoute
   '/recipes': typeof RecipesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/settings': typeof SettingsSettingsRoute
-  '/profile': typeof ProfileProfileRoute
-  '/handmatig': typeof DashboardHandmatigRoute
-  '/dashboard': typeof DashboardDashboardRoute
-  '/automatisch': typeof DashboardAutomatischRoute
-  '/historie': typeof HistorieRoute
-  '/faq': typeof FaqRoute
-  '/boodschappen': typeof BoodschappenRoute
-  '/favorites': typeof FavoritesFavoritesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
+  '/avond-maaltijd': typeof AvondMaaltijdRoute
+  '/boodschappen': typeof BoodschappenRoute
   '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/historie': typeof HistorieRoute
   '/home': typeof HomeRoute
   '/login': typeof LoginRoute
+  '/lunch': typeof LunchRoute
+  '/ontbijt': typeof OntbijtRoute
   '/password': typeof PasswordRoute
+  '/questions': typeof QuestionsRoute
+  '/recepten': typeof ReceptenRoute
+  '/recepten-detail': typeof ReceptenDetailRoute
   '/register': typeof RegisterRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
+  '/snacks': typeof SnacksRoute
+  '/_dashboard/automatisch': typeof DashboardAutomatischRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/handmatig': typeof DashboardHandmatigRoute
+  '/_favorites/favorites': typeof FavoritesFavoritesRoute
+  '/_profile/profile': typeof ProfileProfileRoute
+  '/_settings/settings': typeof SettingsSettingsRoute
   '/recipes/$id': typeof RecipesIdRoute
+  '/recipes/avond-maaltijden': typeof RecipesAvondMaaltijdenRoute
+  '/recipes/lunch': typeof RecipesLunchRoute
   '/recipes/': typeof RecipesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/_settings/settings': typeof SettingsSettingsRoute
-  '/_profile/profile': typeof ProfileProfileRoute
-  '/_dashboard/handmatig': typeof DashboardHandmatigRoute
-  '/_dashboard/dashboard': typeof DashboardDashboardRoute
-  '/_dashboard/automatisch': typeof DashboardAutomatischRoute
-  '/historie': typeof HistorieRoute
-  '/faq': typeof FaqRoute
-  '/boodschappen': typeof BoodschappenRoute
-  '/_favorites/favorites': typeof FavoritesFavoritesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
+    | '/avond-maaltijd'
+    | '/boodschappen'
     | '/contact'
+    | '/faq'
+    | '/historie'
     | '/home'
     | '/login'
+    | '/lunch'
+    | '/ontbijt'
     | '/password'
+    | '/questions'
+    | '/recepten'
+    | '/recepten-detail'
     | '/register'
-    | '/demo/drizzle'
+    | '/snacks'
+    | '/automatisch'
+    | '/dashboard'
+    | '/handmatig'
+    | '/favorites'
+    | '/profile'
+    | '/settings'
     | '/recipes/$id'
+    | '/recipes/avond-maaltijden'
+    | '/recipes/lunch'
     | '/recipes/'
     | '/api/auth/$'
-    | '/settings'
-    | '/profile'
-    | '/handmatig'
-    | '/dashboard'
-    | '/automatisch'
-    | '/historie'
-    | '/faq'
-    | '/boodschappen'
-    | '/favorites'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
+    | '/avond-maaltijd'
+    | '/boodschappen'
     | '/contact'
+    | '/faq'
+    | '/historie'
     | '/home'
     | '/login'
+    | '/lunch'
+    | '/ontbijt'
     | '/password'
+    | '/questions'
+    | '/recepten'
+    | '/recepten-detail'
     | '/register'
-    | '/demo/drizzle'
+    | '/snacks'
+    | '/automatisch'
+    | '/dashboard'
+    | '/handmatig'
+    | '/favorites'
+    | '/profile'
+    | '/settings'
     | '/recipes/$id'
+    | '/recipes/avond-maaltijden'
+    | '/recipes/lunch'
     | '/recipes'
     | '/api/auth/$'
-    | '/settings'
-    | '/profile'
-    | '/handmatig'
-    | '/dashboard'
-    | '/automatisch'
-    | '/historie'
-    | '/faq'
-    | '/boodschappen'
-    | '/favorites'
   id:
     | '__root__'
     | '/'
-    | '/about'
+    | '/avond-maaltijd'
+    | '/boodschappen'
     | '/contact'
+    | '/faq'
+    | '/historie'
     | '/home'
     | '/login'
+    | '/lunch'
+    | '/ontbijt'
     | '/password'
+    | '/questions'
+    | '/recepten'
+    | '/recepten-detail'
     | '/register'
-    | '/demo/drizzle'
+    | '/snacks'
+    | '/_dashboard/automatisch'
+    | '/_dashboard/dashboard'
+    | '/_dashboard/handmatig'
+    | '/_favorites/favorites'
+    | '/_profile/profile'
+    | '/_settings/settings'
     | '/recipes/$id'
+    | '/recipes/avond-maaltijden'
+    | '/recipes/lunch'
     | '/recipes/'
     | '/api/auth/$'
-    | '/_settings/settings'
-    | '/_profile/profile'
-    | '/_dashboard/handmatig'
-    | '/_dashboard/dashboard'
-    | '/_dashboard/automatisch'
-    | '/historie'
-    | '/faq'
-    | '/boodschappen'
-    | '/_favorites/favorites'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
+  AvondMaaltijdRoute: typeof AvondMaaltijdRoute
+  BoodschappenRoute: typeof BoodschappenRoute
   ContactRoute: typeof ContactRoute
+  FaqRoute: typeof FaqRoute
+  HistorieRoute: typeof HistorieRoute
   HomeRoute: typeof HomeRoute
   LoginRoute: typeof LoginRoute
+  LunchRoute: typeof LunchRoute
+  OntbijtRoute: typeof OntbijtRoute
   PasswordRoute: typeof PasswordRoute
+  QuestionsRoute: typeof QuestionsRoute
+  ReceptenRoute: typeof ReceptenRoute
+  ReceptenDetailRoute: typeof ReceptenDetailRoute
   RegisterRoute: typeof RegisterRoute
-  DemoDrizzleRoute: typeof DemoDrizzleRoute
+  SnacksRoute: typeof SnacksRoute
+  DashboardAutomatischRoute: typeof DashboardAutomatischRoute
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardHandmatigRoute: typeof DashboardHandmatigRoute
+  FavoritesFavoritesRoute: typeof FavoritesFavoritesRoute
+  ProfileProfileRoute: typeof ProfileProfileRoute
+  SettingsSettingsRoute: typeof SettingsSettingsRoute
   RecipesIdRoute: typeof RecipesIdRoute
+  RecipesAvondMaaltijdenRoute: typeof RecipesAvondMaaltijdenRoute
+  RecipesLunchRoute: typeof RecipesLunchRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
-  SettingsSettingsRoute: typeof SettingsSettingsRoute
-  ProfileProfileRoute: typeof ProfileProfileRoute
-  DashboardHandmatigRoute: typeof DashboardHandmatigRoute
-  DashboardDashboardRoute: typeof DashboardDashboardRoute
-  DashboardAutomatischRoute: typeof DashboardAutomatischRoute
-  HistorieRoute: typeof HistorieRoute
-  FaqRoute: typeof FaqRoute
-  BoodschappenRoute: typeof BoodschappenRoute
-  FavoritesFavoritesRoute: typeof FavoritesFavoritesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/snacks': {
+      id: '/snacks'
+      path: '/snacks'
+      fullPath: '/snacks'
+      preLoaderRoute: typeof SnacksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/register': {
       id: '/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recepten-detail': {
+      id: '/recepten-detail'
+      path: '/recepten-detail'
+      fullPath: '/recepten-detail'
+      preLoaderRoute: typeof ReceptenDetailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recepten': {
+      id: '/recepten'
+      path: '/recepten'
+      fullPath: '/recepten'
+      preLoaderRoute: typeof ReceptenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/questions': {
@@ -319,6 +425,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ontbijt': {
+      id: '/ontbijt'
+      path: '/ontbijt'
+      fullPath: '/ontbijt'
+      preLoaderRoute: typeof OntbijtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lunch': {
+      id: '/lunch'
+      path: '/lunch'
+      fullPath: '/lunch'
+      preLoaderRoute: typeof LunchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -331,90 +451,6 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recipes/': {
-      id: '/recipes/'
-      path: '/recipes'
-      fullPath: '/recipes/'
-      preLoaderRoute: typeof RecipesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recipes/$id': {
-      id: '/recipes/$id'
-      path: '/recipes/$id'
-      fullPath: '/recipes/$id'
-      preLoaderRoute: typeof RecipesIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/drizzle': {
-      id: '/demo/drizzle'
-      path: '/demo/drizzle'
-      fullPath: '/demo/drizzle'
-      preLoaderRoute: typeof DemoDrizzleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/_settings/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsSettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/_profile/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/handmatig': {
-      id: '/_dashboard/handmatig'
-      path: '/handmatig'
-      fullPath: '/handmatig'
-      preLoaderRoute: typeof DashboardHandmatigRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/_dashboard/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/automatisch': {
-      id: '/_dashboard/automatisch'
-      path: '/automatisch'
-      fullPath: '/automatisch'
-      preLoaderRoute: typeof DashboardAutomatischRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/historie': {
@@ -431,6 +467,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/boodschappen': {
       id: '/boodschappen'
       path: '/boodschappen'
@@ -438,11 +481,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoodschappenRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/favorites': {
+    '/avond-maaltijd': {
+      id: '/avond-maaltijd'
+      path: '/avond-maaltijd'
+      fullPath: '/avond-maaltijd'
+      preLoaderRoute: typeof AvondMaaltijdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes/': {
+      id: '/recipes/'
+      path: '/recipes'
+      fullPath: '/recipes/'
+      preLoaderRoute: typeof RecipesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes/lunch': {
+      id: '/recipes/lunch'
+      path: '/recipes/lunch'
+      fullPath: '/recipes/lunch'
+      preLoaderRoute: typeof RecipesLunchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes/avond-maaltijden': {
+      id: '/recipes/avond-maaltijden'
+      path: '/recipes/avond-maaltijden'
+      fullPath: '/recipes/avond-maaltijden'
+      preLoaderRoute: typeof RecipesAvondMaaltijdenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes/$id': {
+      id: '/recipes/$id'
+      path: '/recipes/$id'
+      fullPath: '/recipes/$id'
+      preLoaderRoute: typeof RecipesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_settings/settings': {
+      id: '/_settings/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_profile/profile': {
+      id: '/_profile/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_favorites/favorites': {
       id: '/_favorites/favorites'
       path: '/favorites'
       fullPath: '/favorites'
       preLoaderRoute: typeof FavoritesFavoritesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/handmatig': {
+      id: '/_dashboard/handmatig'
+      path: '/handmatig'
+      fullPath: '/handmatig'
+      preLoaderRoute: typeof DashboardHandmatigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/automatisch': {
+      id: '/_dashboard/automatisch'
+      path: '/automatisch'
+      fullPath: '/automatisch'
+      preLoaderRoute: typeof DashboardAutomatischRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -450,25 +577,32 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
+  AvondMaaltijdRoute: AvondMaaltijdRoute,
+  BoodschappenRoute: BoodschappenRoute,
   ContactRoute: ContactRoute,
+  FaqRoute: FaqRoute,
+  HistorieRoute: HistorieRoute,
   HomeRoute: HomeRoute,
   LoginRoute: LoginRoute,
+  LunchRoute: LunchRoute,
+  OntbijtRoute: OntbijtRoute,
   PasswordRoute: PasswordRoute,
+  QuestionsRoute: QuestionsRoute,
+  ReceptenRoute: ReceptenRoute,
+  ReceptenDetailRoute: ReceptenDetailRoute,
   RegisterRoute: RegisterRoute,
-  DemoDrizzleRoute: DemoDrizzleRoute,
+  SnacksRoute: SnacksRoute,
+  DashboardAutomatischRoute: DashboardAutomatischRoute,
+  DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardHandmatigRoute: DashboardHandmatigRoute,
+  FavoritesFavoritesRoute: FavoritesFavoritesRoute,
+  ProfileProfileRoute: ProfileProfileRoute,
+  SettingsSettingsRoute: SettingsSettingsRoute,
   RecipesIdRoute: RecipesIdRoute,
+  RecipesAvondMaaltijdenRoute: RecipesAvondMaaltijdenRoute,
+  RecipesLunchRoute: RecipesLunchRoute,
   RecipesIndexRoute: RecipesIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
-  SettingsSettingsRoute: SettingsSettingsRoute,
-  ProfileProfileRoute: ProfileProfileRoute,
-  DashboardHandmatigRoute: DashboardHandmatigRoute,
-  DashboardDashboardRoute: DashboardDashboardRoute,
-  DashboardAutomatischRoute: DashboardAutomatischRoute,
-  HistorieRoute: HistorieRoute,
-  FaqRoute: FaqRoute,
-  BoodschappenRoute: BoodschappenRoute,
-  FavoritesFavoritesRoute: FavoritesFavoritesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
