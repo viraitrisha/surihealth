@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { Search } from 'lucide-react'
 
-import Header from '#/client/components/Layout/PrivateHeader'
-import Footer from '#/client/components/Layout/Footer'
+import Header from '#/components/layout/private-header'
+import Footer from '#/components/layout/footer'
 
 export const Route = createFileRoute('/historie')({
   component: RouteComponent,
