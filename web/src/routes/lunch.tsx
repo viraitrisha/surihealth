@@ -56,16 +56,6 @@ function RouteComponent() {
     );
   }, [searchTerm]);
 
-    const handleRecipeClick = (recipeId: number) => {
-    ({
-      to: '/recepten-detail',
-      search: {
-        id: recipeId
-      }
-    });
-  };
-
-
   return (
     <main className="px-8 py-8">
       <section className="rounded-xl bg-green-100 py-8 text-center">
@@ -151,9 +141,7 @@ function RouteComponent() {
                   <h3 className="font-medium text-gray-800 text-lg">
                     {recipe.title}
                   </h3>
-                  <button 
-                  onClick={() => handleRecipeClick(recipe.id)}
-                  className="mt-2 px-5 py-2 bg-green-100 hover:bg-green-200 text-green-700 text-sm font-medium rounded-full transition-colors shadow-sm hover:shadow-md flex items-center gap-2">
+                  <button className="mt-2 px-5 py-2 bg-green-100 hover:bg-green-200 text-green-700 text-sm font-medium rounded-full transition-colors shadow-sm hover:shadow-md flex items-center gap-2">
                     Bekijk recept
                   </button>
                 </figcaption>
