@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+<<<<<<< HEAD
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -26,6 +27,23 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+=======
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as QuestionsRouteImport } from './routes/questions'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as HistorieRouteImport } from './routes/historie'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as BoodschappenRouteImport } from './routes/boodschappen'
+import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
+import { Route as RecipesIdRouteImport } from './routes/recipes/$id'
+import { Route as FavoritesFavoritesRouteImport } from './routes/_favorites/favorites'
+
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+>>>>>>> origin/Shivi_branch
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuestionsRoute = QuestionsRouteImport.update({
@@ -38,6 +56,7 @@ const ProfileRoute = ProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
 const PasswordRoute = PasswordRouteImport.update({
   id: '/password',
   path: '/password',
@@ -51,6 +70,21 @@ const LoginRoute = LoginRouteImport.update({
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
+=======
+const HistorieRoute = HistorieRouteImport.update({
+  id: '/historie',
+  path: '/historie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+>>>>>>> origin/Shivi_branch
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -58,9 +92,30 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+=======
+const BoodschappenRoute = BoodschappenRouteImport.update({
+  id: '/boodschappen',
+  path: '/boodschappen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecipesIndexRoute = RecipesIndexRouteImport.update({
+  id: '/recipes/',
+  path: '/recipes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecipesIdRoute = RecipesIdRouteImport.update({
+  id: '/recipes/$id',
+  path: '/recipes/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavoritesFavoritesRoute = FavoritesFavoritesRouteImport.update({
+  id: '/_favorites/favorites',
+  path: '/favorites',
+>>>>>>> origin/Shivi_branch
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -90,6 +145,7 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+<<<<<<< HEAD
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
@@ -134,10 +190,51 @@ export interface FileRoutesById {
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+=======
+  '/boodschappen': typeof BoodschappenRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/historie': typeof HistorieRoute
+  '/profile': typeof ProfileRoute
+  '/questions': typeof QuestionsRoute
+  '/settings': typeof SettingsRoute
+  '/favorites': typeof FavoritesFavoritesRoute
+  '/recipes/$id': typeof RecipesIdRoute
+  '/recipes/': typeof RecipesIndexRoute
+}
+export interface FileRoutesByTo {
+  '/boodschappen': typeof BoodschappenRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/historie': typeof HistorieRoute
+  '/profile': typeof ProfileRoute
+  '/questions': typeof QuestionsRoute
+  '/settings': typeof SettingsRoute
+  '/favorites': typeof FavoritesFavoritesRoute
+  '/recipes/$id': typeof RecipesIdRoute
+  '/recipes': typeof RecipesIndexRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/boodschappen': typeof BoodschappenRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRoute
+  '/faq': typeof FaqRoute
+  '/historie': typeof HistorieRoute
+  '/profile': typeof ProfileRoute
+  '/questions': typeof QuestionsRoute
+  '/settings': typeof SettingsRoute
+  '/_favorites/favorites': typeof FavoritesFavoritesRoute
+  '/recipes/$id': typeof RecipesIdRoute
+  '/recipes/': typeof RecipesIndexRoute
+>>>>>>> origin/Shivi_branch
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+<<<<<<< HEAD
     | '/'
     | '/about'
     | '/contact'
@@ -197,15 +294,76 @@ export interface RootRouteChildren {
   RecipesIdRoute: typeof RecipesIdRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+=======
+    | '/boodschappen'
+    | '/contact'
+    | '/dashboard'
+    | '/faq'
+    | '/historie'
+    | '/profile'
+    | '/questions'
+    | '/settings'
+    | '/favorites'
+    | '/recipes/$id'
+    | '/recipes/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/boodschappen'
+    | '/contact'
+    | '/dashboard'
+    | '/faq'
+    | '/historie'
+    | '/profile'
+    | '/questions'
+    | '/settings'
+    | '/favorites'
+    | '/recipes/$id'
+    | '/recipes'
+  id:
+    | '__root__'
+    | '/boodschappen'
+    | '/contact'
+    | '/dashboard'
+    | '/faq'
+    | '/historie'
+    | '/profile'
+    | '/questions'
+    | '/settings'
+    | '/_favorites/favorites'
+    | '/recipes/$id'
+    | '/recipes/'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  BoodschappenRoute: typeof BoodschappenRoute
+  ContactRoute: typeof ContactRoute
+  DashboardRoute: typeof DashboardRoute
+  FaqRoute: typeof FaqRoute
+  HistorieRoute: typeof HistorieRoute
+  ProfileRoute: typeof ProfileRoute
+  QuestionsRoute: typeof QuestionsRoute
+  SettingsRoute: typeof SettingsRoute
+  FavoritesFavoritesRoute: typeof FavoritesFavoritesRoute
+  RecipesIdRoute: typeof RecipesIdRoute
+  RecipesIndexRoute: typeof RecipesIndexRoute
+>>>>>>> origin/Shivi_branch
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+<<<<<<< HEAD
     '/register': {
       id: '/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+=======
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+>>>>>>> origin/Shivi_branch
       parentRoute: typeof rootRouteImport
     }
     '/questions': {
@@ -222,6 +380,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
     '/password': {
       id: '/password'
       path: '/password'
@@ -241,6 +400,27 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
+=======
+    '/historie': {
+      id: '/historie'
+      path: '/historie'
+      fullPath: '/historie'
+      preLoaderRoute: typeof HistorieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+>>>>>>> origin/Shivi_branch
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -250,11 +430,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+=======
+    '/boodschappen': {
+      id: '/boodschappen'
+      path: '/boodschappen'
+      fullPath: '/boodschappen'
+      preLoaderRoute: typeof BoodschappenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes/': {
+      id: '/recipes/'
+      path: '/recipes'
+      fullPath: '/recipes/'
+      preLoaderRoute: typeof RecipesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recipes/$id': {
+      id: '/recipes/$id'
+      path: '/recipes/$id'
+      fullPath: '/recipes/$id'
+      preLoaderRoute: typeof RecipesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_favorites/favorites': {
+      id: '/_favorites/favorites'
+      path: '/favorites'
+      fullPath: '/favorites'
+      preLoaderRoute: typeof FavoritesFavoritesRouteImport
+>>>>>>> origin/Shivi_branch
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -296,6 +505,7 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
+<<<<<<< HEAD
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
@@ -309,6 +519,19 @@ const rootRouteChildren: RootRouteChildren = {
   RecipesIdRoute: RecipesIdRoute,
   RecipesIndexRoute: RecipesIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+=======
+  BoodschappenRoute: BoodschappenRoute,
+  ContactRoute: ContactRoute,
+  DashboardRoute: DashboardRoute,
+  FaqRoute: FaqRoute,
+  HistorieRoute: HistorieRoute,
+  ProfileRoute: ProfileRoute,
+  QuestionsRoute: QuestionsRoute,
+  SettingsRoute: SettingsRoute,
+  FavoritesFavoritesRoute: FavoritesFavoritesRoute,
+  RecipesIdRoute: RecipesIdRoute,
+  RecipesIndexRoute: RecipesIndexRoute,
+>>>>>>> origin/Shivi_branch
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
