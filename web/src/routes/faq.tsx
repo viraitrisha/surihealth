@@ -11,7 +11,7 @@ function FAQPage() {
     <>
       <Header />
 
-      <main className="min-h-screen">
+      <main className="min-h-screen pt-[50px]">
 
         {/* Titel */}
         <section className="py-10 text-center border-b-2 border-[var(--black-color)]">

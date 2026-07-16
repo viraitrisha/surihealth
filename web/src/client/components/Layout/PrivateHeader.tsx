@@ -12,8 +12,8 @@ FaCog,
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
     return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-[#1a756a] px-4 py-4 border-b border-gray-300">
-    <h1 className='text-white text-5xl font-bold'>SuriHealth</h1>
+       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-[var(--primary-color)] px-4 py-4 border-b border-gray-300">
+    <h1 className='text-[var(--white-color)] text-5xl font-bold'>SuriHealth</h1>
     <button 
     className={`lg:hidden bg-transparent border-none cursor-pointer flex flex-col items-center ${menuOpen ? 'active' : ''}`}
     onClick={() => setMenuOpen(!menuOpen)}>
