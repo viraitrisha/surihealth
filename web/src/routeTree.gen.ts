@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as QuestionsRouteImport } from './routes/questions'
 import { Route as ProfileRouteImport } from './routes/profile'
@@ -23,6 +24,14 @@ import { Route as RecipesIndexRouteImport } from './routes/recipes/index'
 import { Route as RecipesIdRouteImport } from './routes/recipes/$id'
 import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+=======
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsSettingsRouteImport } from './routes/_settings/settings'
+import { Route as ProfileProfileRouteImport } from './routes/_profile/profile'
+import { Route as DashboardHandmatigRouteImport } from './routes/_dashboard/handmatig'
+import { Route as DashboardDashboardRouteImport } from './routes/_dashboard/dashboard'
+import { Route as DashboardAutomatischRouteImport } from './routes/_dashboard/automatisch'
+>>>>>>> origin/charissa-branch
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -143,10 +152,36 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsSettingsRoute = SettingsSettingsRouteImport.update({
+  id: '/_settings/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileProfileRoute = ProfileProfileRouteImport.update({
+  id: '/_profile/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardHandmatigRoute = DashboardHandmatigRouteImport.update({
+  id: '/_dashboard/handmatig',
+  path: '/handmatig',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardDashboardRoute = DashboardDashboardRouteImport.update({
+  id: '/_dashboard/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardAutomatischRoute = DashboardAutomatischRouteImport.update({
+  id: '/_dashboard/automatisch',
+  path: '/automatisch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
 <<<<<<< HEAD
   '/': typeof IndexRoute
+<<<<<<< HEAD
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/home': typeof HomeRoute
@@ -174,10 +209,26 @@ export interface FileRoutesByTo {
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes': typeof RecipesIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+=======
+  '/automatisch': typeof DashboardAutomatischRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/handmatig': typeof DashboardHandmatigRoute
+  '/profile': typeof ProfileProfileRoute
+  '/settings': typeof SettingsSettingsRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/automatisch': typeof DashboardAutomatischRoute
+  '/dashboard': typeof DashboardDashboardRoute
+  '/handmatig': typeof DashboardHandmatigRoute
+  '/profile': typeof ProfileProfileRoute
+  '/settings': typeof SettingsSettingsRoute
+>>>>>>> origin/charissa-branch
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+<<<<<<< HEAD
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/home': typeof HomeRoute
@@ -230,10 +281,18 @@ export interface FileRoutesById {
   '/recipes/$id': typeof RecipesIdRoute
   '/recipes/': typeof RecipesIndexRoute
 >>>>>>> origin/Shivi_branch
+=======
+  '/_dashboard/automatisch': typeof DashboardAutomatischRoute
+  '/_dashboard/dashboard': typeof DashboardDashboardRoute
+  '/_dashboard/handmatig': typeof DashboardHandmatigRoute
+  '/_profile/profile': typeof ProfileProfileRoute
+  '/_settings/settings': typeof SettingsSettingsRoute
+>>>>>>> origin/charissa-branch
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+<<<<<<< HEAD
 <<<<<<< HEAD
     | '/'
     | '/about'
@@ -278,10 +337,35 @@ export interface FileRouteTypes {
     | '/recipes/$id'
     | '/recipes/'
     | '/api/auth/$'
+=======
+    | '/'
+    | '/automatisch'
+    | '/dashboard'
+    | '/handmatig'
+    | '/profile'
+    | '/settings'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/automatisch'
+    | '/dashboard'
+    | '/handmatig'
+    | '/profile'
+    | '/settings'
+  id:
+    | '__root__'
+    | '/'
+    | '/_dashboard/automatisch'
+    | '/_dashboard/dashboard'
+    | '/_dashboard/handmatig'
+    | '/_profile/profile'
+    | '/_settings/settings'
+>>>>>>> origin/charissa-branch
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+<<<<<<< HEAD
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   HomeRoute: typeof HomeRoute
@@ -347,6 +431,13 @@ export interface RootRouteChildren {
   RecipesIdRoute: typeof RecipesIdRoute
   RecipesIndexRoute: typeof RecipesIndexRoute
 >>>>>>> origin/Shivi_branch
+=======
+  DashboardAutomatischRoute: typeof DashboardAutomatischRoute
+  DashboardDashboardRoute: typeof DashboardDashboardRoute
+  DashboardHandmatigRoute: typeof DashboardHandmatigRoute
+  ProfileProfileRoute: typeof ProfileProfileRoute
+  SettingsSettingsRoute: typeof SettingsSettingsRoute
+>>>>>>> origin/charissa-branch
 }
 
 declare module '@tanstack/react-router' {
@@ -501,12 +592,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_settings/settings': {
+      id: '/_settings/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_profile/profile': {
+      id: '/_profile/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/handmatig': {
+      id: '/_dashboard/handmatig'
+      path: '/handmatig'
+      fullPath: '/handmatig'
+      preLoaderRoute: typeof DashboardHandmatigRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/dashboard': {
+      id: '/_dashboard/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/automatisch': {
+      id: '/_dashboard/automatisch'
+      path: '/automatisch'
+      fullPath: '/automatisch'
+      preLoaderRoute: typeof DashboardAutomatischRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
 <<<<<<< HEAD
   IndexRoute: IndexRoute,
+<<<<<<< HEAD
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   HomeRoute: HomeRoute,
@@ -532,6 +659,13 @@ const rootRouteChildren: RootRouteChildren = {
   RecipesIdRoute: RecipesIdRoute,
   RecipesIndexRoute: RecipesIndexRoute,
 >>>>>>> origin/Shivi_branch
+=======
+  DashboardAutomatischRoute: DashboardAutomatischRoute,
+  DashboardDashboardRoute: DashboardDashboardRoute,
+  DashboardHandmatigRoute: DashboardHandmatigRoute,
+  ProfileProfileRoute: ProfileProfileRoute,
+  SettingsSettingsRoute: SettingsSettingsRoute,
+>>>>>>> origin/charissa-branch
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
