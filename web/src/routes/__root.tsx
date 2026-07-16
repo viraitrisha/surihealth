@@ -4,6 +4,7 @@
 
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 import { ThemeProvider } from '#/contexts/theme-context'
+import { LanguageProvider } from '#/contexts/language-context'
 // import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 // import { TanStackDevtools } from '@tanstack/react-devtools'
 
@@ -41,12 +42,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <ThemeProvider>
+          <LanguageProvider>
 
         {/* <Navbar/> */}
         {/* <Header/> */}
         {/* <Footer/> */}
         
         {children}
+        </LanguageProvider>
         </ThemeProvider>
         {/* <TanStackDevtools
           config={{

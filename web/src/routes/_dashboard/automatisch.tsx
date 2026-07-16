@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 // import '../styles/automatisch.css'
 import Header from '#/components/layout/private-header'
-import Footer from '#/client/components/Layout/Footer.tsx'
+import Footer from '#/components/layout/footer'
 
 export const Route = createFileRoute('/_dashboard/automatisch')({
   component: RouteComponent,

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "#/contexts/theme-context";
+import { useLanguage } from "#/contexts/language-context";
 
 interface SettingsOverlayProps {
     isOpen:boolean;
@@ -14,7 +15,8 @@ export default function SettingsOverlay({
 }: SettingsOverlayProps) {
     const {theme, setTheme } = useTheme();
     // const [theme, setTheme] = useState("light");
-    const [language, setLanguage] = useState("nl");
+    // const [language, setLanguage] = useState("nl");
+    const { language, setLanguage } = useLanguage();
     const [notifications, setNotifications] = useState(false);
 
     if (!isOpen) return null;
@@ -47,7 +49,7 @@ export default function SettingsOverlay({
                             Taal
                         </label>
 
-                        <select value={language} onChange={(e) => setLanguage(e.target.value)} className="w-full bg-[var(--secondary-color)] rounded-xl border-[var(--primary-color)] px-4 py-3">
+                        <select value={language} onChange={(e) => setLanguage(e.target.value as "nl" | "en")} className="w-full bg-[var(--secondary-color)] rounded-xl border-[var(--primary-color)] px-4 py-3">
                             <option value="nl">Nederlands</option>
                             <option value="en">Engels</option>
                         </select>

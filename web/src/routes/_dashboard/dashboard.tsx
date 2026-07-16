@@ -13,7 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import WelcomeCard from '../../components/dashboard/welcome-card'
 import FoodPreview from '#/components/dashboard/food-preview'
 import Header from '../../components/layout/private-header'
-import Footer from '#/client/components/Layout/Footer'
+import Footer from '#/components/layout/footer'
 export const Route = createFileRoute('/_dashboard/dashboard')({
   component: Dashboard,
 })
