@@ -5,14 +5,15 @@
   "packageManager": "pnpm",
   "includeExamples": false,
   "tailwind": true,
+  "projectPreset": "default",
   "addOnOptions": {
     "drizzle": {
       "database": "postgresql"
     }
   },
-  "envVarValues": {},
-  "git": true,
+  "git": false,
   "install": true,
+  "intent": true,
   "routerOnly": false,
   "version": 1,
   "framework": "react",

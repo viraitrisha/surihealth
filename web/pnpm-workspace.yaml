@@ -1,2 +1,10 @@
+packages:
+  - 'web'
+  - 'docs'
+
+# The new correct configuration block:
 allowBuilds:
-  esbuild: set this to true or false
+  esbuild: true
+  better-auth: true
+  postgres: true
+  lightningcss: true

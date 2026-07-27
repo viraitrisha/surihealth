@@ -9,34 +9,263 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/recipes/index'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ProfileSetupRouteImport } from './routes/profile-setup'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardAutomaticRouteImport } from './routes/dashboard/automatic'
+import { Route as DashboardBoodschappenRouteImport } from './routes/dashboard/boodschappen'
+import { Route as DashboardFavoritesRouteImport } from './routes/dashboard/favorites'
+import { Route as DashboardHandmatigRouteImport } from './routes/dashboard/handmatig'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as DashboardRecipesIndexRouteImport } from './routes/dashboard/recipes/index'
+import { Route as DashboardRecipesCategoryRouteImport } from './routes/dashboard/recipes/$category'
+import { Route as DashboardRecipesViewRecipeIdRouteImport } from './routes/dashboard/recipes/view/$recipeId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileSetupRoute = ProfileSetupRouteImport.update({
+  id: '/profile-setup',
+  path: '/profile-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/admin/dashboard',
+  path: '/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardAutomaticRoute = DashboardAutomaticRouteImport.update({
+  id: '/automatic',
+  path: '/automatic',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardBoodschappenRoute = DashboardBoodschappenRouteImport.update({
+  id: '/boodschappen',
+  path: '/boodschappen',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardFavoritesRoute = DashboardFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardHandmatigRoute = DashboardHandmatigRouteImport.update({
+  id: '/handmatig',
+  path: '/handmatig',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRecipesIndexRoute = DashboardRecipesIndexRouteImport.update({
+  id: '/recipes/',
+  path: '/recipes/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardRecipesCategoryRoute =
+  DashboardRecipesCategoryRouteImport.update({
+    id: '/recipes/$category',
+    path: '/recipes/$category',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+const DashboardRecipesViewRecipeIdRoute =
+  DashboardRecipesViewRecipeIdRouteImport.update({
+    id: '/recipes/view/$recipeId',
+    path: '/recipes/view/$recipeId',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/profile-setup': typeof ProfileSetupRoute
+  '/register': typeof RegisterRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/dashboard/automatic': typeof DashboardAutomaticRoute
+  '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
+  '/dashboard/favorites': typeof DashboardFavoritesRoute
+  '/dashboard/handmatig': typeof DashboardHandmatigRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/dashboard/recipes/$category': typeof DashboardRecipesCategoryRoute
+  '/dashboard/recipes/': typeof DashboardRecipesIndexRoute
+  '/dashboard/recipes/view/$recipeId': typeof DashboardRecipesViewRecipeIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/profile-setup': typeof ProfileSetupRoute
+  '/register': typeof RegisterRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/dashboard/automatic': typeof DashboardAutomaticRoute
+  '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
+  '/dashboard/favorites': typeof DashboardFavoritesRoute
+  '/dashboard/handmatig': typeof DashboardHandmatigRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard': typeof DashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/dashboard/recipes/$category': typeof DashboardRecipesCategoryRoute
+  '/dashboard/recipes': typeof DashboardRecipesIndexRoute
+  '/dashboard/recipes/view/$recipeId': typeof DashboardRecipesViewRecipeIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
+  '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
+  '/profile-setup': typeof ProfileSetupRoute
+  '/register': typeof RegisterRoute
+  '/admin/dashboard': typeof AdminDashboardRoute
+  '/dashboard/automatic': typeof DashboardAutomaticRoute
+  '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
+  '/dashboard/favorites': typeof DashboardFavoritesRoute
+  '/dashboard/handmatig': typeof DashboardHandmatigRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/': typeof DashboardIndexRoute
+  '/api/auth/$': typeof ApiAuthSplatRoute
+  '/dashboard/recipes/$category': typeof DashboardRecipesCategoryRoute
+  '/dashboard/recipes/': typeof DashboardRecipesIndexRoute
+  '/dashboard/recipes/view/$recipeId': typeof DashboardRecipesViewRecipeIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/contact'
+    | '/dashboard'
+    | '/faq'
+    | '/forgot-password'
+    | '/login'
+    | '/profile-setup'
+    | '/register'
+    | '/admin/dashboard'
+    | '/dashboard/automatic'
+    | '/dashboard/boodschappen'
+    | '/dashboard/favorites'
+    | '/dashboard/handmatig'
+    | '/dashboard/settings'
+    | '/dashboard/'
+    | '/api/auth/$'
+    | '/dashboard/recipes/$category'
+    | '/dashboard/recipes/'
+    | '/dashboard/recipes/view/$recipeId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/contact'
+    | '/faq'
+    | '/forgot-password'
+    | '/login'
+    | '/profile-setup'
+    | '/register'
+    | '/admin/dashboard'
+    | '/dashboard/automatic'
+    | '/dashboard/boodschappen'
+    | '/dashboard/favorites'
+    | '/dashboard/handmatig'
+    | '/dashboard/settings'
+    | '/dashboard'
+    | '/api/auth/$'
+    | '/dashboard/recipes/$category'
+    | '/dashboard/recipes'
+    | '/dashboard/recipes/view/$recipeId'
+  id:
+    | '__root__'
+    | '/'
+    | '/contact'
+    | '/dashboard'
+    | '/faq'
+    | '/forgot-password'
+    | '/login'
+    | '/profile-setup'
+    | '/register'
+    | '/admin/dashboard'
+    | '/dashboard/automatic'
+    | '/dashboard/boodschappen'
+    | '/dashboard/favorites'
+    | '/dashboard/handmatig'
+    | '/dashboard/settings'
+    | '/dashboard/'
+    | '/api/auth/$'
+    | '/dashboard/recipes/$category'
+    | '/dashboard/recipes/'
+    | '/dashboard/recipes/view/$recipeId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContactRoute: typeof ContactRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
+  FaqRoute: typeof FaqRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
+  ProfileSetupRoute: typeof ProfileSetupRoute
+  RegisterRoute: typeof RegisterRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +277,174 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile-setup': {
+      id: '/profile-setup'
+      path: '/profile-setup'
+      fullPath: '/profile-setup'
+      preLoaderRoute: typeof ProfileSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/dashboard': {
+      id: '/admin/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/automatic': {
+      id: '/dashboard/automatic'
+      path: '/automatic'
+      fullPath: '/dashboard/automatic'
+      preLoaderRoute: typeof DashboardAutomaticRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/boodschappen': {
+      id: '/dashboard/boodschappen'
+      path: '/boodschappen'
+      fullPath: '/dashboard/boodschappen'
+      preLoaderRoute: typeof DashboardBoodschappenRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/favorites': {
+      id: '/dashboard/favorites'
+      path: '/favorites'
+      fullPath: '/dashboard/favorites'
+      preLoaderRoute: typeof DashboardFavoritesRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/handmatig': {
+      id: '/dashboard/handmatig'
+      path: '/handmatig'
+      fullPath: '/dashboard/handmatig'
+      preLoaderRoute: typeof DashboardHandmatigRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/recipes/': {
+      id: '/dashboard/recipes/'
+      path: '/recipes'
+      fullPath: '/dashboard/recipes/'
+      preLoaderRoute: typeof DashboardRecipesIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/recipes/$category': {
+      id: '/dashboard/recipes/$category'
+      path: '/recipes/$category'
+      fullPath: '/dashboard/recipes/$category'
+      preLoaderRoute: typeof DashboardRecipesCategoryRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/recipes/view/$recipeId': {
+      id: '/dashboard/recipes/view/$recipeId'
+      path: '/recipes/view/$recipeId'
+      fullPath: '/dashboard/recipes/view/$recipeId'
+      preLoaderRoute: typeof DashboardRecipesViewRecipeIdRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardAutomaticRoute: typeof DashboardAutomaticRoute
+  DashboardBoodschappenRoute: typeof DashboardBoodschappenRoute
+  DashboardFavoritesRoute: typeof DashboardFavoritesRoute
+  DashboardHandmatigRoute: typeof DashboardHandmatigRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardRecipesCategoryRoute: typeof DashboardRecipesCategoryRoute
+  DashboardRecipesIndexRoute: typeof DashboardRecipesIndexRoute
+  DashboardRecipesViewRecipeIdRoute: typeof DashboardRecipesViewRecipeIdRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAutomaticRoute: DashboardAutomaticRoute,
+  DashboardBoodschappenRoute: DashboardBoodschappenRoute,
+  DashboardFavoritesRoute: DashboardFavoritesRoute,
+  DashboardHandmatigRoute: DashboardHandmatigRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardRecipesCategoryRoute: DashboardRecipesCategoryRoute,
+  DashboardRecipesIndexRoute: DashboardRecipesIndexRoute,
+  DashboardRecipesViewRecipeIdRoute: DashboardRecipesViewRecipeIdRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContactRoute: ContactRoute,
+  DashboardRoute: DashboardRouteWithChildren,
+  FaqRoute: FaqRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
+  ProfileSetupRoute: ProfileSetupRoute,
+  RegisterRoute: RegisterRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
