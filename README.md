@@ -1,4 +1,4 @@
-### SuriHealth
+# SuriHealth
 
 De volledige backend migreren van Express + Prisma + MySQL naar TanStack Start met Drizzle ORM + PostgreSQL, Better Auth voor authenticatie, en server functions als communicatielaag naar de React-frontend.
 
