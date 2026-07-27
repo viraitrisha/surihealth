@@ -1,3 +1,10 @@
+packages:
+  - 'web'
+  - 'docs'
+
+# The new correct configuration block:
 allowBuilds:
-  '@parcel/watcher': true
-  esbuild: false
+  esbuild: true
+  better-auth: true
+  postgres: true
+  lightningcss: true

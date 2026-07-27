@@ -1,315 +1,225 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
-import { useState, useEffect } from 'react';
+// src/routes/contact.tsx
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { submitContactForm } from '../server-functions/contact';
+import { useToast } from '#/hooks/use-toast';
+import { Mail, User, MessageSquare, Loader2, Send, CheckCircle2, MapPin } from 'lucide-react';
 
-// ============================================================
-// FONT SIZE CONTEXT (voor de Aa knop)
-// ============================================================
-const useFontSize = () => {
-  const [fontSize, setFontSize] = useState(() => {
-    const saved = localStorage.getItem('fontSize');
-    return saved ? parseFloat(saved) : 75;
-  });
+export const Route = (createFileRoute as any)('/contact')({
+  component: ContactPage,
+});
 
-  useEffect(() => {
-    document.documentElement.style.fontSize = `${fontSize}%`;
-    localStorage.setItem('fontSize', fontSize.toString());
-  }, [fontSize]);
-
-  return { fontSize, setFontSize };
-};
-
-// ============================================================
-// FONT SIZE CONTROLLER (Aa knop)
-// ============================================================
-const FontSizeController = () => {
-  const { fontSize, setFontSize } = useFontSize();
-  const [isOpen, setIsOpen] = useState(false);
-
-  return (
-    <div className="relative flex items-center">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="font-bold text-white no-underline whitespace-nowrap transition-all duration-300 hover:text-[#155B52] text-3xl"
-      >
-        Aa
-      </button>
-
-      {isOpen && (
-        <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 min-w-[180px] rounded-lg bg-white p-4 shadow-lg z-50">
-          <input
-            type="range"
-            min="50"
-            max="90"
-            step="0.1"
-            value={fontSize}
-            onChange={(e) => setFontSize(parseFloat(e.target.value))}
-            className="w-full accent-[#1A756A]"
-          />
-          <div className="mt-2 text-center text-base text-gray-600">
-            {Math.round(fontSize)}%
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// ============================================================
-// HEADER COMPONENT (zonder sidebar)
-// ============================================================
-const Header = () => {
-  return (
-    <header className="fixed top-0 w-full z-[1000] bg-gradient-to-r from-[#1A756A] to-[#2D9C8F] shadow-[0_0.2rem_1rem_#000000]">
-      <div className="flex items-center justify-between px-10 py-8 md:px-20">
-        <Link to="/home" className="text-4xl md:text-5xl font-bold text-white transition-transform duration-300 hover:scale-105 no-underline">
-          SuriHealth
-        </Link>
-
-        <nav className="flex items-center gap-6 lg:gap-8">
-          <Link to="/home" className="relative text-3xl font-bold text-white no-underline whitespace-nowrap transition-all duration-300 hover:text-[#155B52] after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#155B52] after:transition-all after:duration-300 hover:after:w-full">
-            Home
-          </Link>
-
-          <FontSizeController />
-
-          <Link to="/faq" className="relative text-3xl font-bold text-white no-underline whitespace-nowrap transition-all duration-300 hover:text-[#155B52] after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#155B52] after:transition-all after:duration-300 hover:after:w-full">
-            FAQ
-          </Link>
-          <Link to="/contact" className="relative text-3xl font-bold text-white no-underline whitespace-nowrap transition-all duration-300 hover:text-[#155B52] after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#155B52] after:transition-all after:duration-300 hover:after:w-full">
-            Contact
-          </Link>
-          <Link to="/login" className="relative text-3xl font-bold text-white no-underline whitespace-nowrap transition-all duration-300 hover:text-[#155B52] after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-1 after:bg-[#155B52] after:transition-all after:duration-300 hover:after:w-full">
-            Login
-          </Link>
-        </nav>
-      </div>
-    </header>
-  );
-};
-
-// ============================================================
-// FOOTER COMPONENT
-// ============================================================
-const Footer = () => {
-  return (
-    <footer className="bg-gradient-to-b from-[#1A756A] to-[#2D9C8F] text-white py-10 px-10 md:px-20">
-      <p className="text-xl md:text-2xl text-left">&copy; 2026 SuriHealth.</p>
-    </footer>
-  );
-};
-
-// ============================================================
-// CONTACT COMPONENT
-// ============================================================
 function ContactPage() {
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
     message: '',
   });
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
+  const isNameTouched = formData.name.length > 0;
+  const isNameValid = formData.name.trim().length >= 2;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const isEmailTouched = formData.email.length > 0;
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim());
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess(false);
 
-    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-      setError('Vul alle velden in');
+    if (!isNameValid) {
+      toast({
+        title: 'Naam te kort',
+        description: 'Vul alstublieft een geldige naam in van minimaal 2 letters.',
+        type: 'warning',
+      });
       return;
     }
 
-    if (!formData.email.includes('@')) {
-      setError('Vul een geldig e-mailadres in');
+    if (!isEmailValid) {
+      toast({
+        title: 'Ongeldig e-mailadres',
+        description: 'Controleer of uw e-mailadres een @ en een geldig domein bevat.',
+        type: 'warning',
+      });
       return;
     }
 
-    console.log('Contact formulier:', formData);
-    setSuccess(true);
-    
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-    });
+    setLoading(true);
+
+    try {
+      const response = await submitContactForm({
+        data: {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
+        },
+      });
+
+      if (response.success) {
+        setSuccess(true);
+        setFormData({ name: '', email: '', message: '' });
+        
+        toast({
+          title: 'Bericht verzonden',
+          description: 'We nemen zo snel mogelijk contact met u op.',
+          type: 'success',
+        });
+      }
+    } catch (err: any) {
+      toast({
+        title: 'Verzenden mislukt',
+        description: err.message || 'Controleer uw invoer en probeer het opnieuw.',
+        type: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <Header />
-      
-      <div className="pt-32 min-h-screen bg-gray-50">
-        <div className="relative overflow-hidden px-4 py-12 md:px-8">
-          
-          <div className="mx-auto flex max-w-[1200px] flex-col gap-8 md:flex-row">
-            
-            {/* ---- CONTACT CARD (Formulier) ---- */}
-            <div className="relative z-10 flex-[0_1_70%] bg-white p-8 shadow-[0_0.2rem_1rem_#000000]">
-              
-              {/* Titel */}
-              <div className="form-side">
-                <h2 className="mb-2 text-4xl md:text-5xl font-bold text-[#1A756A]">Neem contact op</h2>
-                <p className="subtitle mb-6 text-2xl text-gray-600">
-                  Heb je een vraag? Wij helpen je graag!
-                </p>
-              </div>
+    <main className="min-h-[calc(100vh-80px)] bg-gray-50 pt-32 pb-16 px-4 flex items-center justify-center">
+      <div className="w-full max-w-4xl bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+        
+        {/* ---- LINKER KANT: Info Banner ---- */}
+        <div className="flex-1 bg-linear-to-br from-[#1A756A] to-[#2D9C8F] p-8 md:p-12 text-white flex flex-col justify-between">
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight">Contact opnemen</h1>
+            <p className="text-white/90 text-sm md:text-base leading-relaxed">
+              Heeft u vragen over gezonde Surinaamse voeding, medische dieetkoppelingen of suggesties voor nieuwe lokale recepten? 
+            </p>
+          </div>
 
-              {/* Success melding */}
-              {success && (
-                <div className="mb-4 rounded-lg bg-green-100 p-4 text-center text-xl text-green-700 border-2 border-green-500">
-                  ✅ Je bericht is verzonden! We nemen snel contact met je op.
-                </div>
-              )}
-
-              {/* Error melding */}
-              {error && (
-                <div className="mb-4 rounded-lg bg-red-100 p-4 text-center text-xl text-red-700 border-2 border-red-500">
-                  ❌ {error}
-                </div>
-              )}
-
-              {/* Formulier */}
-              <form onSubmit={handleSubmit}>
-                {/* Naam */}
-                <div className="mb-4 flex flex-col">
-                  <label className="mb-1 text-xl font-bold text-gray-700">
-                    Naam
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="rounded-lg border border-gray-300 px-4 py-3 text-xl transition focus:border-[#1A756A] focus:outline-none focus:ring-2 focus:ring-[#1A756A]/20"
-                    placeholder="Naam"
-                    required
-                  />
-                </div>
-
-                {/* E-mailadres */}
-                <div className="mb-4 flex flex-col">
-                  <label className="mb-1 text-xl font-bold text-gray-700">
-                    E-mailadres
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="rounded-lg border border-gray-300 px-4 py-3 text-xl transition focus:border-[#1A756A] focus:outline-none focus:ring-2 focus:ring-[#1A756A]/20"
-                    placeholder="Uw email"
-                    required
-                  />
-                </div>
-
-                {/* Onderwerp */}
-                <div className="mb-4 flex flex-col">
-                  <label className="mb-1 text-xl font-bold text-gray-700">
-                    Onderwerp
-                  </label>
-                  <select
-                    value={formData.subject}
-                    onChange={(e) =>
-                      setFormData({ ...formData, subject: e.target.value })
-                    }
-                    className="rounded-lg border border-gray-300 px-4 py-3 text-xl transition focus:border-[#1A756A] focus:outline-none focus:ring-2 focus:ring-[#1A756A]/20"
-                    required
-                  >
-                    <option value="">Kies een onderwerp</option>
-                    <option value="vraag">Vraag over recepten</option>
-                    <option value="feedback">Feedback</option>
-                    <option value="allergie">Allergie informatie</option>
-                    <option value="account">Account probleem</option>
-                    <option value="overig">Overig</option>
-                  </select>
-                </div>
-
-                {/* Bericht */}
-                <div className="mb-6 flex flex-col">
-                  <label className="mb-1 text-xl font-bold text-gray-700">
-                    Bericht
-                  </label>
-                  <textarea
-                    value={formData.message}
-                    onChange={(e) =>
-                      setFormData({ ...formData, message: e.target.value })
-                    }
-                    rows={4}
-                    className="min-h-[120px] resize-none rounded-lg border border-gray-300 p-3 text-xl transition focus:border-[#1A756A] focus:outline-none focus:ring-2 focus:ring-[#1A756A]/20"
-                    placeholder="Typ hier je bericht..."
-                    required
-                  />
-                </div>
-
-                {/* Verstuur knop */}
-                <button
-                  type="submit"
-                  className="w-full rounded-lg bg-[#1A756A] py-4 text-3xl font-bold text-white transition-all duration-300 hover:bg-[#155B52] hover:shadow-lg hover:translate-y-[-2px]"
-                >
-                  Bericht versturen
-                </button>
-              </form>
-            </div>
-
-            {/* ---- INFO CARD MET ICONEN ---- */}
-            <div className="relative z-20 flex-[0_1_30%] bg-[#0B3F39] p-8 text-white shadow-[0_0.2rem_1rem_#000000]">
-              <h3 className="mb-6 border-b-[5px] border-white pb-2 text-3xl font-bold">
-                Contactgegevens
-              </h3>
-
-              <div className="space-y-4">
-                {/* Email */}
-                <p className="flex items-center gap-3 text-xl">
-                  <svg className="w-8 h-8 text-[#2D9C8F] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                  </svg>
-                  info@surihealth.sr
-                </p>
-
-                {/* Telefoon */}
-                <p className="flex items-center gap-3 text-xl">
-                  <svg className="w-8 h-8 text-[#2D9C8F] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                  </svg>
-                  +597 8904567
-                </p>
-
-                {/* Locatie */}
-                <p className="flex items-center gap-3 text-xl">
-                  <svg className="w-8 h-8 text-[#2D9C8F] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                  </svg>
-                  Paramaribo, Suriname
-                </p>
-
-                {/* Tijd */}
-                <p className="flex items-center gap-3 text-xl">
-                  <svg className="w-8 h-8 text-[#2D9C8F] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                  Ma-Vr: 09:00 - 17:00
-                </p>
-              </div>
-            </div>
+          <div className="pt-8 border-t border-white/20 text-xs opacity-75 flex items-center gap-1.5 font-bold">
+            <MapPin className="h-4 w-4 text-white" />
+            <span>Paramaribo, Suriname</span>
           </div>
         </div>
-      </div>
 
-      <Footer />
-    </>
+        {/* ---- RECHTER KANT: Formulier met live underlines ---- */}
+        <div className="flex-1 p-8 md:p-12">
+          {success ? (
+            <div className="h-full flex flex-col justify-center items-center text-center space-y-4 py-8 animate-in fade-in duration-300">
+              <CheckCircle2 className="h-16 w-16 text-emerald-600 stroke-[1.5]" />
+              <h2 className="text-2xl font-bold text-slate-800">Bedankt voor uw bericht!</h2>
+              <p className="text-gray-500 text-sm max-w-xs mx-auto">
+                Uw gegevens zijn veilig opgeslagen. We verwerken uw aanvraag zo snel mogelijk.
+              </p>
+              <button
+                type="button"
+                onClick={() => setSuccess(false)}
+                className="text-sm font-bold text-[#1A756A] hover:underline pt-2 focus:outline-none cursor-pointer bg-transparent border-none"
+              >
+                Nog een bericht sturen
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              
+              {/* Veld 1: Naam met interactieve onderrand */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  Volledige Naam
+                </label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    required
+                    placeholder="Bijv. Ramesh Kanhai"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    disabled={loading}
+                    className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none transition-all disabled:opacity-50 text-gray-900 ${
+                      !isNameTouched 
+                        ? 'border-gray-300 focus:ring-2 focus:ring-[#1A756A]' 
+                        : isNameValid 
+                          ? 'border-emerald-500 bg-emerald-50/10 focus:ring-2 focus:ring-emerald-500' 
+                          : 'border-red-400 bg-red-50/10 focus:ring-2 focus:ring-red-400'
+                    }`}
+                  />
+                </div>
+                {isNameTouched && !isNameValid && (
+                  <p className="text-[10px] text-red-500 font-bold mt-1 pl-1">
+                    Naam moet minimaal 2 letters bevatten.
+                  </p>
+                )}
+              </div>
+
+              {/* Veld 2: E-mailadres met interactieve onderrand */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  E-mailadres
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    required
+                    placeholder="naam@voorbeeld.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    disabled={loading}
+                    className={`w-full pl-10 pr-4 py-2.5 bg-gray-50 border rounded-xl text-sm focus:outline-none transition-all disabled:opacity-50 text-gray-900 ${
+                      !isEmailTouched 
+                        ? 'border-gray-300 focus:ring-2 focus:ring-[#1A756A]' 
+                        : isEmailValid 
+                          ? 'border-emerald-500 bg-emerald-50/10 focus:ring-2 focus:ring-emerald-500' 
+                          : 'border-red-400 bg-red-50/10 focus:ring-2 focus:ring-red-400'
+                    }`}
+                  />
+                </div>
+                {isEmailTouched && !isEmailValid && (
+                  <p className="text-[10px] text-red-500 font-bold mt-1 pl-1">
+                    Vul alstublieft een geldig e-mailadres in (bijv. naam@domein.com).
+                  </p>
+                )}
+              </div>
+
+              {/* Veld 3: Bericht */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  Uw Bericht
+                </label>
+                <div className="relative">
+                  <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="Schrijf hier uw vraag..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    disabled={loading}
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A756A] text-gray-900 transition-all resize-none disabled:opacity-50"
+                  />
+                </div>
+              </div>
+
+              {/* Submit Knop */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full flex items-center justify-center py-3 px-4 bg-[#1A756A] hover:bg-[#13574e] text-white font-bold rounded-xl shadow-md transition-all disabled:opacity-50 text-sm mt-6 cursor-pointer focus:outline-none"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="animate-spin h-5 w-5 mr-2" />
+                    Bericht verzenden...
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4 mr-2" />
+                    Bericht verzenden
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+
+      </div>
+    </main>
   );
 }
-
-// ============================================================
-// TANSTACK ROUTER EXPORT
-// ============================================================
-export const Route = createFileRoute('/contact')({
-  component: ContactPage,
-});

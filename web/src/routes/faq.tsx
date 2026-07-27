@@ -1,382 +1,180 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
-import Header from '#/client/components/Layout/PrivateHeader'
-import Footer from '#/client/components/Layout/Footer'
 
 export const Route = createFileRoute('/faq')({
-  component: FAQPage,
+  component: FaqPage,
 })
 
-function FAQPage() {
+// ────────────────────────────────────────────────────────
+//  Category navigation (anchor links)
+// ────────────────────────────────────────────────────────
+const categories = [
+  { id: 'algemeen',  label: 'Algemene Vragen' },
+  { id: 'account',   label: 'Account & Profiel' },
+  { id: 'recepten',  label: 'Recepten & Functionaliteit' },
+  { id: 'gezondheid',label: 'Gezondheid & Dieet' },
+  { id: 'technisch', label: 'Technische Vragen' },
+  { id: 'support',   label: 'Support & Contact' },
+]
+
+// ────────────────────────────────────────────────────────
+//  FAQ content per category
+// ────────────────────────────────────────────────────────
+const faqData: Record<string, { q: string; a: string }[]> = {
+  algemeen: [
+    {
+      q: 'Wat is SuriHealth precies?',
+      a: 'SuriHealth is een persoonlijke maaltijdplanner speciaal voor Surinaamse recepten. We helpen je recepten te vinden die passen bij jouw medische condities, allergieën en voorkeuren zodat je zorgeloos kunt genieten van authentiek Surinaams eten.',
+    },
+    {
+      q: 'Is SuriHealth gratis?',
+      a: 'Ja, je kunt een gratis account aanmaken en toegang krijgen tot een groot deel van onze recepten en functionaliteiten. We bieden ook een premium abonnement aan met extra functies zoals onbeperkte weekmenu’s en geavanceerde filters.',
+    },
+    {
+      q: 'Voor wie is SuriHealth bedoeld?',
+      a: 'Voor iedereen die van Surinaams eten houdt maar rekening moet houden met hun gezondheid. Denk aan mensen met diabetes, hart- en vaatziekten, voedselallergieën, lactose-intolerantie, of andere dieetbeperkingen.',
+    },
+  ],
+  account: [
+    {
+      q: 'Hoe maak ik een account aan?',
+      a: 'Klik op “REGISTREER NU” op de homepage, vul je e-mailadres in, kies een wachtwoord en beantwoord enkele vragen over je gezondheid en voorkeuren. Dit duurt ongeveer 5 minuten.',
+    },
+    {
+      q: 'Kan ik mijn gezondheidsinformatie later aanpassen?',
+      a: 'Ja, je kunt altijd teruggaan naar je profiel en je medische condities, allergieën of voorkeuren aanpassen. De receptensuggesties worden automatisch bijgewerkt.',
+    },
+    {
+      q: 'Is mijn gezondheidsinformatie veilig?',
+      a: 'Absoluut. We slaan je gezondheidsgegevens versleuteld op en delen deze nooit met derden zonder je uitdrukkelijke toestemming. Lees ons privacybeleid voor meer informatie.',
+    },
+  ],
+  recepten: [
+    {
+      q: 'Zijn jullie recepten aangepast of gezonder gemaakt?',
+      a: 'Nee, wij gebruiken authentieke Surinaamse recepten en filteren alleen welke recepten geschikt zijn voor jouw profiel. De gerechten blijven zoals je ze kent, maar zijn wel veilig voor jou.',
+    },
+    {
+      q: 'Hoe werkt de automatische receptenselectie?',
+      a: 'Na het invullen van je profiel bepaalt het systeem automatisch welke recepten bij jou passen. Je kunt kiezen voor een volledig automatisch weekmenu of zelf handmatig recepten selecteren uit de gefilterde lijst.',
+    },
+    {
+      q: 'Kan ik ook handmatig recepten zoeken?',
+      a: 'Ja, je kunt zoeken op ingrediënt, bereidingstijd, calorieën, type gerecht (ontbijt, lunch, diner) en nog veel meer.',
+    },
+  ],
+  gezondheid: [
+    {
+      q: 'Zijn jullie recepten medisch goedgekeurd?',
+      a: 'SuriHealth is een studentenproject en biedt geen medisch advies. Raadpleeg altijd je arts of diëtist voor persoonlijk medisch advies.',
+    },
+    {
+      q: 'Ik heb meerdere medische condities. Kan SuriHealth daarmee omgaan?',
+      a: 'Ja, je kunt meerdere aandoeningen en allergieën selecteren. Het systeem houdt rekening met alle combinaties.',
+    },
+    {
+      q: 'Wordt rekening gehouden met religieuze dieetwensen?',
+      a: 'Ja, je kunt aangeven of je halal, vegetarisch, veganistisch of andere dieetvoorkeuren hebt. Deze worden meegenomen in de filtering.',
+    },
+    {
+      q: 'Kunnen jullie helpen bij gewichtsverlies?',
+      a: 'We tonen voedingswaarden en calorieën per recept, maar een persoonlijk dieetplan voor gewichtsverlies moet je met een diëtist bespreken.',
+    },
+  ],
+  technisch: [
+    {
+      q: 'Op welke apparaten werkt SuriHealth?',
+      a: 'SuriHealth werkt op alle moderne browsers en is geoptimaliseerd voor desktop, tablet en smartphone.',
+    },
+    {
+      q: 'Werkt SuriHealth offline?',
+      a: 'Je kunt opgeslagen recepten en boodschappenlijstjes offline bekijken, maar een actieve internetverbinding is nodig om nieuwe data op te halen.',
+    },
+    {
+      q: 'Hoe vaak wordt de receptendatabase bijgewerkt?',
+      a: 'We voegen maandelijks nieuwe recepten toe en controleren bestaande recepten op actualiteit.',
+    },
+  ],
+  support: [
+    {
+      q: 'Hoe kan ik contact opnemen?',
+      a: 'Via het contactformulier op de contactpagina of door een e-mail te sturen naar support@surihealth.nl.',
+    },
+    {
+      q: 'Kunnen jullie helpen met medische vragen?',
+      a: 'Voor medische vragen verwijzen wij je altijd naar je behandelend arts of een gekwalificeerde zorgverlener.',
+    },
+    {
+      q: 'Accepteren jullie feedback?',
+      a: 'Zeker! Jouw feedback helpt ons SuriHealth verder te verbeteren. Gebruik het contactformulier om suggesties door te geven.',
+    },
+  ],
+}
+
+// ────────────────────────────────────────────────────────
+//  Page component
+// ────────────────────────────────────────────────────────
+function FaqPage() {
   return (
-    <>
-      <Header />
+    <main className="max-w-5xl mx-auto px-4 py-12">
+      {/* Titel */}
+      <h1 className="text-center text-4xl font-bold border-b-[5px] border-[var(--black-color)] pb-4 mb-12">
+        Veelgestelde Vragen
+      </h1>
 
-      <main className="min-h-screen pt-[50px]">
-
-        {/* Titel */}
-        <section className="py-10 text-center border-b-2 border-[var(--black-color)]">
-          <h1 className="text-[3rem] font-bold text-[var(--black-color)]">
-            Veelgestelde Vragen
-          </h1>
-        </section>
-
-        {/* Categorieën */}
-        <section className="px-8 py-8 shadow-[var(--box-shadow)]">
-          <nav>
-            <ul className="flex flex-wrap justify-center gap-2 list-none">
-
-              <li>
-                <a
-                  href="#algemeen"
-                  className="block px-8 py-4 rounded-lg font-bold text-[var(--primary-color)] transition-all duration-300 hover:text-[var(--secondary-color)] hover:shadow-[var(--box-shadow)]"
-                >
-                  Algemene Vragen
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#account"
-                  className="block px-8 py-4 rounded-lg font-bold text-[var(--primary-color)] transition-all duration-300 hover:text-[var(--secondary-color)] hover:shadow-[var(--box-shadow)]"
-                >
-                  Account & Profiel
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#recepten"
-                  className="block px-8 py-4 rounded-lg font-bold text-[var(--primary-color)] transition-all duration-300 hover:text-[var(--secondary-color)] hover:shadow-[var(--box-shadow)]"
-                >
-                  Recepten & Functionaliteit
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#gezondheid"
-                  className="block px-8 py-4 rounded-lg font-bold text-[var(--primary-color)] transition-all duration-300 hover:text-[var(--secondary-color)] hover:shadow-[var(--box-shadow)]"
-                >
-                  Gezondheid & Dieet
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#technisch"
-                  className="block px-8 py-4 rounded-lg font-bold text-[var(--primary-color)] transition-all duration-300 hover:text-[var(--secondary-color)] hover:shadow-[var(--box-shadow)]"
-                >
-                  Technische Vragen
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="#support"
-                  className="block px-8 py-4 rounded-lg font-bold text-[var(--primary-color)] transition-all duration-300 hover:text-[var(--secondary-color)] hover:shadow-[var(--box-shadow)]"
-                >
-                  Support & Contact
-                </a>
-              </li>
-
-            </ul>
-          </nav>
-        </section>
-
-        <section className="px-10 py-8 space-y-12">
-
-          {/* ALGEMEEN */}
-          <section id="algemeen" className="scroll-mt-48">
-
-            <h2 className="text-center text-[2.2rem] font-bold border-b-[5px] border-[var(--black-color)] pb-3 mb-8 text-[var(--black-color)]">
-              Algemene Vragen
-            </h2>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Wat is SuriHealth precies?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  SuriHealth is een persoonlijke maaltijdplanner speciaal voor
-                  Surinaamse recepten. We helpen je recepten te vinden die passen
-                  bij jouw medische condities, allergieën en voorkeuren zodat je
-                  zorgeloos kunt genieten van authentiek Surinaams eten.
-                </p>
-              </div>
-
-            </details>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Is SuriHealth gratis?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Ja. Je kunt gratis een account aanmaken en gebruikmaken van een
-                  groot deel van de recepten en functionaliteiten. Daarnaast is
-                  er een premium abonnement beschikbaar met extra mogelijkheden.
-                </p>
-              </div>
-
-            </details>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Voor wie is SuriHealth bedoeld?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Voor iedereen die van Surinaams eten houdt maar rekening moet
-                  houden met allergieën, diabetes, hart- en vaatziekten of andere
-                  dieetbeperkingen.
-                </p>
-              </div>
-
-            </details>
-
-          </section>
-
-          {/* ACCOUNT */}
-          <section id="account" className="scroll-mt-48">
-
-            <h2 className="text-center text-[2.2rem] font-bold border-b-[5px] border-[var(--black-color)] pb-3 mb-8 text-[var(--black-color)]">
-              Account & Profiel
-            </h2>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Hoe maak ik een account aan?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Klik op <strong>Registreer Nu</strong>, vul je e-mailadres in,
-                  kies een wachtwoord en beantwoord enkele vragen over je
-                  gezondheid en voorkeuren.
-                </p>
-              </div>
-
-            </details>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Kan ik mijn gezondheidsinformatie later aanpassen?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Ja. Je kunt altijd je profiel aanpassen. De receptsuggesties
-                  worden daarna automatisch bijgewerkt.
-                </p>
-              </div>
-
-            </details>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Is mijn gezondheidsinformatie veilig?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Ja. Je gegevens worden veilig opgeslagen en niet gedeeld zonder
-                  jouw toestemming.
-                </p>
-              </div>
-
-            </details>
-
-          </section>
-
-          {/* RECEPTEN */}
-          <section id="recepten" className="scroll-mt-48">
-
-            <h2 className="text-center text-[2.2rem] font-bold border-b-[5px] border-[var(--black-color)] pb-3 mb-8 text-[var(--black-color)]">
-              Recepten & Functionaliteit
-            </h2>
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Zijn jullie recepten aangepast of gezonder gemaakt?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Nee. Wij gebruiken authentieke Surinaamse recepten en filteren
-                  alleen welke recepten geschikt zijn voor jouw profiel.
-                </p>
-              </div>
-            </details>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Hoe werkt de automatische receptenselectie?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Na het invullen van je profiel bepaalt het systeem welke
-                  recepten geschikt zijn. Je kunt zelf kiezen of automatisch een
-                  weekmenu laten samenstellen.
-                </p>
-              </div>
-            </details>
-
-            <details className="mb-8 shadow-[var(--box-shadow)] overflow-hidden">
-              <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold px-8 py-6 transition-colors duration-300">
-                Kan ik ook handmatig recepten zoeken?
-              </summary>
-
-              <div className="px-8 py-6 text-[var(--accent-color)]">
-                <p>
-                  Ja. Je kunt zoeken op ingrediënt, bereidingstijd, calorieën en
-                  type gerecht.
-                </p>
-              </div>
-            </details>
-
-          </section>
-
-          {/* GEZONDHEID */}
-          <section id="gezondheid" className="scroll-mt-48">
-
-            <h2 className="text-center text-[2.2rem] font-bold border-b-[5px] border-[var(--black-color)] pb-3 mb-8 text-[var(--black-color)]">
-              Gezondheid & Dieet
-            </h2>
-
-            {[
-              [
-                "Zijn jullie recepten medisch goedgekeurd?",
-                "SuriHealth is een studentenproject en biedt geen medisch advies. Raadpleeg altijd je arts of diëtist.",
-              ],
-              [
-                "Ik heb meerdere medische condities. Kan SuriHealth daarmee omgaan?",
-                "Ja, je kunt meerdere aandoeningen en allergieën selecteren.",
-              ],
-              [
-                "Wordt rekening gehouden met religieuze dieetwensen?",
-                "Ja. Halal, vegetarisch, veganistisch en andere voorkeuren kunnen worden ingesteld.",
-              ],
-              [
-                "Kunnen jullie helpen bij gewichtsverlies?",
-                "We tonen voedingswaarden en calorieën, maar persoonlijk advies moet via een diëtist verlopen.",
-              ],
-            ].map(([vraag, antwoord]) => (
-              <details
-                key={vraag}
-                className="mb-8 shadow-[var(--box-shadow)] overflow-hidden"
+      {/* Categorie navigatie */}
+      <nav className="mb-16">
+        <ul className="flex flex-wrap justify-center gap-2">
+          {categories.map((cat) => (
+            <li key={cat.id}>
+              <a
+                href={`#${cat.id}`}
+                className="block px-6 py-3 rounded-lg font-semibold text-[var(--primary-color)] hover:bg-[var(--primary-color)]/10 transition"
               >
-                <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold p-6 transition-colors duration-300">
-                  {vraag}
-                </summary>
+                {cat.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
-                <div className="p-6 text-[var(--accent-color)]">
-                  {antwoord}
-                </div>
-              </details>
-            ))}
+      {/* FAQ secties */}
+      <div className="space-y-16">
+        {categories.map(({ id }) => {
+          const items = faqData[id]
+          if (!items) return null
+          return (
+            <section key={id} id={id} className="scroll-mt-(--header-height)">
+              <h2 className="text-center text-2xl font-bold border-b-[5px] border-[var(--black-color)] pb-3 mb-8">
+                {categories.find((c) => c.id === id)?.label}
+              </h2>
 
-          </section>
+              {items.map((item) => (
+                <details
+                  key={item.q}
+                  className="mb-6 shadow-[var(--box-shadow)] rounded-lg overflow-hidden group"
+                >
+                  <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-semibold p-6 flex items-center justify-between transition-colors after:content-['▼'] after:transition-transform group-open:after:rotate-180">
+                    {item.q}
+                  </summary>
+                  <div className="p-6 text-[var(--accent-color)] bg-[var(--white-color)]">
+                    <p>{item.a}</p>
+                  </div>
+                </details>
+              ))}
+            </section>
+          )
+        })}
+      </div>
 
-          {/* TECHNISCH */}
-          <section id="technisch" className="scroll-mt-48">
-
-            <h2 className="text-center text-[2.2rem] font-bold border-b-[5px] border-[var(--black-color)] pb-3 mb-8 text-[var(--black-color)]">
-              Technische Vragen
-            </h2>
-
-            {[
-              [
-                "Op welke apparaten werkt SuriHealth?",
-                "Desktop, tablet en smartphone worden ondersteund.",
-              ],
-              [
-                "Werkt SuriHealth offline?",
-                "Opgeslagen recepten en boodschappenlijsten zijn offline beschikbaar.",
-              ],
-              [
-                "Hoe vaak wordt de receptendatabase bijgewerkt?",
-                "Maandelijks worden nieuwe recepten toegevoegd en bestaande bijgewerkt.",
-              ],
-            ].map(([vraag, antwoord]) => (
-              <details
-                key={vraag}
-                className="mb-8 shadow-[var(--box-shadow)] overflow-hidden"
-              >
-                <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold p-6 transition-colors duration-300">
-                  {vraag}
-                </summary>
-
-                <div className="p-6 text-[var(--accent-color)]">
-                  {antwoord}
-                </div>
-              </details>
-            ))}
-
-          </section>
-
-          {/* SUPPORT */}
-          <section id="support" className="scroll-mt-48">
-
-            <h2 className="text-center text-[2.2rem] font-bold border-b-[5px] border-[var(--black-color)] pb-3 mb-8 text-[var(--black-color)]">
-              Support & Contact
-            </h2>
-
-            {[
-              [
-                "Hoe kan ik contact opnemen?",
-                "Via het contactformulier of support@surihealth.nl.",
-              ],
-              [
-                "Kunnen jullie helpen met medische vragen?",
-                "Voor medische vragen verwijzen wij naar je arts of zorgverlener.",
-              ],
-              [
-                "Accepteren jullie feedback?",
-                "Ja, feedback helpt ons om SuriHealth te verbeteren.",
-              ],
-            ].map(([vraag, antwoord]) => (
-              <details
-                key={vraag}
-                className="mb-8 shadow-[var(--box-shadow)] overflow-hidden"
-              >
-                <summary className="cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--secondary-color)] text-[var(--white-color)] font-bold p-6 transition-colors duration-300">
-                  {vraag}
-                </summary>
-
-                <div className="p-6 text-[var(--accent-color)]">
-                  {antwoord}
-                </div>
-              </details>
-            ))}
-
-          </section>
-
-        </section>
-
-        <section className="py-16 text-center">
-
-          <Link
-            to="/questions"
-            className="inline-block px-8 py-4 rounded-lg font-bold bg-[var(--black-color)] text-[var(--white-color)] transition-all duration-300 hover:bg-[var(--accent-color)] hover:shadow-[var(--box-shadow)] hover:-translate-y-[3px]"
-          >
-            Heeft u nog meer vragen? Neem contact op met ons!
-          </Link>
-
-        </section>
-
-      </main>
-
-      <Footer />
-    </>
+      {/* Call to action */}
+      <div className="mt-16 text-center">
+        <Link
+          to="/contact"
+          className="inline-block bg-[var(--black-color)] text-[var(--white-color)] px-8 py-4 rounded-lg font-bold text-xl hover:bg-[var(--accent-color)] hover:shadow-lg hover:-translate-y-0.5 transition-all"
+        >
+          Heeft u nog meer vragen? Neem contact op met ons!
+        </Link>
+      </div>
+    </main>
   )
 }

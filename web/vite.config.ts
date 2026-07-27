@@ -1,21 +1,22 @@
+// web/vite.config.ts
 import { defineConfig } from 'vite'
 import { devtools } from '@tanstack/devtools-vite'
-
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
-
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { nitro } from 'nitro/vite'
 
-const config = defineConfig({
-  resolve: { tsconfigPaths: true },
+export default defineConfig({
   plugins: [
     devtools(),
-    nitro({ rollupConfig: { external: [/^@sentry\//] } }),
+    nitro({
+      // FIX: Force Nitro to bundle srvx and crossws natively to solve the ERR_MODULE_NOT_FOUND error
+      rollupConfig: { 
+        external: [/^@sentry\//],
+      },
+    }),
     tailwindcss(),
     tanstackStart(),
-    viteReact(),
+    viteReact(), 
   ],
 })
-
-export default config

@@ -1,8 +1,7 @@
 import {
   pgTable,
-  serial,
-  varchar,
   text,
+  varchar,
   integer,
   boolean,
   jsonb,
@@ -11,7 +10,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('user', {
-  id: serial('id').primaryKey(),
+  id: text('id').primaryKey(),
   name: text('name').notNull(),
   email: text('email').notNull().unique(),
   emailVerified: boolean('email_verified').notNull().default(false),
@@ -21,8 +20,8 @@ export const users = pgTable('user', {
 });
 
 export const sessions = pgTable('session', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
+  id: text('id').primaryKey(),
+  userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   token: text('token').notNull(),
@@ -34,8 +33,8 @@ export const sessions = pgTable('session', {
 });
 
 export const accounts = pgTable('account', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
+  id: text('id').primaryKey(),
+  userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   accountId: text('account_id').notNull(),
@@ -52,7 +51,7 @@ export const accounts = pgTable('account', {
 });
 
 export const verifications = pgTable('verification', {
-  id: serial('id').primaryKey(),
+  id: text('id').primaryKey(),
   identifier: text('identifier').notNull(),
   value: text('value').notNull(),
   expiresAt: timestamp('expires_at').notNull(),
@@ -61,8 +60,8 @@ export const verifications = pgTable('verification', {
 });
 
 export const profiles = pgTable('profile', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
+  id: text('id').primaryKey(),
+  userId: text('user_id')
     .notNull()
     .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
@@ -78,7 +77,7 @@ export const profiles = pgTable('profile', {
 });
 
 export const contacts = pgTable('contact', {
-  id: serial('id').primaryKey(),
+  id: text('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
   message: text('message').notNull(),
@@ -86,11 +85,13 @@ export const contacts = pgTable('contact', {
 });
 
 export const recipes = pgTable('recipe', {
-  id: serial('id').primaryKey(),
+  id: text('id').primaryKey(),
   externalId: varchar('external_id', { length: 100 }).unique(),
   name: varchar('name', { length: 255 }).notNull(),
   nameNl: varchar('name_nl', { length: 255 }),
   category: varchar('category', { length: 100 }).notNull(),
+  mealTypes: jsonb('meal_types').$type<string[]>().default([]).notNull(),
+  isTopPick: boolean('is_top_pick').default(false).notNull(),
   area: varchar('area', { length: 100 }),
   instructions: text('instructions').notNull(),
   instructionsNl: text('instructions_nl'),
@@ -100,25 +101,29 @@ export const recipes = pgTable('recipe', {
   ingredientsNl: jsonb('ingredients_nl').$type<string[]>(),
 });
 
+
 export const favorites = pgTable(
   'favorite',
   {
-    id: serial('id').primaryKey(),
-    userId: integer('user_id')
+    id: text('id').primaryKey(),
+    userId: text('user_id')
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    recipeId: integer('recipe_id')
+    recipeId: text('recipe_id')
       .notNull()
       .references(() => recipes.id, { onDelete: 'cascade' }),
   },
   (table) => ({
-    unique: uniqueIndex('fav_unique').on(table.userId, table.recipeId),
+    userRecipeUnique: uniqueIndex('user_recipe_unique').on(
+      table.userId,
+      table.recipeId
+    ),
   })
 );
 
 export const shoppingListItems = pgTable('shopping_list_item', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
+  id: text('id').primaryKey(),
+  userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 255 }).notNull(),
@@ -127,11 +132,11 @@ export const shoppingListItems = pgTable('shopping_list_item', {
 });
 
 export const userHistory = pgTable('user_history', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id')
+  id: text('id').primaryKey(),
+  userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  recipeId: integer('recipe_id')
+  recipeId: text('recipe_id')
     .notNull()
     .references(() => recipes.id, { onDelete: 'cascade' }),
   viewedAt: timestamp('viewed_at').defaultNow().notNull(),
