@@ -11,7 +11,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
       GET: async ({ request }: { request: Request }): Promise<Response> => {
         const url = new URL(request.url)
 
-        // 🛡️ DYNAMISCHE RECHTEN & BIOMETRIE SYNCHRONISATIE: Voorkomt dat data terugspringt!
         if (url.pathname.endsWith('/get-session')) {
           try {
             const baseResponse = await auth.handler(request)
@@ -22,7 +21,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
               const sessionData = await baseResponse.clone().json().catch(() => null)
 
               if (sessionData?.user?.id) {
-                // Haal de meest actuele waarden live op uit PostgreSQL
                 const freshUser = await db.query.users.findFirst({
                   where: eq(users.id, sessionData.user.id)
                 })
@@ -32,13 +30,11 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
                 })
 
                 if (freshUser) {
-                  // Synchroniseer de session tokens live met PostgreSQL
                   sessionData.user.name = freshUser.name;
                   sessionData.user.image = freshUser.image;
                   sessionData.user.role = freshUser.role;
                   sessionData.user.blocked = freshUser.blocked;
                   
-                  // Hang de actuele profiel-biometrie aan de sessie context om frontend resets te voorkomen
                   if (freshProfile) {
                     sessionData.profile = freshProfile;
                   }
@@ -61,7 +57,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
       POST: async ({ request }: { request: Request }): Promise<Response> => {
         const url = new URL(request.url)
 
-        // AUTOMATISCHE BEHEERDER (ADMIN) SEEDING
         if (url.pathname.endsWith('/signin-email')) {
           try {
             const reqClone = request.clone();
@@ -104,7 +99,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
               }
             }
 
-            // HARDE INLOG-INTERCEPTOR VOOR GEBLOKKEERDE GEBRUIKERS
             if (body?.email) {
               const emailCheck = body.email.trim().toLowerCase();
               const dbUser = await db.query.users.findFirst({
@@ -128,7 +122,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
           }
         }
 
-        // INTERCEPTOR 1: Registratie
         if (url.pathname.endsWith('/signup')) {
           try {
             const formData = await request.formData()
@@ -157,7 +150,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
           }
         }
 
-        // INTERCEPTOR 2: Profiel-Setup
         if (url.pathname.endsWith('/setup')) {
           try {
             const session = await auth.api.getSession({ headers: request.headers })
