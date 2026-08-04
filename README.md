@@ -1,4 +1,4 @@
-# SuriHealth
+### SuriHealth
 
 De volledige backend migreren van Express + Prisma + MySQL naar TanStack Start met Drizzle ORM + PostgreSQL, Better Auth voor authenticatie, en server functions als communicatielaag naar de React-frontend.
 
@@ -19,11 +19,6 @@ i18n/vertaling van ingrediënten via een statisch Engels -> Nederlands
 ## Run on terminal
 ```bash
 cd web
-
-# If there's a web/.output
-Remove-Item -Recurse -Force .output -ErrorAction SilentlyContinue
-
 pnpm build
-
 $env:BETTER_AUTH_URL="http://localhost:3000"; $env:DATABASE_URL="postgresql://username:password@localhost:5432/database"; node .output/server/index.mjs
 ```
