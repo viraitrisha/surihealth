@@ -1,24 +1,78 @@
-### SuriHealth
+# SuriHealth
 
-De volledige backend migreren van Express + Prisma + MySQL naar TanStack Start met Drizzle ORM + PostgreSQL, Better Auth voor authenticatie, en server functions als communicatielaag naar de React-frontend.
+SuriHealth is een modern, full-stack webplatform ontworpen om de traditionele Surinaamse eetcultuur te synchroniseren met medische en klinische voedingsrichtlijnen. Het platform migreert de legacy Express + Prisma + MySQL architectuur volledig naar een geconsolideerd **TanStack Start (RPC)** ecosysteem aangedreven door **Drizzle ORM** en **PostgreSQL**.
 
-Tegelijk wordt de filtering op dieet, allergieën, voorkeuren en Surinaamse beschikbaarheid gerealiseerd, mét vertaling van ingrediënten naar het Nederlands.
+---
 
-- Alle client-server communicatie verloopt via TanStack Start server functions (createServerFn).
-- Server functions worden gedefinieerd in src/server/ en geïmporteerd in routebestanden (src/routes/api/*.ts) die de request afhandelen.
+## Architectuur & Communicatielaag
 
-## Backend Techstack
+*   **Zero-API Overlap (RPC)**: Alle client-server communicatie verloopt via type-safe TanStack Start server functions (`createServerFn`). Dit elimineert de noodzaak voor losse REST-controllers.
+*   **BFF (Backend-for-Frontend) Isolatie**: Hoewel de frontend componenten de server-functions direct importeren, splitst de compiler (`Vinxi`) de code doormidden. Database-queries en SQL-logica blijven **100% geïsoleerd op de server**.
+*   **Volledig Sluitend Cache Beheer**: Geïntegreerde frontend-spiegeling via `localStorage` in combinatie met harde paginarefreshes vernietigt TanStack loader-caches direct na een mutatie. Dit garandeert dat gebruikersgegevens nooit terugspringen naar oude waarden.
 
-```
-Drizzle ORM met PostgreSQL (No Prisma)
-Better Auth met Drizzle-adapter voor inloggen, registreren, sessies (No JWT-handlers)
-Zod voor validatie van input op de server
-i18n/vertaling van ingrediënten via een statisch Engels -> Nederlands
-```
+---
 
-## Run on terminal
-```bash
+## Beveiliging & Autenticatie Matrix (Better Auth)
+
+*   **Session Token Cryptografie**: Authenticatie, registratie en sessiebeheer worden afgehandeld via **Better Auth** met de native Drizzle-adapter. Er worden geen onveilige, handmatige JWT-handlers gebruikt.
+*   **Server-Side Access Control (RBAC)**: Beveiliging wordt strikt aan de server-zijde afgedwongen binnen de handlers door de actieve sessie-cookies te verifiëren via `auth.api.getSession`.
+*   **Hard-Coded Admin Safeguards**: Kritieke administratieve routes (`/admin/*`) en endpoints zijn beveiligd met een database-interceptor in `src/routes/api/auth/$.ts`. Verzoeken van niet-geautoriseerde gebruikers of geblokkeerde accounts worden direct op serverniveau afgebroken met een `403 Forbidden`.
+
+---
+
+## Geavanceerde Core Features
+
+### 1. Medische & Allergie Filter Engine (`recipeFilters.ts`)
+*   **Diabetes Status**: Sluit automatisch alle suikerrijke desserts, gebak en snacks uit.
+*   **Hoge Bloeddruk & Zoutarm**: Analyseert ingrediënten arrays via RegEx en filtert direct zware natriumbronnen (zoals traditioneel zoutvlees, bakkeljauw en Maggi-bouillonblokjes) uit het menu.
+*   **Cholesterol & Hartklachten**: Blokkeert gerechten met een hoog gehalte aan verzadigde vetten (zoals varkensvlees/pingo, reuzel en zware zuivelproducten).
+*   **Dieetplanners**: Volledige ondersteuning voor **Gluten-vrij, Lactose-vrij, Vegetarisch** en **Veganistisch** door gerichte eliminatie van allergenen en dierlijke extracten.
+
+### 2. Runtime Portion Calorie Matrix (`calorieCalculator.ts`)
+*   **On-The-Fly Berekening**: Omdat externe API's (zoals The MealDB) geen calorieën leveren, scant deze ingebouwde engine ingrediënten runtime.
+*   **Deduplicatie Matser**: Om te voorkomen dat tweetalige ingrediënten (bijv. "kip" en "chicken") dubbel worden geteld, zuivert een JavaScript `Set` de invoer voordat deze langs de 12 macro-voedselgroepen wordt gehaald. Dit levert een uiterst realistische, on-inflated caloriewaarde op per portie.
+
+### 3. Gepersonaliseerde Categorie Navigatie (`category.tsx`)
+*   **Type-Safe Parameters**: "Bekijk alles" knoppen op het dashboard sturen gebruikers naar een specifieke route via TanStack Search Parameters (`?mealType=lunch`).
+*   **Case-Insensitive Array Parsing**: Database JSONB velden worden via een fail-safe parser omgezet naar kleine letters. Dit voorkomt layout-gaten en zorgt ervoor dat de rij exact de juiste gefilterde maaltijden toont.
+
+### 4. Admin Dashboard Inbox & CRUD Console
+*   **Volledige Recepten CRUD**: Beheerders kunnen nieuwe recepten invoegen, live de calorische waarde monitoren tijdens het typen van ingrediënten, of items toevoegen aan de prominente *Top Picks* carrousel.
+*   **Support Inbox Desk**: Een split-pane communicatiepaneel laadt binnengekomen contactformulieren in, valideert de tickets, en activeert via een double-action formulier direct native mailto-workflows.
+
+---
+
+## Technologische Techstack
+
+*   **Framework**: TanStack Start (React) & Vinxi Bundler
+*   **Database-laag**: PostgreSQL & Drizzle ORM (No Prisma)
+*   **Authenticatie**: Better Auth (Drizzle Adapter)
+*   **Validatie**: Zod Schema Enforcement
+*   **Styling**: Tailwind CSS & CSS Custom Properties (`data-theme` Light/Dark responsive switching)
+*   **Icoongrafie**: Lucide React Vector Icons (No Emojis)
+
+---
+
+## Applicatie Lokaal Opstarten (Terminal)
+
+Volg deze stappen in **PowerShell** om de compiler-cache op te schonen en de applicatie in de schone productiemodus te draaien:
+
+```powershell
+# 1. Navigeer naar de projectmap
 cd web
+
+# 2. Installeer de nodige dependencies
+pnpm install
+
+# 3. Wis eventuele vastgelopen route- en vinxi caches
+Remove-Item -Recurse -Force .vinxi, .tanstack -ErrorAction Ignore
+
+# 4. Genereer de type-safe route boom index
+pnpm generate-routes
+
+# 5. Compileer de applicatie volledig opnieuw voor productie
 pnpm build
+
+# 6. Start de gecompileerde Nitro-server live op met de juiste variabelen
 $env:BETTER_AUTH_URL="http://localhost:3000"; $env:DATABASE_URL="postgresql://username:password@localhost:5432/database"; node .output/server/index.mjs
 ```
