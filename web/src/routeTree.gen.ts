@@ -26,7 +26,6 @@ import { Route as DashboardAutomaticRouteImport } from './routes/dashboard/autom
 import { Route as DashboardBoodschappenRouteImport } from './routes/dashboard/boodschappen'
 import { Route as DashboardCategoryRouteImport } from './routes/dashboard/category'
 import { Route as DashboardFavoritesRouteImport } from './routes/dashboard/favorites'
-import { Route as DashboardHandmatigRouteImport } from './routes/dashboard/handmatig'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as DashboardRecipesIndexRouteImport } from './routes/dashboard/recipes/index'
@@ -118,11 +117,6 @@ const DashboardFavoritesRoute = DashboardFavoritesRouteImport.update({
   path: '/favorites',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardHandmatigRoute = DashboardHandmatigRouteImport.update({
-  id: '/handmatig',
-  path: '/handmatig',
-  getParentRoute: () => DashboardRoute,
-} as any)
 const DashboardProfileRoute = DashboardProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -168,7 +162,6 @@ export interface FileRoutesByFullPath {
   '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
   '/dashboard/category': typeof DashboardCategoryRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
-  '/dashboard/handmatig': typeof DashboardHandmatigRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -192,7 +185,6 @@ export interface FileRoutesByTo {
   '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
   '/dashboard/category': typeof DashboardCategoryRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
-  '/dashboard/handmatig': typeof DashboardHandmatigRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -218,7 +210,6 @@ export interface FileRoutesById {
   '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
   '/dashboard/category': typeof DashboardCategoryRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
-  '/dashboard/handmatig': typeof DashboardHandmatigRoute
   '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
@@ -245,7 +236,6 @@ export interface FileRouteTypes {
     | '/dashboard/boodschappen'
     | '/dashboard/category'
     | '/dashboard/favorites'
-    | '/dashboard/handmatig'
     | '/dashboard/profile'
     | '/dashboard/'
     | '/api/auth/$'
@@ -269,7 +259,6 @@ export interface FileRouteTypes {
     | '/dashboard/boodschappen'
     | '/dashboard/category'
     | '/dashboard/favorites'
-    | '/dashboard/handmatig'
     | '/dashboard/profile'
     | '/dashboard'
     | '/api/auth/$'
@@ -294,7 +283,6 @@ export interface FileRouteTypes {
     | '/dashboard/boodschappen'
     | '/dashboard/category'
     | '/dashboard/favorites'
-    | '/dashboard/handmatig'
     | '/dashboard/profile'
     | '/dashboard/'
     | '/api/auth/$'
@@ -440,13 +428,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardFavoritesRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/handmatig': {
-      id: '/dashboard/handmatig'
-      path: '/handmatig'
-      fullPath: '/dashboard/handmatig'
-      preLoaderRoute: typeof DashboardHandmatigRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/dashboard/profile': {
       id: '/dashboard/profile'
       path: '/profile'
@@ -490,7 +471,6 @@ interface DashboardRouteChildren {
   DashboardBoodschappenRoute: typeof DashboardBoodschappenRoute
   DashboardCategoryRoute: typeof DashboardCategoryRoute
   DashboardFavoritesRoute: typeof DashboardFavoritesRoute
-  DashboardHandmatigRoute: typeof DashboardHandmatigRoute
   DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardRecipesCategoryRoute: typeof DashboardRecipesCategoryRoute
@@ -503,7 +483,6 @@ const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardBoodschappenRoute: DashboardBoodschappenRoute,
   DashboardCategoryRoute: DashboardCategoryRoute,
   DashboardFavoritesRoute: DashboardFavoritesRoute,
-  DashboardHandmatigRoute: DashboardHandmatigRoute,
   DashboardProfileRoute: DashboardProfileRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardRecipesCategoryRoute: DashboardRecipesCategoryRoute,
