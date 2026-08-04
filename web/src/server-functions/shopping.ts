@@ -18,10 +18,46 @@ export const getShoppingList = createServerFn({ method: 'GET' })
   });
 
 export const addShoppingItem = createServerFn({ method: 'POST' })
-  .validator(z.object({ name: z.string(), quantity: z.string().optional() }))
+  .validator(z.object({ 
+    name: z.string(), 
+    quantity: z.string().optional() 
+  }))
   .handler(async ({ data }) => {
+
     const sessionData = await getUserSession();
     if (!sessionData) throw new Error('Niet geautoriseerd');
+
+
+    const existingItem = await db
+      .select()
+      .from(shoppingListItems)
+      .where(
+        and(
+          eq(shoppingListItems.userId, sessionData.user.id),
+          eq(shoppingListItems.name, data.name)
+        )
+      );
+
+
+    if (existingItem.length > 0) {
+
+      const currentQuantity = Number(existingItem[0].quantity || 1);
+
+      const updated = await db
+        .update(shoppingListItems)
+        .set({
+          quantity: String(currentQuantity + 1)
+        })
+        .where(
+          eq(shoppingListItems.id, existingItem[0].id)
+        )
+        .returning();
+
+
+      return updated[0];
+
+    }
+
 
     const newItem = await db
       .insert(shoppingListItems)
@@ -29,12 +65,14 @@ export const addShoppingItem = createServerFn({ method: 'POST' })
         id: crypto.randomUUID(),
         userId: sessionData.user.id,
         name: data.name,
-        quantity: data.quantity || null,
+        quantity: data.quantity || "1",
         checked: false,
       })
       .returning();
 
+
     return newItem[0];
+
   });
 
 export const toggleShoppingItem = createServerFn({ method: 'POST' })

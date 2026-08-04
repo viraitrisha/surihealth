@@ -1,3 +1,4 @@
+// src/utils/recipeFilters.ts
 import type { InferSelectModel } from 'drizzle-orm';
 import { recipes, profiles } from '../db/schema';
 
@@ -10,8 +11,11 @@ const PINDA_ITEMS = /pinda|noten|nuts|peanuts|pindakaas|pindasaus/i;
 const SHELLFISH_ITEMS = /garnalen|krab|crab|shrimp|prawn|kreeft|lobster|mosselen|schelpdieren|ebbi/i;
 
 const MEAT_ITEMS = /kip|rund|varken|vis|garnalen|krab|chicken|beef|pork|fish|shrimp|prawn|crab|zoutvlees|bakkeljauw|rookvlees|worst|meat|trijp|sardien|lamb|lam|lamsvlees|mutton|bacon|ham|seafood|zeevruchten|duck|eend|doksa|pingo|pakira|hert|deer|wild|kwiekwie|pataka|warapa|kreeft|lobster|mosselen/i;
-
 const VEGAN_ANIMAL_ITEMS = /kip|rund|varken|vis|garnalen|krab|chicken|beef|pork|fish|shrimp|prawn|crab|zoutvlees|bakkeljauw|rookvlees|worst|meat|trijp|sardien|lamb|lam|lamsvlees|mutton|bacon|ham|seafood|zeevruchten|duck|eend|doksa|pingo|pakira|hert|deer|wild|kwiekwie|pataka|warapa|kreeft|lobster|mosselen|melk|kaas|yoghurt|boter|cream|milk|cheese|yogurt|butter|ei|eieren|egg|eggs|honing|honey|slagroom|zuivel|condensmelk/i;
+
+// 🛡️ REPARATIE: Medische risico-ingrediënten voor Surinaamse aandoeningen
+const HIGH_SODIUM_ITEMS = /zoutvlees|bakkeljauw|maggi|bouillon|rookvlees|worst|sardien|bacon|zout|salted/i;
+const HIGH_CHOLESTEROL_ITEMS = /varken|pingo|bacon|reuzel|boter|butter|slagroom|cream|worst|paté/i;
 
 export function filterRecipesByProfile(
   recipesList: Recipe[],
@@ -27,6 +31,9 @@ export function filterRecipesByProfile(
 
   const lowerConditions = conditions.map(c => c.toLowerCase().trim());
   const isDiabetic = lowerConditions.includes('diabetic') || lowerConditions.includes('diabeet (suikerziekte)');
+  const isHighBloodPressure = lowerConditions.includes('hoge bloeddruk') || lowerConditions.includes('hypertension');
+  const isHighCholesterol = lowerConditions.includes('cholesterol') || lowerConditions.includes('hypercholesterolemie');
+  const isHeartDisease = lowerConditions.includes('hart- en vaatziekten') || lowerConditions.includes('hart');
 
   return recipesList.filter(recipe => {
     const categoryId = recipe.category?.toLowerCase() || '';
@@ -38,6 +45,20 @@ export function filterRecipesByProfile(
     const enIngs = (recipe.ingredients as string[] || []).map(i => i.toLowerCase().trim());
     const nlIngs = (recipe.ingredientsNl as string[] || []).map(i => i.toLowerCase().trim());
     const allIngredientsCombined = [...enIngs, ...nlIngs];
+
+    // 🛡️ REPARATIE: Filter natrium/zoutvlees voor gebruikers met Hoge Bloeddruk
+    if (isHighBloodPressure || diets.includes('Zoutarm')) {
+      if (allIngredientsCombined.some(i => HIGH_SODIUM_ITEMS.test(i))) {
+        return false;
+      }
+    }
+
+    // 🛡️ REPARATIE: Filter verzadigde vetten voor Cholesterol of Hartklachten
+    if (isHighCholesterol || isHeartDisease) {
+      if (allIngredientsCombined.some(i => HIGH_CHOLESTEROL_ITEMS.test(i))) {
+        return false;
+      }
+    }
 
     if (allergies.some(allergen => {
       const lowerAllergen = allergen.toLowerCase().trim();

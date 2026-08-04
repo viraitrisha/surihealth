@@ -17,13 +17,17 @@ import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProfileSetupRouteImport } from './routes/profile-setup'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as AdminContactRouteImport } from './routes/admin/contact'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as AdminRecipesRouteImport } from './routes/admin/recipes'
+import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardAutomaticRouteImport } from './routes/dashboard/automatic'
 import { Route as DashboardBoodschappenRouteImport } from './routes/dashboard/boodschappen'
+import { Route as DashboardCategoryRouteImport } from './routes/dashboard/category'
 import { Route as DashboardFavoritesRouteImport } from './routes/dashboard/favorites'
 import { Route as DashboardHandmatigRouteImport } from './routes/dashboard/handmatig'
-import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as DashboardRecipesIndexRouteImport } from './routes/dashboard/recipes/index'
 import { Route as DashboardRecipesCategoryRouteImport } from './routes/dashboard/recipes/$category'
@@ -69,9 +73,24 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminContactRoute = AdminContactRouteImport.update({
+  id: '/admin/contact',
+  path: '/admin/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/admin/dashboard',
   path: '/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRecipesRoute = AdminRecipesRouteImport.update({
+  id: '/admin/recipes',
+  path: '/admin/recipes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
@@ -89,6 +108,11 @@ const DashboardBoodschappenRoute = DashboardBoodschappenRouteImport.update({
   path: '/boodschappen',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardCategoryRoute = DashboardCategoryRouteImport.update({
+  id: '/category',
+  path: '/category',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardFavoritesRoute = DashboardFavoritesRouteImport.update({
   id: '/favorites',
   path: '/favorites',
@@ -99,9 +123,9 @@ const DashboardHandmatigRoute = DashboardHandmatigRouteImport.update({
   path: '/handmatig',
   getParentRoute: () => DashboardRoute,
 } as any)
-const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => DashboardRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -136,12 +160,16 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/profile-setup': typeof ProfileSetupRoute
   '/register': typeof RegisterRoute
+  '/admin/contact': typeof AdminContactRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/recipes': typeof AdminRecipesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/dashboard/automatic': typeof DashboardAutomaticRoute
   '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
+  '/dashboard/category': typeof DashboardCategoryRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/handmatig': typeof DashboardHandmatigRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/recipes/$category': typeof DashboardRecipesCategoryRoute
@@ -156,12 +184,16 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/profile-setup': typeof ProfileSetupRoute
   '/register': typeof RegisterRoute
+  '/admin/contact': typeof AdminContactRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/recipes': typeof AdminRecipesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/dashboard/automatic': typeof DashboardAutomaticRoute
   '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
+  '/dashboard/category': typeof DashboardCategoryRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/handmatig': typeof DashboardHandmatigRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/recipes/$category': typeof DashboardRecipesCategoryRoute
@@ -178,12 +210,16 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/profile-setup': typeof ProfileSetupRoute
   '/register': typeof RegisterRoute
+  '/admin/contact': typeof AdminContactRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/recipes': typeof AdminRecipesRoute
+  '/admin/users': typeof AdminUsersRoute
   '/dashboard/automatic': typeof DashboardAutomaticRoute
   '/dashboard/boodschappen': typeof DashboardBoodschappenRoute
+  '/dashboard/category': typeof DashboardCategoryRoute
   '/dashboard/favorites': typeof DashboardFavoritesRoute
   '/dashboard/handmatig': typeof DashboardHandmatigRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/dashboard/recipes/$category': typeof DashboardRecipesCategoryRoute
@@ -201,12 +237,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile-setup'
     | '/register'
+    | '/admin/contact'
     | '/admin/dashboard'
+    | '/admin/recipes'
+    | '/admin/users'
     | '/dashboard/automatic'
     | '/dashboard/boodschappen'
+    | '/dashboard/category'
     | '/dashboard/favorites'
     | '/dashboard/handmatig'
-    | '/dashboard/settings'
+    | '/dashboard/profile'
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/recipes/$category'
@@ -221,12 +261,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile-setup'
     | '/register'
+    | '/admin/contact'
     | '/admin/dashboard'
+    | '/admin/recipes'
+    | '/admin/users'
     | '/dashboard/automatic'
     | '/dashboard/boodschappen'
+    | '/dashboard/category'
     | '/dashboard/favorites'
     | '/dashboard/handmatig'
-    | '/dashboard/settings'
+    | '/dashboard/profile'
     | '/dashboard'
     | '/api/auth/$'
     | '/dashboard/recipes/$category'
@@ -242,12 +286,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/profile-setup'
     | '/register'
+    | '/admin/contact'
     | '/admin/dashboard'
+    | '/admin/recipes'
+    | '/admin/users'
     | '/dashboard/automatic'
     | '/dashboard/boodschappen'
+    | '/dashboard/category'
     | '/dashboard/favorites'
     | '/dashboard/handmatig'
-    | '/dashboard/settings'
+    | '/dashboard/profile'
     | '/dashboard/'
     | '/api/auth/$'
     | '/dashboard/recipes/$category'
@@ -264,7 +312,10 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ProfileSetupRoute: typeof ProfileSetupRoute
   RegisterRoute: typeof RegisterRoute
+  AdminContactRoute: typeof AdminContactRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminRecipesRoute: typeof AdminRecipesRoute
+  AdminUsersRoute: typeof AdminUsersRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
@@ -326,11 +377,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/contact': {
+      id: '/admin/contact'
+      path: '/admin/contact'
+      fullPath: '/admin/contact'
+      preLoaderRoute: typeof AdminContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/admin/dashboard'
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/recipes': {
+      id: '/admin/recipes'
+      path: '/admin/recipes'
+      fullPath: '/admin/recipes'
+      preLoaderRoute: typeof AdminRecipesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard/': {
@@ -354,6 +426,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardBoodschappenRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/category': {
+      id: '/dashboard/category'
+      path: '/category'
+      fullPath: '/dashboard/category'
+      preLoaderRoute: typeof DashboardCategoryRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/favorites': {
       id: '/dashboard/favorites'
       path: '/favorites'
@@ -368,11 +447,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardHandmatigRouteImport
       parentRoute: typeof DashboardRoute
     }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsRouteImport
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
       parentRoute: typeof DashboardRoute
     }
     '/api/auth/$': {
@@ -409,9 +488,10 @@ declare module '@tanstack/react-router' {
 interface DashboardRouteChildren {
   DashboardAutomaticRoute: typeof DashboardAutomaticRoute
   DashboardBoodschappenRoute: typeof DashboardBoodschappenRoute
+  DashboardCategoryRoute: typeof DashboardCategoryRoute
   DashboardFavoritesRoute: typeof DashboardFavoritesRoute
   DashboardHandmatigRoute: typeof DashboardHandmatigRoute
-  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardProfileRoute: typeof DashboardProfileRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardRecipesCategoryRoute: typeof DashboardRecipesCategoryRoute
   DashboardRecipesIndexRoute: typeof DashboardRecipesIndexRoute
@@ -421,9 +501,10 @@ interface DashboardRouteChildren {
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAutomaticRoute: DashboardAutomaticRoute,
   DashboardBoodschappenRoute: DashboardBoodschappenRoute,
+  DashboardCategoryRoute: DashboardCategoryRoute,
   DashboardFavoritesRoute: DashboardFavoritesRoute,
   DashboardHandmatigRoute: DashboardHandmatigRoute,
-  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardProfileRoute: DashboardProfileRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardRecipesCategoryRoute: DashboardRecipesCategoryRoute,
   DashboardRecipesIndexRoute: DashboardRecipesIndexRoute,
@@ -443,7 +524,10 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ProfileSetupRoute: ProfileSetupRoute,
   RegisterRoute: RegisterRoute,
+  AdminContactRoute: AdminContactRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminRecipesRoute: AdminRecipesRoute,
+  AdminUsersRoute: AdminUsersRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

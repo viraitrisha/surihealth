@@ -2,10 +2,9 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { getFavoriteRecipes, toggleFavorite } from '../../server-functions/favorites';
 import { useToast } from '#/hooks/use-toast';
-import { Heart, ChefHat, Trash2, ArrowRight, MapPin } from 'lucide-react';
+import { Heart, ChefHat, Trash2, ArrowRight, MapPin, Leaf } from 'lucide-react';
 
 export const Route = (createFileRoute as any)('/dashboard/favorites')({
-  // BACKEND SSR LOADER: Laad alle favoriete recepten inclusief de inner-joined receptdata direct in
   loader: async () => {
     const list = await getFavoriteRecipes();
     return { favoriteList: list || [] };
@@ -18,30 +17,30 @@ function FavoritesPage() {
   const { toast } = useToast();
   const router = useRouter();
 
-  // Actie: Snelkoppeling om een recept direct vanuit dit scherm te ontfavorieten
   const handleRemoveFavorite = async (e: React.MouseEvent, recipeId: string) => {
-    e.preventDefault(); // Voorkom dat de Link-klik naar de detailpagina afgaat
+    e.preventDefault();
     e.stopPropagation();
 
     try {
       await toggleFavorite({ data: { recipeId } });
       toast({ title: 'Verwijderd uit favorieten', type: 'success' });
-      
-      // Forceert TanStack Start om de loaders opnieuw te draaien en de lijst live bij te werken
-      router.invalidate(); 
+      router.invalidate();
     } catch (err) {
       toast({ title: 'Fout bij verwijderen', type: 'error' });
     }
   };
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-8 mt-6">
-      
-      {/* Pagina Header Banner (Zonder Emoji's, Gecorrigeerde Hart-vulling) */}
+    <div className="relative p-6 max-w-7xl mx-auto space-y-8 mt-6 overflow-hidden">
+      {/* Decorative leaves (low opacity, absolute) */}
+      <Leaf className="absolute -top-10 -left-10 w-40 h-40 text-white/10 rotate-12 pointer-events-none" />
+      <Leaf className="absolute -bottom-8 -right-8 w-36 h-36 text-white/10 -rotate-12 pointer-events-none" />
+      <Leaf className="absolute top-1/4 right-1/4 w-24 h-24 text-white/10 rotate-45 pointer-events-none" />
+
+      {/* Pagina Header Banner */}
       <div className="bg-gradient-to-r from-[#1A756A] to-[#2D9C8F] p-8 rounded-3xl text-white shadow-sm flex flex-col md:flex-row justify-between md:items-center gap-4">
         <div className="space-y-1">
           <h1 className="text-3xl md:text-4xl font-black tracking-tight flex items-center gap-3">
-            {/* FIX: stroke-none weggehaald en fill-white gecorrigeerd voor een perfect rood/wit pulserend hart */}
             <Heart className="h-8 w-8 fill-white text-white animate-pulse" /> 
             <span>Mijn Favorieten</span>
           </h1>
@@ -67,7 +66,6 @@ function FavoritesPage() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {favoriteList.map((item: any) => {
-            // Vang dynamisch op of je backend mapping { favoriteId, recipe } of rechtstreekse records retourneert
             const recipe = item.recipe || item;
             const keyId = item.favoriteId || item.id;
 
@@ -76,14 +74,13 @@ function FavoritesPage() {
             return (
               <Link
                 key={keyId}
-                to="/dashboard/recipes/view/$recipeId" // FIX: Verwijst nu correct naar het herstelde subsegment
+                to="/dashboard/recipes/view/$recipeId"
                 params={{ recipeId: recipe.id }}
                 className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:scale-[1.03] transition-all no-underline text-current group flex flex-col justify-between cursor-pointer"
               >
                 <div className="relative h-44 w-full bg-gray-50 overflow-hidden">
                   <img src={recipe.imageUrl} alt={recipe.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   
-                  {/* Snelkoppeling Prullenbak Knop rechtsboven */}
                   <button
                     type="button"
                     onClick={(e) => handleRemoveFavorite(e, recipe.id)}
@@ -104,7 +101,6 @@ function FavoritesPage() {
                     </h3>
                   </div>
                   
-                  {/* Meta rij (Zonder Emoji's) */}
                   <div className="flex items-center justify-between text-xs text-gray-400 pt-2 border-t border-gray-50">
                     <span className="flex items-center gap-1">
                       <MapPin className="h-3.5 w-3.5 text-gray-400" />

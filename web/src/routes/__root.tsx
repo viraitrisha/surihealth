@@ -142,7 +142,7 @@ function RootLayout() {
           <FontSizeProvider>
             {isAdminRoute ? <AdminHeader /> : isDashboard ? <DashboardHeader /> : <PublicHeader />}
             
-            <main className="flex-1 pt-20 min-h-[calc(100vh-80px)]">
+            <main className="flex-1 pt-20 min-h-[calc(110vh-80px)]">
               <Outlet />
             </main>
             

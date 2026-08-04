@@ -8,10 +8,9 @@ import {
   clearShoppingList 
 } from '../../server-functions/shopping';
 import { useToast } from '#/hooks/use-toast';
-import { ShoppingBasket, Plus, Trash2, Loader2, CheckCircle2, Circle } from 'lucide-react';
+import { ShoppingBasket, Plus, Trash2, Loader2, CheckCircle2, Circle, Leaf } from 'lucide-react';
 
 export const Route = (createFileRoute as any)('/dashboard/boodschappen')({
-  // BACKEND SSR: Laad de boodschappenlijst direct in via de server loader
   loader: async () => {
     const items = await getShoppingList();
     return { shoppingItems: items };
@@ -22,12 +21,11 @@ export const Route = (createFileRoute as any)('/dashboard/boodschappen')({
 function ShoppingListPage() {
   const { shoppingItems } = Route.useLoaderData();
   const { toast } = useToast();
-  const router = useRouter(); // Voor het verversen van de server data
+  const router = useRouter();
 
   const [newItemName, setNewItemName] = useState('');
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
-  // Actie: Item handmatig toevoegen
   const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItemName.trim()) return;
@@ -36,7 +34,7 @@ function ShoppingListPage() {
     try {
       await addShoppingItem({ data: { name: newItemName.trim() } });
       setNewItemName('');
-      router.invalidate(); // Forceert TanStack Start om de loader opnieuw te draaien
+      router.invalidate();
       toast({ title: 'Toegevoegd!', type: 'success' });
     } catch (err) {
       toast({ title: 'Fout bij toevoegen', type: 'error' });
@@ -45,7 +43,6 @@ function ShoppingListPage() {
     }
   };
 
-  // Actie: Item afvinken / aanvinken (Toggle)
   const handleToggleItem = async (id: string, currentChecked: boolean) => {
     setLoadingAction(id);
     try {
@@ -58,7 +55,6 @@ function ShoppingListPage() {
     }
   };
 
-  // Actie: Volledige lijst leegmaken
   const handleClearList = async () => {
     if (!confirm('Weet u zeker dat u uw hele boodschappenlijst wilt leegmaken?')) return;
     setLoadingAction('clear');
@@ -75,7 +71,12 @@ function ShoppingListPage() {
   };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-8">
+    <div className="relative p-6 max-w-2xl mx-auto space-y-8 overflow-hidden">
+      {/* Decorative leaves (low opacity, absolute) */}
+      <Leaf className="absolute -top-10 -left-10 w-32 h-32 text-[var(--primary-color)]/5 rotate-12 pointer-events-none" />
+      <Leaf className="absolute -bottom-8 -right-8 w-28 h-28 text-[var(--primary-color)]/5 -rotate-12 pointer-events-none" />
+      <Leaf className="absolute top-1/3 right-1/4 w-20 h-20 text-[var(--primary-color)]/5 rotate-45 pointer-events-none" />
+
       {/* Titel & Leegmaken Knop */}
       <div className="flex justify-between items-center bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
         <div className="flex items-center gap-3">

@@ -1,14 +1,18 @@
+// web/src/server-functions/profile.ts
 import { createServerFn } from '@tanstack/react-start';
 import { getRequest } from '@tanstack/react-start/server';
 import { z } from 'zod';
-import { profiles } from '../db/schema';
+import { eq } from 'drizzle-orm';
 import crypto from 'crypto';
 
-const setupProfileSchema = z.object({
-  age: z.number().int().min(1).max(120),
+// Waterdicht validatieschema voor de biometrie en medische matrices
+const updateProfileSchema = z.object({
+  name: z.string().min(2),
+  imageUrl: z.string().url().or(z.literal('')).optional(),
+  age: z.number(),
   gender: z.string(),
-  height: z.number().int().positive(),
-  weight: z.number().int().positive(),
+  height: z.number(),
+  weight: z.number(),
   conditions: z.array(z.string()),
   diets: z.array(z.string()),
   allergies: z.array(z.string()),
@@ -17,22 +21,33 @@ const setupProfileSchema = z.object({
 });
 
 export const submitProfileSetup = createServerFn({ method: 'POST' })
-  .validator(setupProfileSchema)
+  .validator(updateProfileSchema)
   .handler(async ({ data }) => {
     const request = getRequest();
     const headers = request ? request.headers : new Headers();
-
+    
     const { auth } = await import('../auth/auth-handler');
     const sessionData = await auth.api.getSession({ headers });
     
     if (!sessionData?.user?.id) {
-      throw new Error('Niet geautoriseerd: Geen geldige sessie gevonden.');
+      throw new Error('Niet geautoriseerd: Geen actieve sessie.');
     }
 
     const userId = sessionData.user.id;
-
     const { db } = await import('../db');
+    const { users, profiles } = await import('../db/schema');
 
+    // 1. MUTATIE: Update de gebruikersnaam en profielfoto in de hoofd 'user' tabel
+    await db
+      .update(users)
+      .set({
+        name: data.name,
+        image: data.imageUrl || null,
+        updatedAt: new Date()
+      })
+      .where(eq(users.id, userId));
+
+    // 2. MUTATIE: Sla de biometrische waarden (gender, age, etc.) permanent op via onConflictDoUpdate
     await db
       .insert(profiles)
       .values({
@@ -60,7 +75,7 @@ export const submitProfileSetup = createServerFn({ method: 'POST' })
           allergies: data.allergies,
           likes: data.likes,
           dislikes: data.dislikes,
-        },
+        }
       });
 
     return { success: true };

@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
 import { FaHome, FaUtensils, FaShoppingBasket, FaHeart, FaUser, FaCog } from 'react-icons/fa';
-import { ProfileDrawer } from './profile-drawer';
 import { SettingsDrawer } from './settings-drawer';
 
 export function DashboardHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -75,15 +73,12 @@ export function DashboardHeader() {
             </span>
           </Link>
 
-          <button 
-            onClick={() => { setProfileOpen(true); setMenuOpen(false); }} 
-            className="nav-link group relative flex items-center gap-3 lg:flex-col lg:gap-1 text-white text-xl lg:text-2xl no-underline hover:bg-white/10 rounded-xl px-4 py-2.5 transition-colors w-full lg:w-auto text-left lg:text-center cursor-pointer focus:outline-none"
-          >
+          <Link to="/dashboard/profile" className="nav-link group relative flex items-center gap-3 lg:flex-col lg:gap-1 text-white text-xl lg:text-2xl no-underline hover:bg-white/10 rounded-xl px-4 py-2.5 transition-colors">
             <FaUser className="shrink-0" />
             <span className="text-base lg:text-xs lg:opacity-0 lg:group-hover:opacity-100 lg:absolute lg:top-full lg:mt-2 lg:bg-slate-900/90 lg:text-white lg:px-2 lg:py-1 lg:rounded-lg lg:whitespace-nowrap lg:pointer-events-none transition-opacity shadow-sm">
               Profiel
             </span>
-          </button>
+          </Link>
 
           <button 
             onClick={() => { setSettingsOpen(true); setMenuOpen(false); }} 
@@ -98,13 +93,11 @@ export function DashboardHeader() {
       </header>
 
       {/* Schuifpanelen */}
-      <ProfileDrawer isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
       <SettingsDrawer
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}
         onOpenProfile={() => {
           setSettingsOpen(false);
-          setProfileOpen(true);
         }}
         onThemeToggle={toggleTheme}
         currentTheme={theme}

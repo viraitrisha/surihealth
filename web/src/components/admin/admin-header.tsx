@@ -1,10 +1,9 @@
-import { Link, useNavigate } from '@tanstack/react-router';
+// src/components/admin/admin-header.tsx
 import { authClient } from '../../auth/auth-client';
-import { ShieldCheck, LogOut, LayoutDashboard } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { useToast } from '#/hooks/use-toast';
 
 export function AdminHeader() {
-  const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleLogout = async () => {
@@ -14,18 +13,34 @@ export function AdminHeader() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-gradient-to-r from-[#1A756A] to-[#2D9C8F] px-6 py-4 shadow-md h-20 text-white">
+    <header 
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 shadow-md h-20 text-white"
+      style={{
+        background: 'var(--header-color)',
+        boxShadow: 'var(--box-shadow)',
+      }}
+    >
+      {/* Linker kant: Alleen de titel */}
       <div className="flex items-center gap-2">
-        <ShieldCheck className="h-6 w-6 text-emerald-400" />
-        <span className="text-xl font-black tracking-wider uppercase text-slate-100">SuriHealth HQ</span>
+        <span className="text-xl font-black tracking-wider uppercase" style={{ color: 'var(--white-color)' }}>
+          SuriHealth
+        </span>
       </div>
 
+      {/* Rechter kant: Alleen de witte Log Uit knop */}
       <nav className="flex items-center gap-4">
-        <Link to="/admin/dashboard" className="flex items-center gap-1.5 text-xs font-black uppercase bg-slate-800 hover:bg-slate-700/80 px-4 py-2 rounded-xl text-slate-200 transition-all no-underline">
-          <LayoutDashboard className="h-4 w-4 text-emerald-400" /> Cockpit
-        </Link>
-        <button onClick={handleLogout} className="flex items-center gap-1.5 text-xs font-black uppercase bg-red-950/40 hover:bg-red-900/60 border border-red-900/30 px-4 py-2 rounded-xl text-red-400 transition-all cursor-pointer focus:outline-none">
-          <LogOut className="h-4 w-4" /> Log Uit
+        <button 
+          onClick={handleLogout} 
+          className="flex items-center gap-1.5 text-xs font-black uppercase px-4 py-2 rounded-xl transition-all cursor-pointer focus:outline-none"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            color: 'var(--white-color)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+        >
+          <LogOut className="h-4 w-4" style={{ color: 'var(--white-color)' }} /> Log Uit
         </button>
       </nav>
     </header>
