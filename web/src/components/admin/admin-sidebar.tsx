@@ -1,4 +1,3 @@
-// src/components/admin-sidebar.tsx
 import { Link } from '@tanstack/react-router';
 import { BarChart3, Users, UtensilsCrossed, MessageSquare, LogOut } from 'lucide-react';
 

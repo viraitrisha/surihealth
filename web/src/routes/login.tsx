@@ -1,4 +1,3 @@
-// src/routes/login.tsx
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState, useCallback } from 'react';
 import { authClient } from '../auth/auth-client';

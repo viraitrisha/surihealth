@@ -145,12 +145,10 @@ export const seedAdminAccountOnDemand = createServerFn({ method: 'POST' })
       const { users } = await import('../db/schema');
       const { eq } = await import('drizzle-orm');
 
-      // Zoek de gebruiker op in PostgreSQL
       const userRecord = await db.query.users.findFirst({
         where: eq(users.email, data.email.trim().toLowerCase())
       });
 
-      // Geef de status terug aan de frontend
       return { isBlocked: userRecord?.blocked === true };
     } catch (err) {
       return { isBlocked: false };

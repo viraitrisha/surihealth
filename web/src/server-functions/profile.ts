@@ -1,11 +1,9 @@
-// web/src/server-functions/profile.ts
 import { createServerFn } from '@tanstack/react-start';
 import { getRequest } from '@tanstack/react-start/server';
 import { z } from 'zod';
 import { eq } from 'drizzle-orm';
 import crypto from 'crypto';
 
-// Waterdicht validatieschema voor de biometrie en medische matrices
 const updateProfileSchema = z.object({
   name: z.string().min(2),
   imageUrl: z.string().url().or(z.literal('')).optional(),
@@ -37,7 +35,6 @@ export const submitProfileSetup = createServerFn({ method: 'POST' })
     const { db } = await import('../db');
     const { users, profiles } = await import('../db/schema');
 
-    // 1. MUTATIE: Update de gebruikersnaam en profielfoto in de hoofd 'user' tabel
     await db
       .update(users)
       .set({
@@ -47,7 +44,6 @@ export const submitProfileSetup = createServerFn({ method: 'POST' })
       })
       .where(eq(users.id, userId));
 
-    // 2. MUTATIE: Sla de biometrische waarden (gender, age, etc.) permanent op via onConflictDoUpdate
     await db
       .insert(profiles)
       .values({

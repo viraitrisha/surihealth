@@ -10,7 +10,6 @@ export function PublicHeader() {
     after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-white 
     after:transition-all after:duration-300 hover:after:w-full focus:outline-none`;
 
-  // Only the underline effect for the Aa button (no text color change)
   const aaWrapperStyles = `relative inline-block 
     after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-white 
     after:transition-all after:duration-300 hover:after:w-full`;
@@ -37,7 +36,7 @@ export function PublicHeader() {
           <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
         </button>
 
-        {/* Desktop navigatie (midden) – zichtbaar vanaf lg */}
+        {/* Desktop navigatie */}
         <nav className="hidden lg:flex items-center gap-5 md:gap-8">
           <Link to="/" className={linkStyles}>Home</Link>
           <span className={aaWrapperStyles}>
@@ -48,7 +47,7 @@ export function PublicHeader() {
           <Link to="/login" className={linkStyles}>Login</Link>
         </nav>
 
-        {/* Desktop Register knop – alleen op grote schermen */}
+        {/* Desktop Register */}
         <Link
           to="/register"
           className="hidden lg:inline-block text-2xl font-bold bg-white text-[#1A756A] px-6 py-2 rounded-lg shadow-lg hover:bg-gray-100 transition-all duration-200 no-underline"
@@ -57,7 +56,7 @@ export function PublicHeader() {
         </Link>
       </div>
 
-      {/* Mobiel menu – komt onder de header uit */}
+      {/* Mobiel menu */}
       <nav
         className={`
           lg:hidden

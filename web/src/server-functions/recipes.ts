@@ -9,6 +9,9 @@ import { filterRecipesByProfile } from '../utils/recipeFilters';
 import { auth } from '../auth/auth-handler';
 import crypto from 'crypto';
 
+// 🛡️ IMPORT VAN DE EXCLUSIEVE CALORIEËN CALCULATOR
+import { estimateRecipeCalories } from '../utils/calorieCalculator';
+
 const recipesInputSchema = z.object({
   category: z.string().optional(),
   mealType: z.string().optional(),
@@ -36,11 +39,30 @@ export const getRecipes = createServerFn({ method: 'GET' })
     }
     
     query = query.orderBy(recipes.id);
-    const allRecipes = await query;
+    const rawRecipes = await query;
+
+    // 🛡️ STAP 1: Map alle recepten live en voeg runtime de berekende calorieën toe als deze ontbreken
+// Look inside your getRecipes / getRecipeById functions in src/server-functions/recipes.ts:
+
+    const allRecipes = rawRecipes.map((recipe: any) => {
+      // Pass only one array type first, or pass the raw fields directly to let our Set handler deduplicate them safely!
+      const combinedIngredients = [
+        ...(recipe.ingredients || []),
+        ...(recipe.ingredientsNl || [])
+      ];
+
+      return {
+        ...recipe,
+        // Safely reads the calculated value without getting stuck at the old 850 ceiling block
+        calories: recipe.calories && recipe.calories > 0 
+          ? recipe.calories 
+          : estimateRecipeCalories(combinedIngredients)
+      };
+    });
 
     let preFilteredRecipes = allRecipes;
 
-    // 🛡️ CRUCIALE Full-Stack FIX: Failsafe JSON array parser to stop row data bleeding
+    // 🛡️ STAP 2: Failsafe JSON array parser to stop row data bleeding
     if (data.mealType) {
       const targetMeal = data.mealType.toLowerCase().trim();
       
@@ -51,21 +73,17 @@ export const getRecipes = createServerFn({ method: 'GET' })
           if (Array.isArray(recipe.mealTypes)) {
             cleanTypes = recipe.mealTypes;
           } else if (typeof recipe.mealTypes === 'string') {
-            // Handle cases where PostgreSQL returns a stringified JSON array
             const parsed = JSON.parse(recipe.mealTypes);
             cleanTypes = Array.isArray(parsed) ? parsed : [String(parsed)];
           } else if (recipe.mealTypes) {
             cleanTypes = [String(recipe.mealTypes)];
           }
         } catch (e) {
-          // Absolute fallback: search the text directly using a loose regex match
           cleanTypes = [String(recipe.mealTypes)];
         }
 
-        // Normalize all items to lowercase
         const normalizedTypes = cleanTypes.map(t => String(t).toLowerCase().trim());
         
-        // Handle common layout overrides for snacks and desserts
         if (targetMeal === 'dessert' || targetMeal === 'snack' || targetMeal === 'snacks') {
           return normalizedTypes.includes('dessert') || normalizedTypes.includes('snack') || normalizedTypes.includes('snacks');
         }
@@ -121,7 +139,18 @@ export const getRecipeById = createServerFn({ method: 'GET' })
       });
     }
 
-    return recipe;
+    // 🛡️ Zorg dat ook het los opgevraagde recept via de calculator direct van calorieën is voorzien
+    const combinedIngredients = [
+      ...(recipe.ingredients || []),
+      ...(recipe.ingredientsNl || [])
+    ];
+
+    return {
+      ...recipe,
+      calories: recipe.calories && recipe.calories > 0 
+        ? recipe.calories 
+        : estimateRecipeCalories(combinedIngredients)
+    };
   });
 
 function shuffleArray<T>(array: T[]): T[] {
@@ -140,7 +169,22 @@ export const getAutomaticDailyMenu = createServerFn({ method: 'GET' })
     const session = await auth.api.getSession({ headers });
     const userId = session?.user?.id;
 
-    const allRecipes = await db.select().from(recipes);
+    const rawRecipes = await db.select().from(recipes);
+    
+    // 🛡️ Pas ook hier de calorieberekening toe op de volledige lijst voor de dagplanner
+    const allRecipes = rawRecipes.map((recipe: any) => {
+      const combinedIngredients = [
+        ...(recipe.ingredients || []),
+        ...(recipe.ingredientsNl || [])
+      ];
+      return {
+        ...recipe,
+        calories: recipe.calories && recipe.calories > 0 
+          ? recipe.calories 
+          : estimateRecipeCalories(combinedIngredients)
+      };
+    });
+
     let allowedRecipes = allRecipes;
 
     if (userId) {

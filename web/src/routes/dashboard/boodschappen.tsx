@@ -1,4 +1,3 @@
-// src/routes/dashboard/boodschappen.tsx
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { 

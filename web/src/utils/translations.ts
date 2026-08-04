@@ -1,4 +1,3 @@
-// web/src/utils/translation.ts
 export const INGREDIENT_TRANSLATIONS: Record<string, string> = {
   "chicken": "kip",
   "beef": "rundvlees",

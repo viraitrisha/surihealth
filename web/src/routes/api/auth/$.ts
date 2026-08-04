@@ -1,4 +1,3 @@
-// src/routes/api/auth/$.ts
 import { createFileRoute } from '@tanstack/react-router'
 import { auth } from '../../../auth/auth-handler'
 import { db } from '../../../db'

@@ -1,16 +1,12 @@
-// web/src/server-functions/admin.ts
 import { createServerFn } from '@tanstack/react-start';
 import { getRequest } from '@tanstack/react-start/server';
 import { z } from 'zod';
 import { eq, sql, desc } from 'drizzle-orm';
 
-// web/src/server-functions/admin.ts
-
 async function requireAdmin() {
   const request = getRequest();
   const headers = request ? request.headers : new Headers();
   
-  // 1. Haal de basis sessiegegevens op via Better Auth
   const { auth } = await import('../auth/auth-handler');
   const sessionData = await auth.api.getSession({ headers });
   
@@ -18,12 +14,10 @@ async function requireAdmin() {
     throw new Error('Niet geautoriseerd');
   }
 
-  // HARD RECHTEN INTERCEPTOR: Als dit het presentatie-adres is, mag hij ALTIJD direct door
   if (sessionData.user.email === 'surihealth@gmail.com') {
     return sessionData;
   }
 
-  // 2. 🛡️ FIX: Controleer de rol LIVE in PostgreSQL via Drizzle om cookie-caching te omzeilen!
   const { db } = await import('../db');
   const { users } = await import('../db/schema');
   
@@ -31,7 +25,6 @@ async function requireAdmin() {
     where: (table, { eq }) => eq(table.id, sessionData.user.id)
   });
 
-  // 3. Handhaaf de beheerder-controle op basis van de harde schijf data
   if (!freshUserRecord || freshUserRecord.role !== 'admin') {
     throw new Error('Toegang geweigerd. U bent geen beheerder.');
   }
@@ -47,8 +40,6 @@ export const adminGetContactMessages = createServerFn({ method: 'GET' })
     return await db.select().from(contacts).orderBy(desc(contacts.createdAt));
   });
 
-// Zoek deze functie op in src/server-functions/admin.ts en vervang het binnenste gedeelte:
-
 export const adminGetPlatformStats = createServerFn({ method: 'GET' })
   .handler(async () => {
     await requireAdmin();
@@ -59,7 +50,6 @@ export const adminGetPlatformStats = createServerFn({ method: 'GET' })
     const totalMessages = await db.select().from(contacts);
     const allRecipes = await db.select().from(recipes).orderBy(recipes.name);
 
-    // 🛡️ FIX: Dwing surihealth@gmail.com ALTIJD naar de admin rol in de frontend array
     const allUsers = rawUsers.map((u: any) => {
       if (u.email === 'surihealth@gmail.com') {
         return { ...u, role: 'admin' };
@@ -67,7 +57,6 @@ export const adminGetPlatformStats = createServerFn({ method: 'GET' })
       return u;
     });
 
-    // Bereken de Top Favorieten via SQL
     const topFavorites = await db
       .select({
         recipeId: favorites.recipeId,
@@ -165,12 +154,9 @@ export const adminToggleTopPick = createServerFn({ method: 'POST' })
     return { success: true };
   });
 
-// web/src/server-functions/admin.ts
-
-// Zoek deze specifieke functie op en voeg ({ data }) toe aan de handler-signatuur:
 export const adminReplyToMessage = createServerFn({ method: 'POST' })
   .validator(z.object({ messageId: z.string(), replyText: z.string().min(5) }))
-  .handler(async ({ data }) => { // 🛡️ FIX: '({ data })' toegevoegd zodat de compiler de messageId types begrijpt
+  .handler(async ({ data }) => {
     await requireAdmin();
     
     console.log(`[Support Bureau] Beheerder heeft ticket ${data.messageId} gecontroleerd en goedgekeurd voor e-mail distributie.`);
@@ -199,22 +185,16 @@ export const adminDeleteUser = createServerFn({ method: 'POST' })
     return { success: true };
   });
 
-// ===============================================================
-// 🛡️ REPARATIE: SCHEMA MATGING MET JOUW EXPLICITE KOLOMNAMEN
-// ===============================================================
-// web/src/server-functions/admin.ts
-
 export const adminToggleBlockUser = createServerFn({ method: 'POST' })
   .validator(z.object({ userId: z.string(), block: z.boolean() }))
   .handler(async ({ data }) => {
-    // 1. Controleer de admin status (Dit haalt ook de actieve admin sessie op)
+    
     const adminSession = await requireAdmin();
     const currentAdminId = adminSession.user.id;
 
     const { db } = await import('../db');
     const { users, sessions } = await import('../db/schema');
 
-    // 2. Pas de blokkade-status aan in PostgreSQL
     await db
       .update(users)
       .set({ 
@@ -222,7 +202,6 @@ export const adminToggleBlockUser = createServerFn({ method: 'POST' })
       })
       .where(eq(users.id, data.userId));
 
-    // 3. 🛡️ VEILIGHEIDS-CONTROLE: Wis alleen sessies als het NIET om de actieve admin zelf gaat!
     if (data.block && data.userId !== currentAdminId) {
       await db
         .delete(sessions)
@@ -232,20 +211,16 @@ export const adminToggleBlockUser = createServerFn({ method: 'POST' })
     return { success: true };
   });
 
-
-// web/src/server-functions/admin.ts
-
 export const adminUpdateUserRole = createServerFn({ method: 'POST' })
   .validator(z.object({ userId: z.string(), newRole: z.string() }))
   .handler(async ({ data }) => {
-    // 1. Controleer of de actieve verzoeker daadwerkelijk de hoofdadmin is
+    
     const adminSession = await requireAdmin();
     const currentAdminId = adminSession.user.id;
 
     const { db } = await import('../db');
     const { users, sessions } = await import('../db/schema');
 
-    // 2. Pas de rol aan in PostgreSQL (Bijv. naar 'admin' of 'user')
     await db
       .update(users)
       .set({ 
@@ -253,8 +228,6 @@ export const adminUpdateUserRole = createServerFn({ method: 'POST' })
       })
       .where(eq(users.id, data.userId));
 
-    // 3. 🛡️ COOKIE REFRESH FORCEERDER: Wis de actieve sessies van deze gebruiker 
-    // Hierdoor moet hij opnieuw inloggen en krijgt hij direct zijn admin-rechten!
     if (data.userId !== currentAdminId) {
       await db
         .delete(sessions)
@@ -263,11 +236,6 @@ export const adminUpdateUserRole = createServerFn({ method: 'POST' })
 
     return { success: true };
   });
-
-
-// ==========================================
-// 🛡️ RECEPTEN CRUD COMMANDS (VOOR DE DOCENT)
-// ==========================================
 
 const recipeCrudSchema = z.object({
   name: z.string().min(2),

@@ -1,4 +1,3 @@
-// src/routes/dashboard/favorites.tsx
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router';
 import { getFavoriteRecipes, toggleFavorite } from '../../server-functions/favorites';
 import { useToast } from '#/hooks/use-toast';

@@ -1,4 +1,3 @@
-// src/routes/register.tsx
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
 import { useState, useEffect, useCallback } from 'react';
 import { registerUserOnServer } from '../server-functions/auth';

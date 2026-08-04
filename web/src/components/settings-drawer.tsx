@@ -1,4 +1,3 @@
-// src/components/settings-drawer.tsx
 import { useState, useEffect } from "react";
 import { authClient } from "../auth/auth-client";
 import { useNavigate } from "@tanstack/react-router";
@@ -262,50 +261,68 @@ export function SettingsDrawer({
             </div>
           </div>
 
-          {/* 4. Text size slider */}
+          {/* 4. Text size slider (compact, no overflow) */}
           <div className="space-y-2">
             <h4 className="text-xs font-bold uppercase tracking-wider opacity-50 flex items-center gap-2">
               <Type className="h-4 w-4" style={{ color: primaryColor }} />
               {t("Tekstgrootte", "Text Size")}
             </h4>
             <div
-              className="flex items-center gap-4 p-4 rounded-xl border"
+              className="flex items-center gap-2 p-3 rounded-xl border"
               style={{ backgroundColor: mutedBg, borderColor }}
             >
-              <span className="text-sm font-bold min-w-[45px]">{fontSize}%</span>
-              <div className="flex-1 flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setFontSize(Math.max(50, fontSize - 10))}
-                  className="p-1.5 bg-white dark:bg-slate-800 border rounded-lg cursor-pointer focus:outline-none"
-                  style={{ borderColor }}
-                >
-                  <Minus className="h-4 w-4" />
-                </button>
+              {/* Minus button */}
+              <button
+                type="button"
+                onClick={() => setFontSize(Math.max(50, fontSize - 10))}
+                className="w-7 h-7 flex items-center justify-center rounded-lg text-white text-xs font-bold transition hover:opacity-90 shrink-0 cursor-pointer focus:outline-none"
+                style={{ backgroundColor: primaryColor }}
+                aria-label={t("Tekst verkleinen", "Decrease text size")}
+              >
+                <Minus className="h-3.5 w-3.5" />
+              </button>
+
+              {/* Slider – flex-1 but constrained within overflow-hidden parent */}
+              <div className="flex-1 min-w-0">
                 <input
                   type="range"
                   min="50"
                   max="150"
                   value={fontSize}
                   onChange={(e) => setFontSize(parseInt(e.target.value))}
-                  className="flex-1 h-1.5 rounded-full accent-[#1A756A] cursor-pointer"
+                  className="w-full h-1.5 rounded-full accent-[#1A756A] cursor-pointer appearance-none bg-gray-200 dark:bg-slate-600"
                 />
-                <button
-                  type="button"
-                  onClick={() => setFontSize(Math.min(150, fontSize + 10))}
-                  className="p-1.5 bg-white dark:bg-slate-800 border rounded-lg cursor-pointer focus:outline-none"
-                  style={{ borderColor }}
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
               </div>
+
+              {/* Plus button */}
+              <button
+                type="button"
+                onClick={() => setFontSize(Math.min(150, fontSize + 10))}
+                className="w-7 h-7 flex items-center justify-center rounded-lg text-white text-xs font-bold transition hover:opacity-90 shrink-0 cursor-pointer focus:outline-none"
+                style={{ backgroundColor: primaryColor }}
+                aria-label={t("Tekst vergroten", "Increase text size")}
+              >
+                <Plus className="h-3.5 w-3.5" />
+              </button>
+
+              {/* Percentage badge */}
+              <span
+                className="text-xs font-bold min-w-[36px] text-center shrink-0 px-1.5 py-0.5 rounded-md"
+                style={{ backgroundColor: cardBg, border: `1px solid ${borderColor}` }}
+              >
+                {fontSize}%
+              </span>
+
+              {/* Reset button */}
               <button
                 type="button"
                 onClick={() => setFontSize(100)}
-                className="p-1.5 opacity-40 hover:opacity-100 transition focus:outline-none cursor-pointer"
-                title={t("Herstellen", "Reset")}
+                className="w-7 h-7 flex items-center justify-center rounded-lg opacity-40 hover:opacity-100 transition shrink-0 cursor-pointer focus:outline-none"
+                style={{ color: textColor }}
+                title={t("Standaard herstellen", "Reset to default")}
+                aria-label={t("Standaard herstellen", "Reset to default")}
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-3.5 w-3.5" />
               </button>
             </div>
           </div>
@@ -410,13 +427,13 @@ export function SettingsDrawer({
             )}
           </div>
 
-          {/* 8. Logout */}
+          {/* 8. Logout (brand green) */}
           <button
             type="button"
             onClick={handleLogout}
             disabled={logoutLoading}
-            className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-bold bg-gray-100 dark:bg-slate-800 rounded-xl hover:opacity-90 transition disabled:opacity-60 cursor-pointer focus:outline-none"
-            style={{ color: textColor }}
+            className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-bold text-white rounded-xl transition disabled:opacity-60 cursor-pointer focus:outline-none"
+            style={{ backgroundColor: primaryColor }}
           >
             {logoutLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />

@@ -1,4 +1,3 @@
-// src/routes/admin/contact.tsx
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { adminGetContactMessages, adminReplyToMessage } from '../../server-functions/admin';

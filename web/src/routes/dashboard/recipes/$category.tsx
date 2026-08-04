@@ -1,4 +1,3 @@
-// src/routes/dashboard/recipes/$category.tsx
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { getRecipes } from '../../../server-functions/recipes';
 import {

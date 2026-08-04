@@ -1,4 +1,3 @@
-// src/routes/admin/dashboard.tsx
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { adminGetContactMessages, adminGetPlatformStats } from '../../server-functions/admin';
 import { AdminSidebar } from '../../components/admin/admin-sidebar';

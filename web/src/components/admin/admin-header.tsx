@@ -1,4 +1,3 @@
-// src/components/admin/admin-header.tsx
 import { authClient } from '../../auth/auth-client';
 import { LogOut } from 'lucide-react';
 import { useToast } from '#/hooks/use-toast';

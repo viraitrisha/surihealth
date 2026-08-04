@@ -1,4 +1,3 @@
-// src/routes/__root.tsx
 import { createRootRoute, HeadContent, Outlet, Scripts, useRouterState } from '@tanstack/react-router';
 import { useState } from 'react';
 import { LanguageContext } from '../hooks/use-language';
