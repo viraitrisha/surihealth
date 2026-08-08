@@ -11,3 +11,6 @@ Beschikbare instellingen zijn onder andere:
 - Account beheren
 
 Wijzig de gewenste instellingen en sla de wijzigingen op.
+
+![User](../../../assets/images/user-settings.jpeg)
+*Figuur 11. Instellingen page van SuriHealth.*

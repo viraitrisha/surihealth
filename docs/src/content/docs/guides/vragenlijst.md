@@ -12,3 +12,4 @@ Volg de onderstaande stappen om je profiel in te stellen:
 3. Klik aan het einde op **Profiel opslaan**.
 
 De ingevoerde informatie wordt gebruikt om recepten te tonen die aansluiten bij jouw voorkeuren en gezondheidsbehoeften.
+

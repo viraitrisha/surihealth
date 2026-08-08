@@ -7,6 +7,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: 'SuriHealth Documentatie',
+			favicon: '/surihealth-logo.png',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/withastro/starlight' }],
 			sidebar: [
 				{
@@ -29,14 +30,22 @@ export default defineConfig({
 						{ label: 'Vragenlijst', link: '/guides/vragenlijst/'},
 						{ label: 'Dashboard', link: '/guides/dashboard/'},
 						{ label: 'Navigatie balk', link: '/guides/navigatie-balk/'},
-						{ label: 'Automatisch maaltijden', link: '/guides/automatisch/'},
-						{ label: 'Handmatig maaltijdplan', link: '/guides/handmatig/'},
+						{ label: 'Recepten', link: '/guides/recepten/'},
 						{ label: 'Recept detail & Favorieten', link: '/guides/recept-detail/'},
 						{ label: 'Boodschappenlijst', link: '/guides/boodschappenlijst/'},
 						{ label: 'Favorieten pagina', link: '/guides/favorieten/'},
 						{ label: 'Profiel', link: '/guides/profiel/'},
 						{ label: 'Instellingen', link: '/guides/instellingen/'},
 						{ label: 'Contact & FAQ', link: '/guides/contact/'},
+					],
+				},
+				{
+					label: 'Beheer (Admin)',
+					items: [
+						{ label: 'Admin dashboard', link: '/admin/dashboard/'},
+						{ label: 'Berichten', link: '/admin/messages/'},
+						{ label: 'Recepten beheren', link: '/admin/recipes/'},
+						{ label: 'Gebruikers beheren', link: '/admin/users/'},
 					],
 				},
 				{

@@ -11,3 +11,6 @@ Beschikbare pagina's zijn onder andere:
 - Favorieten
 - Profiel
 - Instellingen
+
+![User](../../../assets/images/user-navigation.jpeg)
+*Figuur 5. Navigation balk van SuriHealth.*

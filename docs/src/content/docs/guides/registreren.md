@@ -10,3 +10,6 @@ Volg de onderstaande stappen om een account aan te maken:
 3. Klik op **Registreer**.
 4. Optioneel: vink **Onthoud mijn gegevens** aan.
 5. Na de registratie word je automatisch doorgestuurd naar de vragenlijst.
+
+![Homepage](../../../assets/images/landing-register.jpeg)
+*Figuur 2. Register page van SuriHealth.*

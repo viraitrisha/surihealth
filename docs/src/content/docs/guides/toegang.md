@@ -11,5 +11,5 @@ Volg de onderstaande stappen om de applicatie te openen:
 
 Vanaf de homepage kan de gebruiker navigeren naar de verschillende functies van de applicatie.
 
-![Homepage](../../../assets/images/homepage.jpeg)
+![Homepage](../../../assets/images/landing-home.jpeg)
 *Figuur 1. Homepage van SuriHealth.*
