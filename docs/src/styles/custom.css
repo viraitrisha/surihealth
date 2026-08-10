@@ -1,0 +1,92 @@
+:root {
+  --sl-color-accent-low: #e3f2f0;    
+  --sl-color-accent: #1A756A;        
+  --sl-color-accent-high: #13574e;   
+  
+  --sl-color-white: #0f172a;         
+  --sl-color-gray-1: #334155;        
+  --sl-color-gray-2: #64748b;        
+  --sl-color-gray-6: #f8fafc;        
+  
+  --sl-color-bg: #ffffff;            
+  --sl-color-bg-nav: #ffffff;        
+  --sl-color-bg-sidebar: #f8fafc;    
+  --sl-color-border: #e2e8f0;        
+}
+
+:root[data-theme='dark'] {
+  --sl-color-accent-low: #112d29;    
+  --sl-color-accent: #2D9C8F;        
+  --sl-color-accent-high: #4ec3b5;   
+  
+  --sl-color-white: #f8fafc;         
+  --sl-color-gray-1: #cbd5e1;
+  --sl-color-gray-2: #94a3b8;
+  --sl-color-gray-6: #0f172a;        
+  
+  --sl-color-bg: #0b0f19;            
+  --sl-color-bg-nav: #0f172a;
+  --sl-color-bg-sidebar: #0f172a;
+  --sl-color-border: #1e293b;        
+}
+
+.surihealth-custom-grid .card {
+  transition:
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+    border-color 0.3s ease-in-out !important;
+  background-color: var(--sl-color-bg-sidebar) !important;
+}
+
+.surihealth-custom-grid .card:hover {
+  transform: translateY(-6px) scale(1.01);
+  border-color: var(--sl-color-accent) !important;
+  box-shadow: 0 12px 30px rgba(26, 117, 106, 0.12) !important;
+}
+
+.surihealth-custom-grid .card:hover .icon {
+  color: var(--sl-color-accent) !important;
+  transform: scale(1.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+.card, .starlight-aside, pre, code {
+  border-radius: 1rem !important;    
+  border-width: 1px !important;
+}
+
+.hero-image {
+  filter: drop-shadow(0 20px 50px rgba(26, 117, 106, 0.15)); 
+}
+
+.hero .actions a.primary {
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+    background-color 0.2s ease-in-out !important;
+  border-radius: 0.75rem !important;
+}
+
+.hero .actions a.primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  background-color: var(--sl-color-accent-high) !important;
+  box-shadow: 0 10px 25px rgba(26, 117, 106, 0.3) !important;
+}
+
+.hero .actions a.primary:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+.hero .actions a.minimal {
+  transition: color 0.2s ease-in-out !important;
+  transform: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.hero .actions a.minimal:hover {
+  color: var(--sl-color-accent) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}

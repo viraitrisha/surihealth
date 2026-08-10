@@ -1,0 +1,61 @@
+---
+title: Welkom bij SuriHealth Documentatie
+template: splash
+hero:
+  title: Welkom bij SuriHealth
+  tagline: Uw complete, overzichtelijke gebruikers- en beheerdersgids voor het SuriHealth maaltijdplatform.
+  image:
+    file: ../../assets/images/surihealth-logo.png
+    alt: SuriHealth logo
+  actions:
+    - text: Starten met Lezen
+      link: /guides/introductie/
+      icon: right-arrow
+      variant: primary
+    - text: Bekijk de Applicatie
+      link: http://localhost:3000
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<div className="surihealth-custom-grid">
+
+## Belangrijkste Functies van het Platform
+
+<CardGrid>
+  <Card title="Snelle Backend Verwerking" icon="setting">
+    De achterkant van de applicatie is volledig vernieuwd. Hierdoor laden pagina's razendsnel en worden al uw gegevens direct, veilig en afgeschermd verwerkt.
+  </Card>
+
+  <Card title="Slimme Gezondheidsfilters" icon="heart">
+    De planner controleert automatisch ingrediënten. Schadelijke producten (zoals zoutvlees bij hoge bloeddruk of snelle suikers bij diabetes) worden direct uit uw overzicht geweerd.
+  </Card>
+
+  <Card title="Nauwkeurige Calorieënteller" icon="random">
+    Het systeem schat automatisch het aantal calorieën per maaltijd. Het ingebouwde filter voorkomt dat ingrediënten dubbel worden geteld door vertalingen (zoals Kip en Chicken).
+  </Card>
+
+  <Card title="Persoonlijke Categorieën" icon="open-book">
+    Uw gerechten worden netjes verdeeld over logische maaltijden: ontbijt, lunch, middagmaaltijd, avondeten en snacks die 100% aansluiten op uw persoonlijke voorkeuren.
+  </Card>
+
+  <Card title="Veilig Inloggen & Privacy" icon="document">
+    Uw privacy staat voorop. Het platform maakt gebruik van een streng beveiligd loginsysteem dat uw medische gegevens en accounts activeert en vergrendelt tegen onbevoegden.
+  </Card>
+
+  <Card title="Centraal Beheer & Helpdesk" icon="email">
+    Voor beheerders is er een overzichtelijk controlepaneel om recepten toe te voegen en binnengekomen vragen van gebruikers direct via de ingebouwde postbus te beantwoorden.
+  </Card>
+</CardGrid>
+
+</div>
+
+---
+
+## Direct Aan de Slag
+
+*   **Voor Gebruikers**: Leer hoe u de [medische vragenlijst invult](/guides/vragenlijst/) of direct uw [persoonlijke dashboard gebruikt](/guides/dashboard/).
+*   **Voor Beheerders**: Bekijk hoe u [nieuwe recepten toevoegt](/admin/recipes/) of [supportberichten beantwoordt](/admin/messages/).
+*   **Voor Ontwikkelaars**: Raadpleeg de installatiestappen en technische server-instellingen in de hoofd-`README.md`.
