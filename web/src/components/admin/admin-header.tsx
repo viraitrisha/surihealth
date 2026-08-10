@@ -21,7 +21,7 @@ export function AdminHeader() {
     >
       {/* Linker kant: Alleen de titel */}
       <div className="flex items-center gap-2">
-        <span className="text-xl font-black tracking-wider uppercase" style={{ color: 'var(--white-color)' }}>
+        <span className="text-xl font-black tracking-wider" style={{ color: 'var(--white-color)' }}>
           SuriHealth
         </span>
       </div>

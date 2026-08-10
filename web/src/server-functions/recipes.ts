@@ -1,4 +1,3 @@
-// src/server-functions/recipes.ts
 import { createServerFn } from '@tanstack/react-start';
 import { getRequest } from '@tanstack/react-start/server'; 
 import { z } from 'zod';
@@ -8,8 +7,6 @@ import { eq } from 'drizzle-orm';
 import { filterRecipesByProfile } from '../utils/recipeFilters';
 import { auth } from '../auth/auth-handler';
 import crypto from 'crypto';
-
-// 🛡️ IMPORT VAN DE EXCLUSIEVE CALORIEËN CALCULATOR
 import { estimateRecipeCalories } from '../utils/calorieCalculator';
 
 const recipesInputSchema = z.object({
@@ -41,11 +38,7 @@ export const getRecipes = createServerFn({ method: 'GET' })
     query = query.orderBy(recipes.id);
     const rawRecipes = await query;
 
-    // 🛡️ STAP 1: Map alle recepten live en voeg runtime de berekende calorieën toe als deze ontbreken
-// Look inside your getRecipes / getRecipeById functions in src/server-functions/recipes.ts:
-
     const allRecipes = rawRecipes.map((recipe: any) => {
-      // Pass only one array type first, or pass the raw fields directly to let our Set handler deduplicate them safely!
       const combinedIngredients = [
         ...(recipe.ingredients || []),
         ...(recipe.ingredientsNl || [])
@@ -53,7 +46,6 @@ export const getRecipes = createServerFn({ method: 'GET' })
 
       return {
         ...recipe,
-        // Safely reads the calculated value without getting stuck at the old 850 ceiling block
         calories: recipe.calories && recipe.calories > 0 
           ? recipe.calories 
           : estimateRecipeCalories(combinedIngredients)
@@ -61,8 +53,6 @@ export const getRecipes = createServerFn({ method: 'GET' })
     });
 
     let preFilteredRecipes = allRecipes;
-
-    // 🛡️ STAP 2: Failsafe JSON array parser to stop row data bleeding
     if (data.mealType) {
       const targetMeal = data.mealType.toLowerCase().trim();
       
@@ -92,7 +82,6 @@ export const getRecipes = createServerFn({ method: 'GET' })
       });
     }
 
-    // Apply medical profile restrictions (High Blood Pressure, Diabetes, etc.)
     if (userId) {
       const profile = await db.query.profiles.findFirst({
         where: (profiles, { eq }) => eq(profiles.userId, userId),
@@ -139,7 +128,6 @@ export const getRecipeById = createServerFn({ method: 'GET' })
       });
     }
 
-    // 🛡️ Zorg dat ook het los opgevraagde recept via de calculator direct van calorieën is voorzien
     const combinedIngredients = [
       ...(recipe.ingredients || []),
       ...(recipe.ingredientsNl || [])
@@ -171,7 +159,6 @@ export const getAutomaticDailyMenu = createServerFn({ method: 'GET' })
 
     const rawRecipes = await db.select().from(recipes);
     
-    // 🛡️ Pas ook hier de calorieberekening toe op de volledige lijst voor de dagplanner
     const allRecipes = rawRecipes.map((recipe: any) => {
       const combinedIngredients = [
         ...(recipe.ingredients || []),

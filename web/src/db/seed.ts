@@ -2,19 +2,17 @@ import 'dotenv/config';
 import { db } from './index';
 import { recipes } from './schema';
 import { SURINAMESE_INGREDIENTS } from '../utils/surinameIngredients';
-import { translateIngredient } from '../utils/translations'; // Ensure this matches your file name
+import { translateIngredient } from '../utils/translations';
 import crypto from 'crypto';
 
-// FIX: Added the mandatory API endpoint subpath version wrappers
 const MEALDB_BASE = 'https://www.themealdb.com/api/json/v1/1';
 
 async function fetchMealsByCategory(cat: string) {
-  // FIX: Force category lowercase formatting to ensure proper API parameter processing
   const res = await fetch(`${MEALDB_BASE}/filter.php?c=${cat.toLowerCase()}`);
   
   const contentType = res.headers.get("content-type") || "";
   if (!res.ok || !contentType.includes("application/json")) {
-    console.warn(`   ⚠️ Warning: Skipping category "${cat}". API returned an invalid response or HTML.`);
+    console.warn(`Warning: Skipping category "${cat}". API returned an invalid response or HTML.`);
     return [];
   }
 
@@ -63,7 +61,7 @@ function determineMealTypes(apiCategory: string, ingredients: string[], name: st
   // 2. Dessert
   if (apiCategory.toLowerCase() === 'dessert' || lowerName.includes('cake') || lowerName.includes('pudding')) {
     categories.add('dessert');
-    return Array.from(categories); // Standalone course loop short circuit
+    return Array.from(categories);
   }
 
   // 3. Lunch (Light components)
@@ -81,7 +79,7 @@ function determineMealTypes(apiCategory: string, ingredients: string[], name: st
   if (['beef', 'chicken', 'lamb', 'pork', 'seafood', 'pasta'].includes(apiCategory.toLowerCase()) || (hasProtein && hasCarb)) {
     categories.add('middagmaaltijd');
     categories.add('avondeten');
-    if (!categories.has('lunch')) categories.add('lunch'); // Balanced warm meal options work for lunch slots too
+    if (!categories.has('lunch')) categories.add('lunch');
   }
 
   if (categories.size === 0) {
@@ -95,7 +93,6 @@ function determineMealTypes(apiCategory: string, ingredients: string[], name: st
 async function seed() {
   console.log('Start seeding recipes...');
   
-  // Explicitly configured categories natively present inside The Meal DB ledger indexes
   const categories = ['Beef', 'Chicken', 'Dessert', 'Lamb', 'Pasta', 'Pork', 'Seafood', 'Side', 'Starter', 'Vegetarian', 'Breakfast'];
   let imported = 0;
   let skipped = 0;
