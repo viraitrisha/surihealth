@@ -87,7 +87,7 @@ pnpm generate-routes
 pnpm build
 
 # 3. Start de standalone Nitro-server service
-node .output/server/index.mjs
+$env:BETTER_AUTH_URL="http://localhost:3000"; $env:DATABASE_URL="postgresql://username:password@localhost:5432/database"; node .output/server/index.mjs
 ```
 
 ---

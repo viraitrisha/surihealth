@@ -54,13 +54,6 @@ pnpm dev
 ```
 De documentatie is direct lokaal bereikbaar via het toegewezen adres, standaard: `http://localhost:4321`
 
-### Statische Productiebuild Compileren (Production Build)
-Om de volledige documentatie om te zetten naar de definitieve, geoptimaliseerde HTML-bestanden die live op Vercel worden gepubliceerd, gebruikt u:
-```powershell
-pnpm build
-```
-De resulterende, pure webbestanden worden door de compiler weggeschreven in de map `docs/dist/`.
-
 ---
 
 ## Structuur en Onderhoud van de Handleidingen
