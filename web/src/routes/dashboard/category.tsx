@@ -9,17 +9,22 @@ import {
   ArrowLeft,
   ArrowRight,
   Utensils,
+  Leaf,
 } from 'lucide-react';
 
 type CategorySearch = { mealType: string };
 
 export const Route = createFileRoute('/dashboard/category')({
+  loaderDeps: ({ search }) => ({ mealType: search.mealType }),
+
   validateSearch: (search: Record<string, unknown>): CategorySearch => ({
     mealType: (search.mealType as string) || 'lunch',
   }),
-  loader: async (ctx: any) => {
+
+  loader: async ({ deps }) => {
+    const currentMealQuery = deps.mealType || 'lunch';
+
     try {
-      const currentMealQuery = ctx.search?.mealType || 'lunch';
       const response = await getRecipes({
         data: { mealType: currentMealQuery, limit: 250 },
       });
@@ -31,6 +36,7 @@ export const Route = createFileRoute('/dashboard/category')({
       return { categoryRecipes: [], selectedType: 'lunch' };
     }
   },
+
   component: CategoryRecipesPage,
 });
 
@@ -63,68 +69,82 @@ function CategoryRecipesPage() {
     return normalizedTypes.includes(targetType);
   });
 
-  const getHeaderDetails = () => {
+  // Banner configuratie per maaltijdtype
+  const getBannerDetails = () => {
     switch (targetType) {
       case 'ontbijt':
         return {
           title: 'Mijn Gefilterde Ontbijtopties',
-          icon: <Coffee className="h-8 w-8 text-amber-500" />,
+          icon: <Coffee className="h-8 w-8" />,
         };
       case 'lunch':
         return {
           title: 'Mijn Gefilterde Lunchgerechten',
-          icon: <Layers className="h-8 w-8 text-blue-500" />,
+          icon: <Layers className="h-8 w-8" />,
         };
       case 'middagmaaltijd':
         return {
           title: 'Mijn Gefilterde Middagmaaltijden',
-          icon: <Sun className="h-8 w-8 text-orange-500" />,
+          icon: <Sun className="h-8 w-8" />,
         };
       case 'avondeten':
         return {
           title: 'Mijn Gefilterde Avondmaaltijden',
-          icon: <Moon className="h-8 w-8 text-indigo-500" />,
+          icon: <Moon className="h-8 w-8" />,
         };
       case 'dessert':
         return {
           title: 'Mijn Gefilterde Snacks & Desserts',
-          icon: <Cookie className="h-8 w-8 text-rose-500" />,
+          icon: <Cookie className="h-8 w-8" />,
         };
       default:
         return {
           title: 'Gefilterde Recepten',
-          icon: <Utensils className="h-8 w-8 text-[var(--primary-color)]" />,
+          icon: <Utensils className="h-8 w-8" />,
         };
     }
   };
 
-  const header = getHeaderDetails();
+  const banner = getBannerDetails();
 
   return (
-    <div className="max-w-6xl mx-auto p-6 sm:p-8 space-y-8 bg-[var(--bg-color)] text-[var(--text-color)] transition-colors duration-300">
+    <div className="relative max-w-6xl mx-auto p-6 sm:p-8 space-y-8 bg-[var(--bg-color)] text-[var(--text-color)] transition-colors duration-300 overflow-hidden">
+      {/* Decoratieve bladeren */}
+      <Leaf className="absolute -top-10 -left-10 w-40 h-40 text-white/10 rotate-12 pointer-events-none" />
+      <Leaf className="absolute -bottom-8 -right-8 w-36 h-36 text-white/10 -rotate-12 pointer-events-none" />
+      <Leaf className="absolute top-1/4 right-1/4 w-24 h-24 text-white/10 rotate-45 pointer-events-none" />
+
       <Link
         to="/dashboard"
-        className="inline-flex items-center gap-2 text-sm font-bold text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition-colors no-underline"
+        className="inline-flex items-center gap-2 text-sm font-bold text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition-colors no-underline relative z-10"
       >
         <ArrowLeft className="w-4 h-4" /> Terug naar dashboard
       </Link>
 
-      <section className="bg-[var(--card-bg)] border border-[var(--border-color)] rounded-3xl p-6 shadow-sm flex items-center gap-4">
-        <div className="p-3 bg-slate-50 dark:bg-slate-800 rounded-2xl shadow-inner shrink-0">
-          {header.icon}
-        </div>
-        <div>
-          <h1 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">
-            {header.title}
+      {/* Gradient Banner */}
+      <div className="bg-gradient-to-r from-[#1A756A] to-[#2D9C8F] p-8 rounded-3xl text-white shadow-sm flex flex-col md:flex-row justify-between md:items-center gap-4 relative z-10">
+        <div className="space-y-1">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tight flex items-center gap-3">
+            <span className="shrink-0">{banner.icon}</span>
+            <span>{banner.title}</span>
           </h1>
-          <p className="text-xs text-gray-400 font-semibold mt-0.5">
+          <p className="text-white/80 text-sm md:text-base font-medium max-w-xl">
             Alle Surinaamse kookplannen die 100% veilig zijn bevonden voor
             jouw actieve gezondheidsprofiel.
           </p>
         </div>
-      </section>
+        <div className="bg-white/10 px-5 py-3 rounded-2xl border border-white/10 text-center shrink-0 min-w-[100px]">
+          <span className="block text-3xl font-black leading-none">
+            {dynamicCategoryRecipes.length}
+          </span>
+          <span className="text-[10px] uppercase font-bold tracking-wider opacity-70 block mt-1">
+            Beschikbaar
+          </span>
+        </div>
+      </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Recepten grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
         {dynamicCategoryRecipes.map((recipe: any) => (
           <div
             key={recipe.id}

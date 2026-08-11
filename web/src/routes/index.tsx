@@ -1,14 +1,15 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import { HeroCarousel } from '../components/hero-carousel'
-import { ImageCarousel } from '../components/image-carousel'
+// pages/index.tsx (Home)
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { HeroCarousel } from '../components/hero-carousel';
+import { ImageCarousel } from '../components/image-carousel';
 
-export const Route = createFileRoute('/')({ component: Home })
+export const Route = createFileRoute('/')({ component: Home });
 
 const heroSlides = [
   { image: '/images/HMP Image 1.jpeg', alt: 'Heerlijke Surinaamse gerechten' },
   { image: '/images/HMP Image 2.jpeg', alt: 'Verse lokale ingrediënten' },
   { image: '/images/HMP Image 3.jpeg', alt: 'Gezonde maaltijdplanning' },
-]
+];
 
 const galleryImages = [
   { src: '/images/HMP Image 4.jpeg', alt: 'Gerecht 1' },
@@ -16,7 +17,7 @@ const galleryImages = [
   { src: '/images/HMP Image 6.jpeg', alt: 'Gerecht 3' },
   { src: '/images/HMP Image 7.jpeg', alt: 'Gerecht 4' },
   { src: '/images/HMP Image 8.jpeg', alt: 'Gerecht 5' },
-]
+];
 
 function Home() {
   return (
@@ -25,13 +26,17 @@ function Home() {
       <HeroCarousel slides={heroSlides} interval={5000} />
 
       {/* SURIHEALTH TITEL */}
-      <section className="w-full py-16 bg-[#0B3F39]">
-        <div className="flex justify-center items-center gap-4 md:gap-8 text-white font-bold flex-wrap text-center">
-          <span className="tracking-[-1px] text-3xl md:text-6xl">────────</span>
-          <span className="text-5xl md:text-[5.5rem] leading-none">𓆩༺</span>
-          <span className="text-4xl md:text-6xl">SURIHEALTH</span>
-          <span className="text-5xl md:text-[5.5rem] leading-none">༻𓆪</span>
-          <span className="tracking-[-1px] text-3xl md:text-6xl">────────</span>
+      <section className="w-full py-12 md:py-16 bg-[#0B3F39]">
+        <div className="flex items-center justify-center gap-3 md:gap-6 px-4">
+          <div className="hidden sm:block flex-1 h-[2px] bg-white/50 rounded-full" />
+
+          <div className="flex items-center gap-2 md:gap-4 text-white font-bold shrink-0">
+            <span className="text-3xl sm:text-4xl md:text-5xl leading-none">𓆩༺</span>
+            <span className="text-2xl sm:text-4xl md:text-6xl tracking-tight">SURIHEALTH</span>
+            <span className="text-3xl sm:text-4xl md:text-5xl leading-none">༻𓆪</span>
+          </div>
+
+          <div className="hidden sm:block flex-1 h-[2px] bg-white/50 rounded-full" />
         </div>
       </section>
 
@@ -74,7 +79,7 @@ function Home() {
         </div>
       </section>
 
-      {/* WERKING – STAP 1, 2, 3 */}
+      {/* WERKING */}
       <section className="grid gap-0">
         {/* Stap 1 */}
         <div className="bg-white text-black min-h-[70vh] p-8 md:p-16">
@@ -231,5 +236,5 @@ function Home() {
         </div>
       </section>
     </main>
-  )
+  );
 }

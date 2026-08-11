@@ -93,5 +93,5 @@ pnpm generate-routes
 pnpm build
 
 # 6. Start de gecompileerde Nitro-server live op met de juiste variabelen
-$env:BETTER_AUTH_URL="http://localhost:3000"; $env:DATABASE_URL="postgresql://username:password@localhost:5432/database"; node .output/server/index.mjs
+$env:BETTER_AUTH_URL="http://localhost:3000"; $env:DATABASE_URL="postgresql://postgres:vanshika@localhost:5432/dev_surihealth"; node .output/server/index.mjs
 ```

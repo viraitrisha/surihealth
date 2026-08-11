@@ -28,18 +28,18 @@ export function DashboardHeader() {
           SuriHealth
         </Link>
 
-        {/* Hamburger mobile menu knop */}
+        {/* Hamburger */}
         <button
           className="lg:hidden flex flex-col items-center justify-center gap-1.5 p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
-          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'translate-y-[7px] rotate-45' : ''}`}></span>
+          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'translate-y-2 rotate-45' : ''}`}></span>
           <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
-          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-translate-y-[7px] -rotate-45' : ''}`}></span>
+          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-translate-y-2 -rotate-45' : ''}`}></span>
         </button>
 
-        {/* Gecorrigeerde Navigatiematrix */}
+        {/* Navigatiematrix */}
         <nav className={`
           lg:flex lg:flex-row lg:items-center lg:gap-3 lg:static lg:bg-transparent lg:p-0 lg:shadow-none lg:w-auto lg:h-auto lg:rounded-none lg:border-none
           ${menuOpen ? 'flex' : 'hidden'}
@@ -92,7 +92,6 @@ export function DashboardHeader() {
         </nav>
       </header>
 
-      {/* Schuifpanelen */}
       <SettingsDrawer
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}

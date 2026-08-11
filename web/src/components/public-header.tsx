@@ -17,7 +17,7 @@ export function PublicHeader() {
   return (
     <header className="fixed top-0 left-0 w-full z-[1000] bg-gradient-to-r from-[#1A756A] to-[#2D9C8F] shadow-md">
       <div className="flex items-center justify-between px-6 py-5 md:px-16 max-w-7xl mx-auto">
-        {/* Logo – links */}
+        {/* Logo */}
         <Link
           to="/"
           className="text-3xl md:text-4xl font-extrabold text-white transition-transform duration-300 hover:scale-[1.02] no-underline tracking-tight"
@@ -25,15 +25,15 @@ export function PublicHeader() {
           SuriHealth
         </Link>
 
-        {/* Hamburger button – alleen zichtbaar op mobiel */}
+        {/* Hamburger button */}
         <button
           className="lg:hidden flex flex-col items-center justify-center gap-1.5 p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
-          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'translate-y-2 rotate-45' : ''}`} />
           <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
+          <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-translate-y-2 -rotate-45' : ''}`} />
         </button>
 
         {/* Desktop navigatie */}
