@@ -30,11 +30,11 @@ export const submitProfileSetup = createServerFn({ method: 'POST' })
     if (!sessionData?.user?.id) {
       throw new Error('Niet geautoriseerd: Geen actieve sessie.');
     }
-
+    
     const userId = sessionData.user.id;
     const { db } = await import('../db');
     const { users, profiles } = await import('../db/schema');
-
+    
     await db
       .update(users)
       .set({
