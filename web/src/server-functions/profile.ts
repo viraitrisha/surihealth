@@ -23,24 +23,24 @@ export const submitProfileSetup = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     const request = getRequest();
     const headers = request ? request.headers : new Headers();
-    
+
     const { auth } = await import('../auth/auth-handler');
     const sessionData = await auth.api.getSession({ headers });
-    
+
     if (!sessionData?.user?.id) {
       throw new Error('Niet geautoriseerd: Geen actieve sessie.');
     }
-    
+
     const userId = sessionData.user.id;
     const { db } = await import('../db');
     const { users, profiles } = await import('../db/schema');
-    
+
     await db
       .update(users)
       .set({
         name: data.name,
         image: data.imageUrl || null,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       })
       .where(eq(users.id, userId));
 
@@ -71,8 +71,29 @@ export const submitProfileSetup = createServerFn({ method: 'POST' })
           allergies: data.allergies,
           likes: data.likes,
           dislikes: data.dislikes,
-        }
+        },
       });
 
     return { success: true };
   });
+
+export const getProfile = createServerFn({ method: 'GET' }).handler(async () => {
+  const request = getRequest();
+  const headers = request ? request.headers : new Headers();
+
+  const { auth } = await import('../auth/auth-handler');
+  const sessionData = await auth.api.getSession({ headers });
+
+  if (!sessionData?.user?.id) {
+    return null;
+  }
+
+  const { db } = await import('../db');
+  const { profiles } = await import('../db/schema');
+
+  const profile = await db.query.profiles.findFirst({
+    where: eq(profiles.userId, sessionData.user.id),
+  });
+
+  return profile ?? null;
+});

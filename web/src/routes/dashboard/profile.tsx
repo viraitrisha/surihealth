@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useState, useEffect } from 'react';
-import { submitProfileSetup } from '../../server-functions/profile';
+import { useState } from 'react';
+import { submitProfileSetup, getProfile } from '../../server-functions/profile';
 import { getUserSession } from '../../server-functions/auth';
 import { useToast } from '#/hooks/use-toast';
 import {
@@ -24,7 +24,10 @@ export const Route = (createFileRoute as any)('/dashboard/profile')({
   loader: async () => {
     const sessionData = await getUserSession();
     if (!sessionData) throw new Error('Niet geautoriseerd');
-    return { sessionData };
+
+    const profileData = await getProfile();
+
+    return { sessionData, profileData };
   },
   component: DashboardProfilePage,
 });
@@ -71,67 +74,48 @@ const ingredientOptions = [
 const tabs = ['basis', 'medisch', 'voorkeuren'] as const;
 
 function DashboardProfilePage() {
-  const { sessionData } = Route.useLoaderData() as { sessionData: any };
+  const { sessionData, profileData } = Route.useLoaderData() as any;
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<(typeof tabs)[number]>('basis');
 
-  const [formData, setFormData] = useState({
-    name: 'Gebruiker',
-    imageUrl: '',
-    age: 25,
-    gender: 'Vrouw',
-    height: 170,
-    weight: 70,
-    conditions: [] as string[],
-    diets: [] as string[],
-    allergies: [] as string[],
-    likes: [] as string[],
-    dislikes: [] as string[],
-  });
-
-  const mapDatabaseToFrontend = (list: string[] | null): string[] => {
-    if (!list) return [];
-    return list.map((c) => {
-      if (c === 'Diabetic' || c === 'diabetic') return 'Diabeet (Suikerziekte)';
-      return c;
-    });
+  // Helper om database-waarden (bijv. 'Diabetic') te vertalen naar wat de gebruiker ziet
+  const mapDatabaseToFrontend = (list: string[] | null | undefined): string[] => {
+    if (!list || !Array.isArray(list)) return [];
+    return list.map((item: string) =>
+      item === 'Diabetic' || item === 'diabetic' ? 'Diabeet (Suikerziekte)' : item
+    );
   };
 
-  // Laad profiel uit cache of database
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const cache = localStorage.getItem('surihealth_profile_cache');
-      if (cache) {
-        try {
-          const parsed = JSON.parse(cache);
-          setFormData(parsed);
-          return;
-        } catch {
-          // fallback naar database
-        }
-      }
-    }
+  // Helper om de frontend-labels terug te vertalen naar database-waarden
+  const mapFrontendToDatabase = (list: string[]): string[] =>
+    list.map((item: string) =>
+      item === 'Diabeet (Suikerziekte)' ? 'Diabetic' : item
+    );
 
-    if (sessionData?.user) {
-      const user = sessionData.user;
-      const profile = sessionData.profile || {};
-      setFormData({
-        name: user.name || 'Gebruiker',
-        imageUrl: user.image || '',
-        age: profile.age || 25,
-        gender: profile.gender || 'Vrouw',
-        height: profile.height || 170,
-        weight: profile.weight || 70,
-        conditions: mapDatabaseToFrontend(profile.conditions),
-        diets: profile.diets || [],
-        allergies: profile.allergies || [],
-        likes: profile.likes || [],
-        dislikes: profile.dislikes || [],
-      });
-    }
-  }, [sessionData]);
+  // Bouw de initiële formulierdata uit de loader-resultaten
+  const getInitialFormData = () => ({
+    name: sessionData?.user?.name || 'Gebruiker',
+    imageUrl: sessionData?.user?.image || '',
+    age: profileData?.age ?? 25,
+    gender: profileData?.gender || 'Vrouw',
+    height: profileData?.height ?? 170,
+    weight: profileData?.weight ?? 70,
+    conditions: mapDatabaseToFrontend(profileData?.conditions),
+    diets: profileData?.diets ?? [],
+    allergies: profileData?.allergies ?? [],
+    likes: profileData?.likes ?? [],
+    dislikes: profileData?.dislikes ?? [],
+  });
+
+  const [formData, setFormData] = useState(getInitialFormData);
+
+  // Synchroniseer de formulierdata opnieuw als de loaderdata verandert (bv. na reload)
+  // Dit zorgt ervoor dat de allereerste render altijd de juiste waarden toont.
+  useState(() => {
+    setFormData(getInitialFormData());
+  });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -165,23 +149,25 @@ function DashboardProfilePage() {
 
   const handleCheckboxToggle = (
     field: 'conditions' | 'diets' | 'allergies' | 'likes' | 'dislikes',
-    option: string
+    option: string,
   ) => {
     setFormData((prev) => {
       const currentList = prev[field];
       let newList: string[] = [];
+
       if (option === 'Geen' || option === 'Geen speciaal dieet') {
         newList = [option];
       } else {
         const filteredList = currentList.filter(
-          (item) => item !== 'Geen' && item !== 'Geen speciaal dieet'
+          (item: string) => item !== 'Geen' && item !== 'Geen speciaal dieet',
         );
         if (filteredList.includes(option)) {
-          newList = filteredList.filter((item) => item !== option);
+          newList = filteredList.filter((item: string) => item !== option);
         } else {
           newList = [...filteredList, option];
         }
       }
+
       const updated = { ...prev, [field]: newList };
       if (typeof window !== 'undefined') {
         localStorage.setItem('surihealth_profile_cache', JSON.stringify(updated));
@@ -202,10 +188,6 @@ function DashboardProfilePage() {
     }
     setLoading(true);
     try {
-      const mappedConditions = formData.conditions.map((c) =>
-        c === 'Diabeet (Suikerziekte)' ? 'Diabetic' : c
-      );
-
       const result = await submitProfileSetup({
         data: {
           name: formData.name.trim(),
@@ -214,7 +196,7 @@ function DashboardProfilePage() {
           gender: formData.gender,
           height: Number(formData.height),
           weight: Number(formData.weight),
-          conditions: mappedConditions,
+          conditions: mapFrontendToDatabase(formData.conditions),
           diets: formData.diets,
           allergies: formData.allergies,
           likes: formData.likes,
@@ -257,20 +239,17 @@ function DashboardProfilePage() {
 
   const displayAvatar =
     formData.imageUrl.trim() ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      formData.name
-    )}&background=1A756A&color=fff&size=150`;
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(formData.name)}&background=1A756A&color=fff&size=150`;
 
-  // Helper om checkboxgroepen te renderen
   const renderCheckboxGroup = (
     field: 'conditions' | 'diets' | 'allergies' | 'likes' | 'dislikes',
     options: string[],
-    label: string
+    label: string,
   ) => (
     <div className="space-y-2">
       <p className="text-sm font-semibold">{label}</p>
       <div className="flex flex-wrap gap-2">
-        {options.map((opt) => (
+        {options.map((opt: string) => (
           <label
             key={opt}
             className="flex items-center gap-1.5 cursor-pointer text-sm bg-[var(--muted-bg)] px-3 py-1.5 rounded-full border border-[var(--border-color)]"
@@ -311,9 +290,7 @@ function DashboardProfilePage() {
           </div>
 
           <div className="text-center space-y-1 w-full border-b border-[var(--border-color)] pb-4 z-10">
-            <h3 className="text-2xl font-bold tracking-tight truncate">
-              {formData.name}
-            </h3>
+            <h3 className="text-2xl font-bold tracking-tight truncate">{formData.name}</h3>
             <p className="text-xs font-bold text-gray-400 uppercase tracking-wider">
               {formData.gender} • {formData.age} jaar
             </p>
@@ -323,8 +300,7 @@ function DashboardProfilePage() {
             <div className="bg-[var(--muted-bg)] p-4 rounded-2xl flex items-center justify-between border border-[var(--border-color)]/30">
               <div className="space-y-0.5">
                 <h4 className="text-xs font-bold uppercase text-gray-400 tracking-wider flex items-center gap-1">
-                  <LayoutDashboard className="w-3 h-3 text-[#1A756A]" /> Biometrische
-                  Waarden
+                  <LayoutDashboard className="w-3 h-3 text-[#1A756A]" /> Biometrische Waarden
                 </h4>
                 <p className="text-sm font-bold">Body Mass Index</p>
                 <span className="text-[11px] text-gray-400 font-medium">
@@ -380,11 +356,11 @@ function DashboardProfilePage() {
         {/* RIGHT OPERATIONS PANEL */}
         <div className="lg:col-span-8 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-3xl p-6 shadow-sm">
           <div className="flex gap-2 mb-6 border-b border-[var(--border-color)] pb-2">
-            {tabs.map((t) => (
+            {tabs.map((t: string) => (
               <button
                 key={t}
                 type="button"
-                onClick={() => setActiveTab(t)}
+                onClick={() => setActiveTab(t as typeof activeTab)}
                 className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider rounded-xl transition-all cursor-pointer focus:outline-none ${
                   activeTab === t
                     ? 'bg-[#1A756A] text-white shadow-sm'
@@ -414,10 +390,7 @@ function DashboardProfilePage() {
                       const val = e.target.value;
                       setFormData((prev) => {
                         const upd = { ...prev, name: val };
-                        localStorage.setItem(
-                          'surihealth_profile_cache',
-                          JSON.stringify(upd)
-                        );
+                        localStorage.setItem('surihealth_profile_cache', JSON.stringify(upd));
                         return upd;
                       });
                     }}
@@ -434,10 +407,7 @@ function DashboardProfilePage() {
                         const val = parseInt(e.target.value) || 0;
                         setFormData((prev) => {
                           const upd = { ...prev, age: val };
-                          localStorage.setItem(
-                            'surihealth_profile_cache',
-                            JSON.stringify(upd)
-                          );
+                          localStorage.setItem('surihealth_profile_cache', JSON.stringify(upd));
                           return upd;
                         });
                       }}
@@ -452,10 +422,7 @@ function DashboardProfilePage() {
                         const val = e.target.value;
                         setFormData((prev) => {
                           const upd = { ...prev, gender: val };
-                          localStorage.setItem(
-                            'surihealth_profile_cache',
-                            JSON.stringify(upd)
-                          );
+                          localStorage.setItem('surihealth_profile_cache', JSON.stringify(upd));
                           return upd;
                         });
                       }}
@@ -477,10 +444,7 @@ function DashboardProfilePage() {
                         const val = parseInt(e.target.value) || 0;
                         setFormData((prev) => {
                           const upd = { ...prev, height: val };
-                          localStorage.setItem(
-                            'surihealth_profile_cache',
-                            JSON.stringify(upd)
-                          );
+                          localStorage.setItem('surihealth_profile_cache', JSON.stringify(upd));
                           return upd;
                         });
                       }}
@@ -496,10 +460,7 @@ function DashboardProfilePage() {
                         const val = parseInt(e.target.value) || 0;
                         setFormData((prev) => {
                           const upd = { ...prev, weight: val };
-                          localStorage.setItem(
-                            'surihealth_profile_cache',
-                            JSON.stringify(upd)
-                          );
+                          localStorage.setItem('surihealth_profile_cache', JSON.stringify(upd));
                           return upd;
                         });
                       }}
@@ -523,11 +484,7 @@ function DashboardProfilePage() {
               <div className="space-y-6">
                 <h4 className="text-lg font-bold">Voedingsvoorkeuren</h4>
                 {renderCheckboxGroup('likes', ingredientOptions, 'Wat vind je lekker?')}
-                {renderCheckboxGroup(
-                  'dislikes',
-                  ingredientOptions,
-                  'Wat eet je liever niet?'
-                )}
+                {renderCheckboxGroup('dislikes', ingredientOptions, 'Wat eet je liever niet?')}
               </div>
             )}
 
