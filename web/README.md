@@ -4,7 +4,7 @@ Dit component bevat de full-stack broncode van het SuriHealth maaltijdplatform. 
 
 ---
 
-## Technische Techstack (Architecture)
+## Tech Stack
 
 - **Frontend & Server Framework**: TanStack Start (React v18) & Vinxi Server Bundler
 - **Database & Mapping**: PostgreSQL & Drizzle ORM (Type-safe SQL Client)
@@ -15,7 +15,7 @@ Dit component bevat de full-stack broncode van het SuriHealth maaltijdplatform. 
 
 ---
 
-## Systeemvereisten & Voorwaarden (Prerequisites)
+## Prerequisites
 
 Voordat u de applicatie lokaal kunt installeren en opstarten, dient uw ontwikkelomgeving te beschikken over de volgende softwarecomponenten:
 
@@ -25,7 +25,7 @@ Voordat u de applicatie lokaal kunt installeren en opstarten, dient uw ontwikkel
 
 ---
 
-## Omgevingsvariabelen (Environment Variables)
+## Environment Variables
 
 Maak in de map `web/` een bestand aan genaamd `.env` en configureer de volgende runtime-variabelen:
 
@@ -42,7 +42,7 @@ BETTER_AUTH_SECRET="super_duper_secret_key"
 
 ---
 
-## Installatiegids (Installation)
+## Installation
 
 Volg deze stappen in uw PowerShell-terminal om de applicatie en de bijbehorende database-tabellen volledig operationeel te maken:
 
@@ -66,7 +66,7 @@ pnpm tsx src/db/seed.ts
 
 ---
 
-## Applicatie Gebruik & Beheer (Usage)
+## Usage
 
 U kunt de applicatie in twee verschillende modi opstarten, afhankelijk van uw testdoeleinden:
 

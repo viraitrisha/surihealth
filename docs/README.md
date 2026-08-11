@@ -4,7 +4,7 @@ Dit component bevat de volledige, interactieve systeemdocumentatie en het functi
 
 ---
 
-## Technische Techstack (Architecture)
+## Tech Stack
 
 - **Documentatie Engine**: Astro Starlight Ecosystem
 - **Rendering Model**: Static Site Generation (SSG)
@@ -14,7 +14,7 @@ Dit component bevat de volledige, interactieve systeemdocumentatie en het functi
 
 ---
 
-## Systeemvereisten & Voorwaarden (Prerequisites)
+## Prerequisites
 
 Om deze documentatieomgeving lokaal te kunnen compileren, te inspecteren of uit te breiden, dient uw computer te beschikken over de volgende softwareonderdelen:
 
@@ -24,7 +24,7 @@ Om deze documentatieomgeving lokaal te kunnen compileren, te inspecteren of uit 
 
 ---
 
-## Installatiegids (Installation)
+## Installation
 
 Volg deze stappen in uw PowerShell-terminal om de documentatieomgeving lokaal op te bouwen:
 
@@ -43,7 +43,7 @@ Remove-Item -Recurse -Force .astro, dist, node_modules/.vite -ErrorAction Ignore
 
 ---
 
-## Documentatie Lokaal Gebruik & Beheer (Usage)
+## Usage
 
 U kunt de documentatie lokaal opstarten om te testen, of compileren naar statische bestanden voor deployment via de volgende opdrachten:
 
@@ -58,7 +58,7 @@ De documentatie is direct lokaal bereikbaar via het toegewezen adres, standaard:
 
 ## Structuur en Onderhoud van de Handleidingen
 
-Alle functionele handleidingen, medische filterverklaringen en administratorgidsen zijn opgeslagen als gestructureerde contentbestanden in de map: `src/content/docs/`.
+Alle functionaliteiten handleidingen, medische filterverklaringen en administratorgidsen zijn opgeslagen als gestructureerde contentbestanden in de map: `src/content/docs/`.
 - **`guides/`**: Bevat de gebruikershandleidingen (zoals introductie, dashboard, recepten en profielbeheer).
 - **`admin/`**: Bevat de beveiligde beheerdersgidsen (zoals database CRUD en support inbox).
 - **Zijbalk Navigatie**: De volgorde en groepering van de menu-items worden centraal en type-safe beheerd binnen het `sidebar` array-object in het bestand `astro.config.mjs`.
