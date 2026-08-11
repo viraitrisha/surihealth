@@ -4,6 +4,25 @@ SuriHealth is een modern, full-stack webplatform ontworpen om de traditionele Su
 
 ---
 
+## Project Componenten (Project Structure)
+
+Het SuriHealth-project is georganiseerd als een ontkoppelde monorepo-architectuur om een strikte scheiding van belangen, maximale schaalbaarheid en DevOps-efficiëntie te garanderen. Het project bestaat uit de volgende twee hoofdcomponenten:
+
+### 1. De Hoofdapplicatie (`/web`)
+Dit is het kloppende hart van het platform. Deze map bevat de volledige full-stack broncode van de applicatie die live is ondergebracht op **Render** met een serverless **Neon PostgreSQL** database-cluster.
+- **`/src/routes/`**: De type-safe routeboom aangedreven door TanStack Router, inclusief de medische profile-setup, de consumenten-dashboards en de streng beveiligde beheerdersomgeving (`/admin/*`).
+- **`/src/server-functions/`**: De RPC-communicatielaag (`createServerFn`) die asynchrone database-mutaties en database-queries direct isoleert op de server-laag.
+- **`/src/utils/`**: De analytische reken- en filterkernen van de software, waaronder de medische RegEx-scan (`recipeFilters.ts`) en de on-the-fly calorieteller (`calorieCalculator.ts`).
+- **`/src/db/`**: De database-infrastructuur met de type-safe schema-definities (`schema.ts`), de Drizzle-migratiebestanden en het automatische database seed-script (`seed.ts`).
+
+### 2. De Systeemdocumentatie (`/docs`)
+Dit is het uitgebreide, interactieve technische en functionele handboek van het platform. Dit component is gebouwd met **Astro Starlight** en is volledig onafhankelijk en gratis gehost op **Vercel** als een statische site (SSG).
+- **`/src/content/docs/`**: Bevat alle gestructureerde documentatiegidsen in Markdown- en MDX-formaat (van installatiegidsen tot gedetailleerde scherminformatie).
+- **`/src/styles/custom.css`**: Het centrale merkkleur-stijlblad dat de documentatiewebsite transformeert naar de officiële, rustgevende **SuriHealth Teal-huisstijl** (100% emojivrij).
+- **`astro.config.mjs`**: Het centrale configuratiebestand waarin de type-safe navigatiematrix, icons en CSS-koppelingen van het handboek zijn vastgelegd.
+
+---
+
 ## Architectuur & Communicatielaag
 
 *   **Zero-API Overlap (RPC)**: Alle client-server communicatie verloopt via type-safe TanStack Start server functions (`createServerFn`). Dit elimineert de noodzaak voor losse REST-controllers.
@@ -12,7 +31,7 @@ SuriHealth is een modern, full-stack webplatform ontworpen om de traditionele Su
 
 ---
 
-## Beveiliging & Autenticatie Matrix (Better Auth)
+## Beveiliging & Authenticatie Matrix (Better Auth)
 
 *   **Session Token Cryptografie**: Authenticatie, registratie en sessiebeheer worden afgehandeld via **Better Auth** met de native Drizzle-adapter. Er worden geen onveilige, handmatige JWT-handlers gebruikt.
 *   **Server-Side Access Control (RBAC)**: Beveiliging wordt strikt aan de server-zijde afgedwongen binnen de handlers door de actieve sessie-cookies te verifiëren via `auth.api.getSession`.
@@ -30,7 +49,7 @@ SuriHealth is een modern, full-stack webplatform ontworpen om de traditionele Su
 
 ### 2. Runtime Portion Calorie Matrix (`calorieCalculator.ts`)
 *   **On-The-Fly Berekening**: Omdat externe API's (zoals The MealDB) geen calorieën leveren, scant deze ingebouwde engine ingrediënten runtime.
-*   **Deduplicatie Matser**: Om te voorkomen dat tweetalige ingrediënten (bijv. "kip" en "chicken") dubbel worden geteld, zuivert een JavaScript `Set` de invoer voordat deze langs de 12 macro-voedselgroepen wordt gehaald. Dit levert een uiterst realistische, on-inflated caloriewaarde op per portie.
+*   **Deduplicatie Master**: Om te voorkomen dat tweetalige ingrediënten (bijv. "kip" en "chicken") dubbel worden geteld, zuivert een JavaScript `Set` de invoer voordat deze langs de 12 macro-voedselgroepen wordt gehaald. Dit levert een uiterst realistische, on-inflated caloriewaarde op per portie.
 
 ### 3. Gepersonaliseerde Categorie Navigatie (`category.tsx`)
 *   **Type-Safe Parameters**: "Bekijk alles" knoppen op het dashboard sturen gebruikers naar een specifieke route via TanStack Search Parameters (`?mealType=lunch`).
