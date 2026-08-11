@@ -4,20 +4,13 @@ import { submitProfileSetup, getProfile } from '../../server-functions/profile';
 import { getUserSession } from '../../server-functions/auth';
 import { useToast } from '#/hooks/use-toast';
 import {
-  User as UserIcon,
   Loader2,
   Save,
-  Activity,
-  Heart,
-  Ban,
-  ThumbsUp,
-  ThumbsDown,
   Ruler,
   Scale,
   LayoutDashboard,
   Upload,
   Flame,
-  RefreshCw,
 } from 'lucide-react';
 
 export const Route = (createFileRoute as any)('/dashboard/profile')({

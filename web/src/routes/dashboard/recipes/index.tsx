@@ -19,7 +19,7 @@ import {
 
 export const Route = createFileRoute('/dashboard/recipes/')({
   loader: async () => {
-    const response = await getRecipes({ data: { limit: 500 } });
+    const response = await getRecipes({ data: { limit: 500, all: true } });
 
     let historyEntries: any[] = [];
     try {
@@ -189,8 +189,8 @@ function RecipesMainPage() {
                       <h2 className="text-xl font-bold">{row.title}</h2>
                     </div>
                     <Link
-                      to="/dashboard/category"
-                      search={{ mealType: row.id }}
+                      to="/dashboard/recipes/$category"
+                      params={{ category: row.id }}
                       className="inline-flex items-center gap-1 text-xs font-bold px-4 py-2 rounded-lg bg-[var(--primary-color)] text-white hover:bg-[var(--secondary-color)] transition-colors no-underline"
                     >
                       Bekijk alles <ChevronRight className="h-4 w-4" />

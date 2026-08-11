@@ -3,17 +3,18 @@ import { useState } from 'react';
 import { adminGetContactMessages, adminReplyToMessage } from '../../server-functions/admin';
 import { useToast } from '#/hooks/use-toast';
 import { AdminSidebar } from '../../components/admin/admin-sidebar';
-import { 
-  MessageSquare, 
-  Mail, 
-  User, 
-  Clock, 
-  ChevronRight, 
-  CornerUpLeft, 
-  Send, 
-  Loader2, 
+import {
+  MessageSquare,
+  Mail,
+  User,
+  Clock,
+  ChevronRight,
+  CornerUpLeft,
+  Send,
+  Loader2,
   Search,
-  Inbox
+  Inbox,
+  Leaf,
 } from 'lucide-react';
 
 export const Route = (createFileRoute)('/admin/contact')({
@@ -38,7 +39,6 @@ function AdminContactInboxPage() {
   const [replyText, setReplyText] = useState('');
   const [sending, setSending] = useState<boolean>(false);
 
-  // Filter binnengekomen formulieren op basis van de zoekbalk
   const filteredMessages = messages.filter((msg: any) => {
     return (
       msg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -50,18 +50,20 @@ function AdminContactInboxPage() {
   const handleSendInboxReply = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!replyText.trim() || !selectedMessage) return;
-    
+
     setSending(true);
     try {
-      // Roept de gecorrigeerde server-function aan zonder SQL-type crashes
       await adminReplyToMessage({ data: { messageId: selectedMessage.id, replyText } });
-      toast({ title: 'Antwoord verwerkt', description: 'De mail-client wordt nu geopend.', type: 'success' });
-      
-      // Open de native mailto link van Windows/Mac/Telefoon om de e-mail daadwerkelijk te versturen
+      toast({
+        title: 'Antwoord verwerkt',
+        description: 'De mail-client wordt nu geopend.',
+        type: 'success',
+      });
+
       if (typeof window !== 'undefined') {
         window.location.href = `mailto:${selectedMessage.email}?subject=SuriHealth Ondersteuning&body=${encodeURIComponent(replyText)}`;
       }
-      
+
       setReplyText('');
       setSelectedMessage(null);
       router.invalidate();
@@ -73,34 +75,45 @@ function AdminContactInboxPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex">
+    <div className="min-h-screen bg-slate-50 flex relative overflow-hidden">
       <AdminSidebar />
 
-      <main className="flex-1 ml-72 p-10 pt-0 space-y-8 animate-in fade-in duration-200">
+      {/* Decoratieve bladeren */}
+      <Leaf className="absolute -top-10 -left-10 w-40 h-40 text-[#1A756A]/10 rotate-12 pointer-events-none" />
+      <Leaf className="absolute -bottom-8 -right-8 w-36 h-36 text-[#1A756A]/10 -rotate-12 pointer-events-none" />
+      <Leaf className="absolute top-1/4 right-1/4 w-24 h-24 text-[#1A756A]/10 rotate-45 pointer-events-none" />
+
+      <main className="flex-1 ml-72 p-10 pt-0 space-y-8 relative z-10">
         <div className="h-6"></div>
 
-        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-200 pb-5">
-          <div>
-            <h2 className="text-4xl font-bold text-slate-800 tracking-tight">Support Inbox</h2>
-            <p className="text-slate-500 mt-2">Beheer en beantwoord binnengekomen contactformulieren van gebruikers.</p>
+        {/* GRADIENT BANNER */}
+        <div className="bg-gradient-to-r from-[#1A756A] to-[#2D9C8F] p-8 rounded-3xl text-white shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="space-y-1">
+            <h1 className="text-3xl md:text-4xl font-black tracking-tight flex items-center gap-3">
+              <MessageSquare className="h-8 w-8" />
+              <span>Support Inbox</span>
+            </h1>
+            <p className="text-white/80 text-sm md:text-base font-medium max-w-xl">
+              Beheer en beantwoord binnengekomen contactformulieren van gebruikers.
+            </p>
           </div>
-          <div className="bg-white px-4 py-2 rounded-xl border text-xs font-bold text-slate-600 shadow-sm self-start sm:self-center">
-            {messages.length} Berichten
+          <div className="bg-white/10 px-5 py-3 rounded-2xl border border-white/10 text-center shrink-0 min-w-[100px]">
+            <span className="block text-3xl font-black leading-none">{messages.length}</span>
+            <span className="text-[10px] uppercase font-bold tracking-wider opacity-70 block mt-1">Berichten</span>
           </div>
         </div>
 
-        {/* INBOX GRID COMPARTIMENT */}
+        {/* INBOX GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          
           {/* LINKER KOLOM: TICKETS */}
-          <div className="lg:col-span-5 bg-white border rounded-3xl p-4 space-y-4 shadow-sm h-[68vh] flex flex-col">
+          <div className="lg:col-span-5 bg-white rounded-3xl border border-gray-100 shadow-sm p-4 space-y-4 h-[68vh] flex flex-col">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
                 placeholder="Zoek op afzender, e-mail..."
                 value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-xs bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1A756A] text-gray-900 font-medium"
               />
             </div>
@@ -109,7 +122,10 @@ function AdminContactInboxPage() {
               {filteredMessages.map((msg: any) => (
                 <div
                   key={msg.id}
-                  onClick={() => { setSelectedMessage(msg); setReplyText(''); }}
+                  onClick={() => {
+                    setSelectedMessage(msg);
+                    setReplyText('');
+                  }}
                   className={`p-4 rounded-2xl border text-xs transition-all cursor-pointer flex items-start justify-between gap-3 ${
                     selectedMessage?.id === msg.id
                       ? 'bg-teal-50/40 border-[#1A756A] shadow-sm'
@@ -120,11 +136,16 @@ function AdminContactInboxPage() {
                     <div className="flex justify-between items-baseline gap-2">
                       <h4 className="font-bold text-slate-800 truncate">{msg.name}</h4>
                       <span className="text-[9px] font-bold text-gray-400 shrink-0">
-                        {new Date(msg.createdAt).toLocaleDateString('nl-SR', { day: '2-digit', month: 'short' })}
+                        {new Date(msg.createdAt).toLocaleDateString('nl-SR', {
+                          day: '2-digit',
+                          month: 'short',
+                        })}
                       </span>
                     </div>
                     <p className="text-gray-400 font-semibold truncate">{msg.email}</p>
-                    <p className="text-slate-600 line-clamp-2 pt-1 font-medium leading-relaxed">{msg.message}</p>
+                    <p className="text-slate-600 line-clamp-2 pt-1 font-medium leading-relaxed">
+                      {msg.message}
+                    </p>
                   </div>
                   <ChevronRight className="w-4 h-4 text-gray-400 self-center shrink-0" />
                 </div>
@@ -138,8 +159,8 @@ function AdminContactInboxPage() {
             </div>
           </div>
 
-          {/* RECHTER KOLOM: DETAILS & ANTWOORD VELDER */}
-          <div className="lg:col-span-7 bg-white border rounded-3xl p-6 shadow-sm h-[68vh] flex flex-col justify-between relative overflow-hidden">
+          {/* RECHTER KOLOM: DETAILS & ANTWOORD VELD */}
+          <div className="lg:col-span-7 bg-white rounded-3xl border border-gray-100 shadow-sm p-6 h-[68vh] flex flex-col justify-between">
             {selectedMessage ? (
               <div className="flex-1 flex flex-col justify-between space-y-6 animate-in fade-in duration-150">
                 <div className="space-y-4">
@@ -154,13 +175,14 @@ function AdminContactInboxPage() {
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="bg-slate-50 border p-5 rounded-2xl text-xs leading-relaxed text-slate-700 font-medium whitespace-pre-wrap max-h-48 overflow-y-auto shadow-inner">
                     {selectedMessage.message}
                   </div>
-                  
+
                   <div className="text-[10px] font-bold text-gray-400 flex items-center gap-1">
-                    <Clock className="w-4 h-4" /> Ontvangen op: {new Date(selectedMessage.createdAt).toLocaleString('nl-SR')}
+                    <Clock className="w-4 h-4" /> Ontvangen op:{' '}
+                    {new Date(selectedMessage.createdAt).toLocaleString('nl-SR')}
                   </div>
                 </div>
 
@@ -172,7 +194,7 @@ function AdminContactInboxPage() {
                     required
                     rows={4}
                     value={replyText}
-                    onChange={e => setReplyText(e.target.value)}
+                    onChange={(e) => setReplyText(e.target.value)}
                     placeholder="Typ hier uw officiële ondersteuningsreactie..."
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1A756A] transition-all font-medium"
                   />
@@ -180,14 +202,17 @@ function AdminContactInboxPage() {
                     <button
                       type="submit"
                       disabled={sending || replyText.trim().length < 4}
-                      className="inline-flex items-center gap-1.5 bg-[#1A756A] hover:bg-[#13574e] text-white font-black px-4 py-2.5 rounded-xl shadow-md text-xs uppercase tracking-wider cursor-pointer focus:outline-none transition-all disabled:opacity-40"
+                      className="inline-flex items-center gap-1.5 bg-[#1A756A] hover:bg-[#13574e] text-white font-black px-4 py-2.5 rounded-xl shadow-md text-xs uppercase tracking-wider transition-all disabled:opacity-40"
                     >
-                      {sending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                      {sending ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Send className="w-3.5 h-3.5" />
+                      )}
                       <span>Beantwoorden & Mail openen</span>
                     </button>
                   </div>
                 </form>
-
               </div>
             ) : (
               <div className="flex-1 flex flex-col items-center justify-center text-center text-gray-400 p-8 space-y-3">
@@ -197,7 +222,8 @@ function AdminContactInboxPage() {
                 <div>
                   <h4 className="font-bold text-slate-700 text-sm">Geen bericht geselecteerd</h4>
                   <p className="text-xs text-gray-400 font-semibold max-w-xs mx-auto mt-1 leading-normal">
-                    Selecteer een binnengekomen ticket aan de linkerzijde om de inhoud te lezen en direct te beantwoorden.
+                    Selecteer een binnengekomen ticket aan de linkerzijde om de inhoud te
+                    lezen en direct te beantwoorden.
                   </p>
                 </div>
               </div>

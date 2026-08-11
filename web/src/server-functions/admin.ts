@@ -19,7 +19,6 @@ async function requireAdmin() {
   }
 
   const { db } = await import('../db');
-  const { users } = await import('../db/schema');
   
   const freshUserRecord = await db.query.users.findFirst({
     where: (table, { eq }) => eq(table.id, sessionData.user.id)

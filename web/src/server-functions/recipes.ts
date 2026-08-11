@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start';
-import { getRequest } from '@tanstack/react-start/server'; 
+import { getRequest } from '@tanstack/react-start/server';
 import { z } from 'zod';
 import { db } from '../db';
 import { recipes, userHistory } from '../db/schema';
@@ -12,6 +12,7 @@ import { estimateRecipeCalories } from '../utils/calorieCalculator';
 const recipesInputSchema = z.object({
   category: z.string().optional(),
   mealType: z.string().optional(),
+  all: z.boolean().optional().default(false),
   page: z.number().int().positive().default(1),
   limit: z.number().int().positive().default(500),
 });
@@ -25,40 +26,35 @@ export const getRecipes = createServerFn({ method: 'GET' })
   .handler(async ({ data }) => {
     const request = getRequest();
     const headers = request ? request.headers : new Headers();
-    
     const session = await auth.api.getSession({ headers });
     const userId = session?.user?.id;
 
     let query = db.select().from(recipes).$dynamic();
-    
     if (data.category) {
       query = query.where(eq(recipes.category, data.category));
     }
-    
     query = query.orderBy(recipes.id);
     const rawRecipes = await query;
 
     const allRecipes = rawRecipes.map((recipe: any) => {
       const combinedIngredients = [
         ...(recipe.ingredients || []),
-        ...(recipe.ingredientsNl || [])
+        ...(recipe.ingredientsNl || []),
       ];
-
       return {
         ...recipe,
-        calories: recipe.calories && recipe.calories > 0 
-          ? recipe.calories 
-          : estimateRecipeCalories(combinedIngredients)
+        calories:
+          recipe.calories && recipe.calories > 0
+            ? recipe.calories
+            : estimateRecipeCalories(combinedIngredients),
       };
     });
 
     let preFilteredRecipes = allRecipes;
     if (data.mealType) {
       const targetMeal = data.mealType.toLowerCase().trim();
-      
       preFilteredRecipes = allRecipes.filter((recipe: any) => {
         let cleanTypes: string[] = [];
-        
         try {
           if (Array.isArray(recipe.mealTypes)) {
             cleanTypes = recipe.mealTypes;
@@ -71,40 +67,54 @@ export const getRecipes = createServerFn({ method: 'GET' })
         } catch (e) {
           cleanTypes = [String(recipe.mealTypes)];
         }
-
-        const normalizedTypes = cleanTypes.map(t => String(t).toLowerCase().trim());
-        
-        if (targetMeal === 'dessert' || targetMeal === 'snack' || targetMeal === 'snacks') {
-          return normalizedTypes.includes('dessert') || normalizedTypes.includes('snack') || normalizedTypes.includes('snacks');
+        const normalizedTypes = cleanTypes.map((t) =>
+          String(t).toLowerCase().trim(),
+        );
+        if (
+          targetMeal === 'dessert' ||
+          targetMeal === 'snack' ||
+          targetMeal === 'snacks'
+        ) {
+          return (
+            normalizedTypes.includes('dessert') ||
+            normalizedTypes.includes('snack') ||
+            normalizedTypes.includes('snacks')
+          );
         }
-        
         return normalizedTypes.includes(targetMeal);
       });
     }
 
-    if (userId) {
+    if (userId && !data.all) {
       const profile = await db.query.profiles.findFirst({
         where: (profiles, { eq }) => eq(profiles.userId, userId),
       });
-      
       const filtered = filterRecipesByProfile(preFilteredRecipes, profile ?? null);
       const total = filtered.length;
       const start = (data.page - 1) * data.limit;
       const paged = filtered.slice(start, start + data.limit);
-      
       return {
         recipes: paged,
-        pagination: { page: data.page, limit: data.limit, total, totalPages: Math.ceil(total / data.limit) },
+        pagination: {
+          page: data.page,
+          limit: data.limit,
+          total,
+          totalPages: Math.ceil(total / data.limit),
+        },
       };
     }
 
     const total = preFilteredRecipes.length;
     const start = (data.page - 1) * data.limit;
     const paged = preFilteredRecipes.slice(start, start + data.limit);
-    
     return {
       recipes: paged,
-      pagination: { page: data.page, limit: data.limit, total, totalPages: Math.ceil(total / data.limit) },
+      pagination: {
+        page: data.page,
+        limit: data.limit,
+        total,
+        totalPages: Math.ceil(total / data.limit),
+      },
     };
   });
 
@@ -119,25 +129,24 @@ export const getRecipeById = createServerFn({ method: 'GET' })
     const request = getRequest();
     const headers = request ? request.headers : new Headers();
     const session = await auth.api.getSession({ headers });
-    
     if (session?.user?.id) {
       await db.insert(userHistory).values({
-        id: crypto.randomUUID(), 
+        id: crypto.randomUUID(),
         userId: session.user.id,
-        recipeId: data.id, 
+        recipeId: data.id,
       });
     }
 
     const combinedIngredients = [
       ...(recipe.ingredients || []),
-      ...(recipe.ingredientsNl || [])
+      ...(recipe.ingredientsNl || []),
     ];
-
     return {
       ...recipe,
-      calories: recipe.calories && recipe.calories > 0 
-        ? recipe.calories 
-        : estimateRecipeCalories(combinedIngredients)
+      calories:
+        recipe.calories && recipe.calories > 0
+          ? recipe.calories
+          : estimateRecipeCalories(combinedIngredients),
     };
   });
 
@@ -150,74 +159,99 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export const getAutomaticDailyMenu = createServerFn({ method: 'GET' })
-  .handler(async () => {
-    const request = getRequest();
-    const headers = request ? request.headers : new Headers();
-    const session = await auth.api.getSession({ headers });
-    const userId = session?.user?.id;
+export const getAutomaticDailyMenu = createServerFn({ method: 'GET' }).handler(async () => {
+  const request = getRequest();
+  const headers = request ? request.headers : new Headers();
+  const session = await auth.api.getSession({ headers });
+  const userId = session?.user?.id;
 
-    const rawRecipes = await db.select().from(recipes);
-    
-    const allRecipes = rawRecipes.map((recipe: any) => {
-      const combinedIngredients = [
-        ...(recipe.ingredients || []),
-        ...(recipe.ingredientsNl || [])
-      ];
-      return {
-        ...recipe,
-        calories: recipe.calories && recipe.calories > 0 
-          ? recipe.calories 
-          : estimateRecipeCalories(combinedIngredients)
-      };
+  const rawRecipes = await db.select().from(recipes);
+  const allRecipes = rawRecipes.map((recipe: any) => {
+    const combinedIngredients = [
+      ...(recipe.ingredients || []),
+      ...(recipe.ingredientsNl || []),
+    ];
+    return {
+      ...recipe,
+      calories:
+        recipe.calories && recipe.calories > 0
+          ? recipe.calories
+          : estimateRecipeCalories(combinedIngredients),
+    };
+  });
+
+  let allowedRecipes = allRecipes;
+  if (userId) {
+    const profile = await db.query.profiles.findFirst({
+      where: (profiles, { eq }) => eq(profiles.userId, userId),
     });
-
-    let allowedRecipes = allRecipes;
-
-    if (userId) {
-      const profile = await db.query.profiles.findFirst({
-        where: (profiles, { eq }) => eq(profiles.userId, userId),
-      });
-      if (profile) {
-        allowedRecipes = filterRecipesByProfile(allRecipes, profile);
-      }
+    if (profile) {
+      allowedRecipes = filterRecipesByProfile(allRecipes, profile);
     }
+  }
 
-    const randomizedPool = shuffleArray(allowedRecipes);
+  const randomizedPool = shuffleArray(allowedRecipes);
 
-    const ontbijt = randomizedPool.find(r => {
-      const ts = Array.isArray(r.mealTypes) ? r.mealTypes : JSON.parse(String(r.mealTypes) || '[]');
+  const ontbijt =
+    randomizedPool.find((r) => {
+      const ts = Array.isArray(r.mealTypes)
+        ? r.mealTypes
+        : JSON.parse(String(r.mealTypes) || '[]');
       return ts.map((t: string) => String(t).toLowerCase()).includes('ontbijt');
     }) || null;
 
-    const lunch = randomizedPool.find(r => {
-      const ts = Array.isArray(r.mealTypes) ? r.mealTypes : JSON.parse(String(r.mealTypes) || '[]');
-      return ts.map((t: string) => String(t).toLowerCase()).includes('lunch') && r.id !== ontbijt?.id;
+  const lunch =
+    randomizedPool.find((r) => {
+      const ts = Array.isArray(r.mealTypes)
+        ? r.mealTypes
+        : JSON.parse(String(r.mealTypes) || '[]');
+      return (
+        ts.map((t: string) => String(t).toLowerCase()).includes('lunch') &&
+        r.id !== ontbijt?.id
+      );
     }) || null;
 
-    const middagmaaltijd = randomizedPool.find(r => {
-      const ts = Array.isArray(r.mealTypes) ? r.mealTypes : JSON.parse(String(r.mealTypes) || '[]');
-      return ts.map((t: string) => String(t).toLowerCase()).includes('middagmaaltijd') && r.id !== ontbijt?.id && r.id !== lunch?.id;
+  const middagmaaltijd =
+    randomizedPool.find((r) => {
+      const ts = Array.isArray(r.mealTypes)
+        ? r.mealTypes
+        : JSON.parse(String(r.mealTypes) || '[]');
+      return (
+        ts.map((t: string) => String(t).toLowerCase()).includes('middagmaaltijd') &&
+        r.id !== ontbijt?.id &&
+        r.id !== lunch?.id
+      );
     }) || null;
 
-    const avondeten = randomizedPool.find(r => {
-      const ts = Array.isArray(r.mealTypes) ? r.mealTypes : JSON.parse(String(r.mealTypes) || '[]');
-      return ts.map((t: string) => String(t).toLowerCase()).includes('avondeten') && r.id !== ontbijt?.id && r.id !== lunch?.id && r.id !== middagmaaltijd?.id;
+  const avondeten =
+    randomizedPool.find((r) => {
+      const ts = Array.isArray(r.mealTypes)
+        ? r.mealTypes
+        : JSON.parse(String(r.mealTypes) || '[]');
+      return (
+        ts.map((t: string) => String(t).toLowerCase()).includes('avondeten') &&
+        r.id !== ontbijt?.id &&
+        r.id !== lunch?.id &&
+        r.id !== middagmaaltijd?.id
+      );
     }) || null;
 
-    const snack = randomizedPool.find(r => {
-      const ts = Array.isArray(r.mealTypes) ? r.mealTypes : JSON.parse(String(r.mealTypes) || '[]');
+  const snack =
+    randomizedPool.find((r) => {
+      const ts = Array.isArray(r.mealTypes)
+        ? r.mealTypes
+        : JSON.parse(String(r.mealTypes) || '[]');
       const normalized = ts.map((t: string) => String(t).toLowerCase());
       return normalized.includes('dessert') || normalized.includes('snack');
     }) || null;
 
-    return {
-      menu: {
-        ontbijt,
-        lunch,
-        middagmaaltijd,
-        avondeten,
-        snack
-      }
-    };
-  });
+  return {
+    menu: {
+      ontbijt,
+      lunch,
+      middagmaaltijd,
+      avondeten,
+      snack,
+    },
+  };
+});
