@@ -188,7 +188,6 @@ function RecipesMainPage() {
                       {row.icon}
                       <h2 className="text-xl font-bold">{row.title}</h2>
                     </div>
-                    {/* CORRECTIE: link naar dynamische $category route */}
                     <Link
                       to="/dashboard/recipes/$category"
                       params={{ category: row.id }}
@@ -208,7 +207,7 @@ function RecipesMainPage() {
               )
           )}
 
-          {/* Onlangs Bekeken (zonder dubbele recepten) */}
+          {/* Onlangs Bekeken */}
           {history.length > 0 && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 border-b border-[var(--border-color)] pb-2">
