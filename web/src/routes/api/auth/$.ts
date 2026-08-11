@@ -10,25 +10,20 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
     handlers: {
       GET: async ({ request }: { request: Request }): Promise<Response> => {
         const url = new URL(request.url)
-
         if (url.pathname.endsWith('/get-session')) {
           try {
             const baseResponse = await auth.handler(request)
             if (!baseResponse.ok) return baseResponse;
-
             const contentType = baseResponse.headers.get('content-type') || '';
             if (contentType.includes('application/json')) {
               const sessionData = await baseResponse.clone().json().catch(() => null)
-
               if (sessionData?.user?.id) {
                 const freshUser = await db.query.users.findFirst({
                   where: eq(users.id, sessionData.user.id)
                 })
-
                 const freshProfile = await db.query.profiles.findFirst({
                   where: eq(profiles.userId, sessionData.user.id)
                 })
-
                 if (freshUser) {
                   sessionData.user.name = freshUser.name;
                   sessionData.user.image = freshUser.image;
@@ -38,7 +33,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
                   if (freshProfile) {
                     sessionData.profile = freshProfile;
                   }
-
                   return new Response(JSON.stringify(sessionData), {
                     status: 200,
                     headers: { 'Content-Type': 'application/json' }
@@ -51,12 +45,10 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
             return await auth.handler(request)
           }
         }
-
         return await auth.handler(request)
       },
       POST: async ({ request }: { request: Request }): Promise<Response> => {
         const url = new URL(request.url)
-
         if (url.pathname.endsWith('/signin-email')) {
           try {
             const reqClone = request.clone();
@@ -66,7 +58,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
               const existingAdmin = await db.query.users.findFirst({
                 where: eq(users.email, 'surihealth@gmail.com')
               });
-
               if (!existingAdmin) {
                 const createdUser = await auth.api.signUpEmail({
                   body: {
@@ -75,13 +66,11 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
                     name: 'Admin SuriHealth',
                   }
                 });
-
                 if (createdUser?.user?.id) {
                   await db
                     .update(users)
                     .set({ role: 'admin' })
                     .where(eq(users.id, createdUser.user.id));
-
                   await db.insert(profiles).values({
                     id: crypto.randomUUID(),
                     userId: createdUser.user.id,
@@ -94,17 +83,15 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
                     allergies: [],
                     likes: [],
                     dislikes: [],
-                  });
+                  }).execute();
                 }
               }
             }
-
             if (body?.email) {
               const emailCheck = body.email.trim().toLowerCase();
               const dbUser = await db.query.users.findFirst({
                 where: eq(users.email, emailCheck)
               });
-
               if (dbUser?.blocked === true) {
                 return new Response(
                   JSON.stringify({ 
@@ -121,18 +108,15 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
             console.error(err);
           }
         }
-
         if (url.pathname.endsWith('/signup')) {
           try {
             const formData = await request.formData()
             const name = formData.get('name')?.toString() || ''
             const email = formData.get('email')?.toString() || ''
             const password = formData.get('password')?.toString() || ''
-
             if (!name || !email || !password) {
               return new Response('Vul alle velden in.', { status: 400 })
             }
-
             await auth.api.signUpEmail({
               body: {
                 email: email.trim(),
@@ -140,7 +124,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
                 name: name.trim(),
               }
             })
-
             return new Response(null, {
               status: 302,
               headers: { 'Location': '/profile-setup' },
@@ -149,14 +132,12 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
             return new Response(`Registratie mislukt: ${error.message}`, { status: 400 })
           }
         }
-
         if (url.pathname.endsWith('/setup')) {
           try {
             const session = await auth.api.getSession({ headers: request.headers })
             if (!session?.user?.id) {
               return new Response('Niet geautoriseerd.', { status: 401 })
             }
-
             const formData = await request.formData()
             const age = Number(formData.get('age')) || 25
             const gender = formData.get('gender')?.toString() || 'Vrouw'
@@ -168,9 +149,8 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
             const allergies = formData.getAll('allergies').map(a => a.toString())
             const likes = formData.getAll('likes').map(l => l.toString())
             const dislikes = formData.getAll('dislikes').map(d => d.toString())
-
             const mappedConditions = conditions.map(c => c.includes('Diabeet') ? 'Diabetic' : c)
-
+            
             await db
               .insert(profiles)
               .values({
@@ -190,7 +170,8 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
                 target: profiles.userId,
                 set: { age, gender, height, weight, conditions: mappedConditions, diets, allergies, likes, dislikes },
               })
-
+              .execute(); 
+              
             return new Response(null, {
               status: 302,
               headers: { 'Location': '/dashboard' },
@@ -199,7 +180,6 @@ export const Route = (createFileRoute as any)('/api/auth/$')({
             return new Response(`Profiel opslaan mislukt: ${error.message}`, { status: 500 })
           }
         }
-
         return await auth.handler(request)
       },
     },
